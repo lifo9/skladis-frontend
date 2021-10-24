@@ -1,20 +1,28 @@
 {
   "name": "skladis",
   "version": "1.0.0",
+  "private": true,
   "description": "SKLAD IS",
   "author": "Jakub Filo <jakub@filo.dev>",
-  "private": true,
   "scripts": {
+    "build": "node build/build.js",
+    "lint": "eslint --ext .js,.vue src test/unit",
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
-    "unit": "jest --config test/unit/jest.conf.js --coverage",
     "test": "npm run unit",
-    "lint": "eslint --ext .js,.vue src test/unit",
-    "build": "node build/build.js"
+    "unit": "jest --config test/unit/jest.conf.js --coverage"
   },
   "dependencies": {
+    "@tailwindcss/postcss7-compat": "^2.0.2",
+    "autoprefixer": "^9",
+    "axios": "^0.23.0",
+    "postcss": "^7",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.2",
     "vue": "^2.5.2",
-    "vue-router": "^3.0.1"
+    "vue-axios": "^3.3.7",
+    "vue-router": "^3.0.1",
+    "vuex": "^3.6.2",
+    "vuex-persistedstate": "^4.1.0"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
@@ -60,6 +68,7 @@
     "shelljs": "^0.7.6",
     "uglifyjs-webpack-plugin": "^1.1.1",
     "url-loader": "^0.5.8",
+    "vue-cli-plugin-tailwind": "~2.0.6",
     "vue-jest": "^1.0.2",
     "vue-loader": "^13.3.0",
     "vue-style-loader": "^3.0.1",
@@ -69,13 +78,13 @@
     "webpack-dev-server": "^2.9.1",
     "webpack-merge": "^4.1.0"
   },
-  "engines": {
-    "node": ">= 6.0.0",
-    "npm": ">= 3.0.0"
-  },
   "browserslist": [
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "engines": {
+    "node": ">= 6.0.0",
+    "npm": ">= 3.0.0"
+  }
 }

@@ -1,10 +1,10 @@
-# skladis
+# SkladIS
 
 > SKLAD IS
 
 ## Build Setup
 
-``` bash
+```bash
 # install dependencies
 npm install
 
