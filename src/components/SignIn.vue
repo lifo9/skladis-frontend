@@ -18,7 +18,7 @@
             md:mt-0
           "
       >
-        <form class="space-y-6" @submit.prevent="signin">
+        <form class="space-y-6" @submit.prevent="signIn">
           <div
             v-if="error"
             class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
@@ -122,7 +122,7 @@
             Sign in
           </button>
           <div>
-            <router-link to="/signup">Sign up</router-link>
+            <router-link to="/sign-up">Sign up</router-link>
             <br />
             <router-link to="/forgot_password">Forgot Password</router-link>
           </div>
@@ -133,6 +133,8 @@
 </template>
 
 <script>
+import { signIn, getCurrentUser } from '../backend/services/UserService'
+
 export default {
   data () {
     return {
@@ -148,28 +150,30 @@ export default {
     this.checkSignedIn()
   },
   methods: {
-    signin () {
-      this.$http.plain
-        .post('/signin', { email: this.email, password: this.password })
-        .then(response => this.signinSuccessful(response))
-        .catch(error => this.signinFailed(error))
+    async signIn () {
+      try {
+        const response = await signIn(this.email, this.password)
+        this.signInSuccessful(response)
+      } catch (error) {
+        this.signinFailed(error)
+      }
     },
-    signinSuccessful (response) {
+    async signInSuccessful (response) {
       if (!response.data.csrf) {
         this.signinFailed(response)
         return
       }
-      this.$http.plain
-        .get('/me')
-        .then(meResponse => {
-          this.$store.commit('setCurrentUser', {
-            currentUser: meResponse.data,
-            csrf: response.data.csrf
-          })
-          this.error = ''
-          this.$router.replace('/admin')
+      try {
+        const me = await getCurrentUser()
+        this.$store.commit('setCurrentUser', {
+          currentUser: me.data,
+          csrf: response.data.csrf
         })
-        .catch(error => this.signinFailed(error))
+        this.error = ''
+        this.$router.replace('/')
+      } catch (error) {
+        this.signinFailed(error)
+      }
     },
     signinFailed (error) {
       this.error =
@@ -179,7 +183,7 @@ export default {
     },
     checkSignedIn () {
       if (this.$store.state.signedIn) {
-        this.$router.replace('/admin')
+        this.$router.replace('/')
       }
     }
   }

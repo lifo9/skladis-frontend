@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { store } from './../../store'
+import { store } from '../store/store'
 
 const API_URL = 'http://localhost:3009' // TODO make dynamic
 
