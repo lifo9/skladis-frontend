@@ -46,6 +46,14 @@ export default new Router({
       beforeEnter: (to, from, next) => {
         redirectSignedIn(to, from, next)
       }
+    },
+    {
+      path: '/forgot-password',
+      name: 'ForgotPassword',
+      component: GuestMainView,
+      beforeEnter: (to, from, next) => {
+        redirectSignedIn(to, from, next)
+      }
     }
   ]
 })
