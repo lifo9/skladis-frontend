@@ -1,6 +1,6 @@
 <template>
   <div>
-    NAVIGATION
+    NAV TEST
   </div>
 </template>
 
