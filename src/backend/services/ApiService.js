@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { store } from '../store/store'
 
-const API_URL = 'http://localhost:3009' // TODO make dynamic
+const API_URL = process.env.ROOT_API // TODO make dynamic
 
 const securedAxiosInstance = axios.create({
   baseURL: API_URL,
