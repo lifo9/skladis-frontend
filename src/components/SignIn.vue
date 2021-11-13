@@ -18,9 +18,13 @@
       :label="$t('Password')"
       :placeholder="$t('Password')"
     />
-    <r-button type="submit" size="full" :loading="loading">{{
-      $t('Sign In')
-    }}</r-button>
+    <r-button
+      type="submit"
+      size="full"
+      :loading="loading"
+      :disabled="loading"
+      >{{ $t('Sign In') }}</r-button
+    >
     <div>
       <router-link to="/sign-up">{{ $t('Sign Up') }}</router-link>
       <br />
