@@ -1,7 +1,5 @@
 <template>
-  <div id="app">
-    <router-view />
-  </div>
+  <p>Forgot Password</p>
 </template>
 
 <script>
