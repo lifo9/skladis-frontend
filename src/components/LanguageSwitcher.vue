@@ -1,6 +1,6 @@
 <template>
-  <div class="flex justify-center items-center">
-    <select v-model="$i18n.locale" class="form-select text-black">
+  <div class="flex items-center justify-center">
+    <select v-model="$i18n.locale" class="text-black form-select">
       <option v-for="(lang, i) in langs" :key="`Lang${i}`" :value="lang">
         {{ lang }}
       </option>

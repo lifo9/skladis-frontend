@@ -1,6 +1,6 @@
 <template>
   <div>
-    <label v-if="label" class="block text-sm font-medium text-neutral-600 mb-1">
+    <label v-if="label" class="block mb-1 text-sm font-medium text-neutral-600">
       {{ label }}
       <span v-if="required" class="text-red-500">*</span>
     </label>
@@ -8,26 +8,26 @@
     <div class="relative">
       <input
         class="block
-                w-full
-                px-5
-                py-3
-                text-base
-                text-neutral-600
-                placeholder-gray-400
-                transition
-                duration-500
-                ease-in-out
-                transform
-                border
-                border-transparent
-                rounded-md
-                bg-gray-50
-                focus:outline-none
-                focus:border-transparent
-                focus:ring-2
-                focus:ring-white
-                focus:ring-offset-1
-                focus:ring-offset-gray-400"
+  w-full
+ px-5
+ py-3
+ text-base
+ text-neutral-600
+ placeholder-gray-400
+ transition
+ duration-500
+ ease-in-out
+ transform
+ border
+ border-transparent
+ rounded-md
+ bg-gray-50
+ focus:outline-none
+ focus:border-transparent
+ focus:ring-2
+ focus:ring-white
+ focus:ring-offset-1
+ focus:ring-offset-gray-400"
         :class="[{ 'border-red-500': error }]"
         :type="type"
         :value="value"
@@ -39,7 +39,7 @@
 
     <span
       v-if="error && error.length"
-      class="py-2 text-red-500 text-xs font-bold"
+      class="py-2 text-xs font-bold text-red-500"
     >
       {{ $t(error) }}
     </span>

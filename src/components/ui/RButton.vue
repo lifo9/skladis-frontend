@@ -3,19 +3,19 @@
     :is="type"
     v-on="$listeners"
     class="
-          inline-flex
-          justify-center
-          items-center
-          border
-          border-transparent
-          text-base
-          leading-6
-          font-medium
-          rounded-md
-          active:bg-blue-700
-          transition
-          ease-in-out
-          duration-150"
+  inline-flex
+ justify-center
+ items-center
+ border
+ border-transparent
+ text-base
+ leading-6
+ font-medium
+ rounded-md
+ active:bg-blue-700
+ transition
+ ease-in-out
+ duration-150"
     :class="btnClass"
     :loading="loading"
     :disabled="disabled"
@@ -24,7 +24,7 @@
   >
     <svg
       v-if="loading"
-      class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+      class="w-5 h-5 mr-3 -ml-1 text-white animate-spin"
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"

@@ -1,13 +1,13 @@
 <template>
   <div
-    class="relative flex rounded-full bg-white text-gray-800 cursor-pointer"
+    class="relative flex text-gray-800 bg-white rounded-full cursor-pointer"
     @click="toggleMenu"
   >
-    <span class="material-icons-sharp w-8 text-2xl text-center select-none"
+    <span class="w-8 text-2xl text-center select-none material-icons-sharp"
       >person</span
     >
     <span
-      class="rounded-full material-icons-sharp w-8 text-2xl text-center select-none hoverable"
+      class="w-8 text-2xl text-center rounded-full select-none material-icons-sharp hoverable"
       >arrow_drop_down</span
     >
     <div
@@ -43,10 +43,7 @@ export default {
 
 <style lang="postcss">
 .user-menu-item {
-  @apply block;
-  @apply px-4;
-  @apply py-2;
-  @apply text-gray-700;
+  @apply block px-4 py-2 text-gray-700;
 }
 .hoverable {
   @apply hover:bg-gray-200;
