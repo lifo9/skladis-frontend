@@ -29,7 +29,8 @@ export default new Router({
       component: LoggedMainView,
       beforeEnter: (to, from, next) => {
         redirectSignedOut(to, from, next)
-      }
+      },
+      children: []
     },
     {
       path: '/sign-in',

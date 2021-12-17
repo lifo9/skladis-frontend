@@ -1,7 +1,7 @@
 <template>
   <div>
     <my-header />
-    <main class="container mx-auto px-4 md:px-12">
+    <main class="container max-w-6xl px-4 mx-auto md:px-12">
       <sign-in v-if="isSignIn" />
       <sign-up v-if="isSignUp" />
       <forgot-password v-if="isForgotPassword" />

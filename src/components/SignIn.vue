@@ -2,7 +2,7 @@
   <r-form
     @submit.prevent="signIn"
     :error="error"
-    class="mx-auto my-14 w-full max-w-md"
+    class="w-full max-w-md mx-auto my-14"
   >
     <r-input
       v-model="email"
