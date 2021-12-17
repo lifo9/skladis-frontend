@@ -1,8 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import { store } from '../backend/store/store'
+
+// main views
 import LoggedMainView from '../views/logged/LoggedMainView'
 import GuestMainView from '../views/guest/GuestMainView'
-import { store } from '../backend/store/store'
+
+// pages
+import HomeView from '../views/logged/HomeView'
 
 Vue.use(Router)
 
@@ -30,7 +35,13 @@ export default new Router({
       beforeEnter: (to, from, next) => {
         redirectSignedOut(to, from, next)
       },
-      children: []
+      children: [
+        {
+          path: '',
+          name: 'Home',
+          component: HomeView
+        }
+      ]
     },
     {
       path: '/sign-in',

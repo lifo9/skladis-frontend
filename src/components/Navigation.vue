@@ -15,9 +15,9 @@
       <ul class="h-screen overflow-y-auto">
         <li
           class="navigation-menu-item"
-          :class="isActiveRoute('LoggedMainView') ? 'active' : ''"
+          :class="isActiveRoute('Home') ? 'active' : ''"
         >
-          <a href="javascript:" @click="navigate('LoggedMainView')"
+          <a href="javascript:" @click="navigate('Home')"
             ><span class="material-icons">home</span>&nbsp;{{ $t('Home') }}</a
           >
         </li>
