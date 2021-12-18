@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
+import { getStartingLocale } from '../backend/services/LanguageService'
 
 Vue.use(VueI18n)
 
@@ -26,7 +27,8 @@ const { context, messages } = loadMessages()
 const i18n = new VueI18n({
   fallbackWarn: false,
   missingWarn: false,
-  locale: 'en',
+  locale: getStartingLocale(),
+  fallbackLocale: 'en',
   messages
 })
 

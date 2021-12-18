@@ -1,13 +1,16 @@
 import axios from 'axios'
 import { store } from '../store/store'
+import { getVueLocale } from './LanguageService'
 
-const API_URL = process.env.ROOT_API // TODO make dynamic
+const API_URL = process.env.ROOT_API
+const appLocale = getVueLocale()
 
 const securedAxiosInstance = axios.create({
   baseURL: API_URL,
   withCredentials: true,
   headers: {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    Locale: appLocale
   }
 })
 
@@ -15,7 +18,8 @@ const plainAxiosInstance = axios.create({
   baseURL: API_URL,
   withCredentials: true,
   headers: {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    Locale: appLocale
   }
 })
 
