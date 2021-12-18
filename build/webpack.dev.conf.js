@@ -8,7 +8,6 @@ const baseWebpackConfig = require("./webpack.base.conf");
 const { VueLoaderPlugin } = require('vue-loader')
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const FriendlyErrorsPlugin = require("friendly-errors-webpack-plugin");
 const ESLintPlugin = require('eslint-webpack-plugin')
 const portfinder = require("portfinder");
 
@@ -101,20 +100,6 @@ module.exports = new Promise((resolve, reject) => {
       process.env.PORT = port;
       // add port to devServer config
       devWebpackConfig.devServer.port = port;
-
-      // Add FriendlyErrorsPlugin
-      devWebpackConfig.plugins.push(
-        new FriendlyErrorsPlugin({
-          compilationSuccessInfo: {
-            messages: [
-              `Your application is running here: http://${devWebpackConfig.devServer.host}:${port}`,
-            ],
-          },
-          onErrors: config.dev.notifyOnErrors
-            ? utils.createNotifierCallback()
-            : undefined,
-        })
-      );
 
       resolve(devWebpackConfig);
     }
