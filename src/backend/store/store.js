@@ -1,29 +1,29 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import createPersistedState from 'vuex-persistedstate'
-Vue.use(Vuex)
+import Vue from "vue";
+import Vuex from "vuex";
+import createPersistedState from "vuex-persistedstate";
+Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   state: {
     currentUser: {},
     signedIn: false,
-    csrf: null
+    csrf: null,
   },
   mutations: {
-    setCurrentUser (state, { currentUser, csrf }) {
-      state.currentUser = currentUser
-      state.signedIn = true
-      state.csrf = csrf
+    setCurrentUser(state, { currentUser, csrf }) {
+      state.currentUser = currentUser;
+      state.signedIn = true;
+      state.csrf = csrf;
     },
-    unsetCurrentUser (state) {
-      state.currentUser = {}
-      state.signedIn = false
-      state.csrf = null
+    unsetCurrentUser(state) {
+      state.currentUser = {};
+      state.signedIn = false;
+      state.csrf = null;
     },
-    refresh (state, csrf) {
-      state.signedIn = true
-      state.csrf = csrf
-    }
+    refresh(state, csrf) {
+      state.signedIn = true;
+      state.csrf = csrf;
+    },
   },
-  plugins: [createPersistedState()]
-})
+  plugins: [createPersistedState()],
+});

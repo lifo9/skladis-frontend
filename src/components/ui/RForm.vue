@@ -18,8 +18,8 @@ export default {
   props: {
     error: {
       type: String,
-      default: ''
-    }
-  }
-}
+      default: "",
+    },
+  },
+};
 </script>

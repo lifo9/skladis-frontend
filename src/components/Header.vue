@@ -21,10 +21,10 @@
 </template>
 
 <script>
-import Navigation from './Navigation.vue'
-import Logo from './ui/Logo.vue'
-import UserMenu from './UserMenu.vue'
+import Navigation from "./Navigation.vue";
+import Logo from "./ui/Logo.vue";
+import UserMenu from "./UserMenu.vue";
 export default {
-  components: { Logo, UserMenu, Navigation }
-}
+  components: { Logo, UserMenu, Navigation },
+};
 </script>

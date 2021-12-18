@@ -15,11 +15,11 @@
 </template>
 
 <script>
-import Logout from '../../components/Logout.vue'
-import MyHeader from '../../components/Header.vue'
-import Navigation from '../../components/Navigation.vue'
+import Logout from "../../components/Logout.vue";
+import MyHeader from "../../components/Header.vue";
+import Navigation from "../../components/Navigation.vue";
 
 export default {
-  components: { Logout, MyHeader, Navigation }
-}
+  components: { Logout, MyHeader, Navigation },
+};
 </script>

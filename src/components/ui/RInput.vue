@@ -7,27 +7,7 @@
 
     <div class="relative">
       <input
-        class="block
-  w-full
- px-5
- py-3
- text-base
- text-neutral-600
- placeholder-gray-400
- transition
- duration-500
- ease-in-out
- transform
- border
- border-transparent
- rounded-md
- bg-gray-50
- focus:outline-none
- focus:border-transparent
- focus:ring-2
- focus:ring-white
- focus:ring-offset-1
- focus:ring-offset-gray-400"
+        class="block w-full px-5 py-3 text-base text-neutral-600 placeholder-gray-400 transition duration-500 ease-in-out transform border border-transparent rounded-md bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-1 focus:ring-offset-gray-400"
         :class="[{ 'border-red-500': error }]"
         :type="type"
         :value="value"
@@ -47,42 +27,42 @@
 </template>
 
 <script>
-import Vue from 'vue'
+import Vue from "vue";
 export default Vue.extend({
   props: {
     type: {
       type: String,
-      default: 'text'
+      default: "text",
     },
     label: {
       type: String,
-      default: null
+      default: null,
     },
     required: {
       type: Boolean,
-      default: false
+      default: false,
     },
     icon: {
       type: String,
-      default: ''
+      default: "",
     },
     value: {
       type: [String, Number],
-      default: undefined
+      default: undefined,
     },
     error: {
       type: String,
-      default: ''
-    }
+      default: "",
+    },
   },
   computed: {
-    listeners () {
+    listeners() {
       return {
         ...this.$listeners,
-        input: e => this.$emit('input', e.target.value),
-        change: e => this.$emit('change', e.target.value)
-      }
-    }
-  }
-})
+        input: (e) => this.$emit("input", e.target.value),
+        change: (e) => this.$emit("change", e.target.value),
+      };
+    },
+  },
+});
 </script>

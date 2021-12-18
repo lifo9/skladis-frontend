@@ -11,13 +11,13 @@
 </template>
 
 <script>
-import LanguageSwitcher from '../../components/LanguageSwitcher.vue'
-import SignIn from '../../components/SignIn.vue'
-import SignUp from '../../components/SignUp.vue'
-import Logo from '../../components/ui/Logo.vue'
-import MyFooter from '../../components/Footer.vue'
-import MyHeader from '../../components/Header.vue'
-import ForgotPassword from '../../components/ForgotPassword.vue'
+import LanguageSwitcher from "../../components/LanguageSwitcher.vue";
+import SignIn from "../../components/SignIn.vue";
+import SignUp from "../../components/SignUp.vue";
+import Logo from "../../components/ui/Logo.vue";
+import MyFooter from "../../components/Footer.vue";
+import MyHeader from "../../components/Header.vue";
+import ForgotPassword from "../../components/ForgotPassword.vue";
 
 export default {
   components: {
@@ -27,18 +27,18 @@ export default {
     LanguageSwitcher,
     MyFooter,
     MyHeader,
-    ForgotPassword
+    ForgotPassword,
   },
   computed: {
-    isSignIn () {
-      return this.$route.name === 'SignIn'
+    isSignIn() {
+      return this.$route.name === "SignIn";
     },
-    isSignUp () {
-      return this.$route.name === 'SignUp'
+    isSignUp() {
+      return this.$route.name === "SignUp";
     },
-    isForgotPassword () {
-      return this.$route.name === 'ForgotPassword'
-    }
-  }
-}
+    isForgotPassword() {
+      return this.$route.name === "ForgotPassword";
+    },
+  },
+};
 </script>

@@ -2,11 +2,11 @@
   <div class="md:border-t">
     <a
       v-if="type === 'mobile'"
-      class="flex items-center justify-center w-8 h-full text-2xl text-center text-white select-none material-icons-sharp"
+      class="flex items-center justify-center w-8 h-full text-2xl text-center text-white select-none"
       href="javascript:"
       @click="toggleMenu()"
     >
-      menu
+      <i class="fas fa-bars"></i>
     </a>
     <div
       v-if="isOpen || type === 'desktop'"
@@ -18,7 +18,7 @@
           :class="isActiveRoute('Home') ? 'active' : ''"
         >
           <a href="javascript:" @click="navigate('Home')"
-            ><span class="material-icons">home</span>&nbsp;{{ $t('Home') }}</a
+            ><i class="fas fa-home"></i>&nbsp;{{ $t("Home") }}</a
           >
         </li>
       </ul>
@@ -31,32 +31,32 @@ export default {
   props: {
     type: {
       type: String,
-      default: 'mobile'
-    }
+      default: "mobile",
+    },
   },
 
-  data () {
+  data() {
     return {
-      isOpen: false
-    }
+      isOpen: false,
+    };
   },
 
   methods: {
-    toggleMenu () {
-      this.isOpen = !this.isOpen
+    toggleMenu() {
+      this.isOpen = !this.isOpen;
     },
-    navigate (routeName) {
+    navigate(routeName) {
       if (this.$router.currentRoute.name !== routeName) {
-        const route = this.$router.resolve({ name: routeName })
-        this.$router.push(route.href)
+        const route = this.$router.resolve({ name: routeName });
+        this.$router.push(route.href);
       }
-      this.isOpen = false
+      this.isOpen = false;
     },
-    isActiveRoute (routeName) {
-      return this.$router.currentRoute.name === routeName
-    }
-  }
-}
+    isActiveRoute(routeName) {
+      return this.$router.currentRoute.name === routeName;
+    },
+  },
+};
 </script>
 
 <style lang="postcss">

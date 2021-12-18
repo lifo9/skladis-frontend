@@ -1,71 +1,71 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import { store } from '../backend/store/store'
+import Vue from "vue";
+import Router from "vue-router";
+import { store } from "../backend/store/store";
 
 // main views
-import LoggedMainView from '../views/logged/LoggedMainView'
-import GuestMainView from '../views/guest/GuestMainView'
+import LoggedMainView from "../views/logged/LoggedMainView";
+import GuestMainView from "../views/guest/GuestMainView";
 
 // pages
-import HomeView from '../views/logged/HomeView'
+import HomeView from "../views/logged/HomeView";
 
-Vue.use(Router)
+Vue.use(Router);
 
-function redirectSignedOut (to, from, next) {
+function redirectSignedOut(to, from, next) {
   if (!store.state.signedIn) {
-    next('/sign-in')
+    next("/sign-in");
   }
-  next()
+  next();
 }
 
-function redirectSignedIn (to, from, next) {
+function redirectSignedIn(to, from, next) {
   if (store.state.signedIn) {
-    next('/')
+    next("/");
   }
-  next()
+  next();
 }
 
 export default new Router({
-  mode: 'history',
+  mode: "history",
   routes: [
     {
-      path: '/',
-      name: 'LoggedMainView',
+      path: "/",
+      name: "LoggedMainView",
       component: LoggedMainView,
       beforeEnter: (to, from, next) => {
-        redirectSignedOut(to, from, next)
+        redirectSignedOut(to, from, next);
       },
       children: [
         {
-          path: '',
-          name: 'Home',
-          component: HomeView
-        }
-      ]
+          path: "",
+          name: "Home",
+          component: HomeView,
+        },
+      ],
     },
     {
-      path: '/sign-in',
-      name: 'SignIn',
+      path: "/sign-in",
+      name: "SignIn",
       component: GuestMainView,
       beforeEnter: (to, from, next) => {
-        redirectSignedIn(to, from, next)
-      }
+        redirectSignedIn(to, from, next);
+      },
     },
     {
-      path: '/sign-up',
-      name: 'SignUp',
+      path: "/sign-up",
+      name: "SignUp",
       component: GuestMainView,
       beforeEnter: (to, from, next) => {
-        redirectSignedIn(to, from, next)
-      }
+        redirectSignedIn(to, from, next);
+      },
     },
     {
-      path: '/forgot-password',
-      name: 'ForgotPassword',
+      path: "/forgot-password",
+      name: "ForgotPassword",
       component: GuestMainView,
       beforeEnter: (to, from, next) => {
-        redirectSignedIn(to, from, next)
-      }
-    }
-  ]
-})
+        redirectSignedIn(to, from, next);
+      },
+    },
+  ],
+});

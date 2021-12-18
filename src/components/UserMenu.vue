@@ -3,13 +3,13 @@
     class="relative flex text-gray-800 bg-white rounded-full cursor-pointer"
     @click="toggleMenu"
   >
-    <span class="w-8 text-2xl text-center select-none material-icons-sharp"
-      >person</span
-    >
     <span
-      class="w-8 text-2xl text-center rounded-full select-none material-icons-sharp hoverable"
-      >arrow_drop_down</span
-    >
+      class="flex items-center justify-center w-8 text-xl text-center select-none"
+      ><i class="fas fa-user"></i
+    ></span>
+    <span class="w-8 text-2xl text-center rounded-full select-none hoverable"
+      ><i class="fas fa-caret-down"></i
+    ></span>
     <div
       class="absolute z-50 right-0 mt-1.5 w-48 top-full rounded-md shadow-lg py-1 bg-white"
       :class="[menuHidden ? 'hidden' : '']"
@@ -25,20 +25,20 @@
 </template>
 
 <script>
-import Logout from './Logout.vue'
+import Logout from "./Logout.vue";
 export default {
   components: { Logout },
-  data () {
+  data() {
     return {
-      menuHidden: true
-    }
+      menuHidden: true,
+    };
   },
   methods: {
-    toggleMenu () {
-      this.menuHidden = !this.menuHidden
-    }
-  }
-}
+    toggleMenu() {
+      this.menuHidden = !this.menuHidden;
+    },
+  },
+};
 </script>
 
 <style lang="postcss">

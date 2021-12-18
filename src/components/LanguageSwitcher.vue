@@ -10,8 +10,8 @@
 
 <script>
 export default {
-  data () {
-    return { langs: Object.keys(this.$i18n.messages) }
-  }
-}
+  data() {
+    return { langs: Object.keys(this.$i18n.messages) };
+  },
+};
 </script>
