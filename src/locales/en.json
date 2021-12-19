@@ -1,10 +1,16 @@
 {
   "appName": "Sklad IS",
   "Email address": "Email address",
-  "Password": "Password",
-  "Sign In": "Sign In",
-  "Sign Up": "Sign Up",
+  "First name": "First name",
   "Forgot Password": "Forgot Password",
+  "Home": "Home",
+  "Last name": "Last name",
   "Logout": "Logout",
-  "Home": "Home"
+  "Password confirmation": "Password confirmation",
+  "Password": "Password",
+  "Passwords have to match": "Passwords have to match",
+  "Registration successful message": "Registration was successful. The confirmation email was sent to your email address.",
+  "Registration": "Registration",
+  "Sign In": "Sign In",
+  "Sign Up": "Sign Up"
 }

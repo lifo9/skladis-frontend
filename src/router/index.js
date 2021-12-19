@@ -52,7 +52,7 @@ export default new Router({
       }
     },
     {
-      path: '/sign-up',
+      path: '/sign-up/:registration_key',
       name: 'SignUp',
       component: GuestMainView,
       beforeEnter: (to, from, next) => {

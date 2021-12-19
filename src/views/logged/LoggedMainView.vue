@@ -1,5 +1,6 @@
 <template>
   <div>
+    <alert />
     <my-header />
     <main>
       <navigation
@@ -18,8 +19,9 @@
 import Logout from '../../components/Logout.vue'
 import MyHeader from '../../components/Header.vue'
 import Navigation from '../../components/Navigation.vue'
+import Alert from '../../components/ui/Alert.vue'
 
 export default {
-  components: { Logout, MyHeader, Navigation }
+  components: { Logout, MyHeader, Navigation, Alert }
 }
 </script>

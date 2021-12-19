@@ -1,5 +1,6 @@
 <template>
   <div>
+    <alert />
     <my-header />
     <main class="container max-w-6xl px-4 mx-auto md:px-12">
       <sign-in v-if="isSignIn" />
@@ -18,6 +19,7 @@ import Logo from '../../components/ui/Logo.vue'
 import MyFooter from '../../components/Footer.vue'
 import MyHeader from '../../components/Header.vue'
 import ForgotPassword from '../../components/ForgotPassword.vue'
+import Alert from '../../components/ui/Alert.vue'
 
 export default {
   components: {
@@ -27,7 +29,8 @@ export default {
     LanguageSwitcher,
     MyFooter,
     MyHeader,
-    ForgotPassword
+    ForgotPassword,
+    Alert
   },
   computed: {
     isSignIn () {
