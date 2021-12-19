@@ -26,8 +26,6 @@
       >{{ $t('Sign In') }}</r-button
     >
     <div>
-      <router-link to="/sign-up">{{ $t('Sign Up') }}</router-link>
-      <br />
       <router-link to="/forgot-password">{{
         $t('Forgot Password')
       }}</router-link>
