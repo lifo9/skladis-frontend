@@ -1,3 +1,3 @@
 <template>
-  <span>Home sweet home</span>
+  <span>Home sweet home 2</span>
 </template>
