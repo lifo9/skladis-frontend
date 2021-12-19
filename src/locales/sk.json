@@ -1,10 +1,16 @@
 {
   "appName": "Sklad IS",
   "Email address": "Email",
-  "Password": "Heslo",
-  "Sign In": "Prihlásiť sa",
-  "Sign Up": "Registrovať",
+  "First name": "Meno",
   "Forgot Password": "Zabudnuté heslo",
+  "Home": "Domov",
+  "Last name": "Priezvisko",
   "Logout": "Odhlásiť",
-  "Home": "Domov"
+  "Password confirmation": "Potvrdenie hesla",
+  "Password": "Heslo",
+  "Passwords have to match": "Heslá sa musia zhodovať",
+  "Registration successful message": "Registrácia prebehla úspešne. Potvrdzovací email bol zaslaný na Vašu emailovú adresu.",
+  "Registration": "Registrácia",
+  "Sign In": "Prihlásiť sa",
+  "Sign Up": "Registrovať"
 }

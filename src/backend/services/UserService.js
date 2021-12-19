@@ -14,3 +14,21 @@ export async function signIn (email, password) {
 export async function signOut () {
   return securedAxiosInstance.delete('/signin')
 }
+
+export async function signUp (
+  email,
+  password,
+  passwordConfirmation,
+  firstName,
+  lastName,
+  registrationKey
+) {
+  return plainAxiosInstance.post('/signup', {
+    email: email,
+    password: password,
+    password_confirmation: passwordConfirmation,
+    first_name: firstName,
+    last_name: lastName,
+    registration_key: registrationKey
+  })
+}

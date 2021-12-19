@@ -17,6 +17,7 @@
       type="password"
       :label="$t('Password')"
       :placeholder="$t('Password')"
+      :enablePasswordToggle="true"
     />
     <r-button
       type="submit"

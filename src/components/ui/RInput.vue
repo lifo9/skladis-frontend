@@ -7,36 +7,21 @@
 
     <div class="relative">
       <input
-        class="block
-  w-full
- px-5
- py-3
- text-base
- text-neutral-600
- placeholder-gray-400
- transition
- duration-500
- ease-in-out
- transform
- border
- border-transparent
- rounded-md
- bg-gray-50
- focus:outline-none
- focus:border-transparent
- focus:ring-2
- focus:ring-white
- focus:ring-offset-1
- focus:ring-offset-gray-400"
+        class="block w-full px-5 py-3 text-base placeholder-gray-400 transition duration-500 ease-in-out transform border border-transparent rounded-md text-neutral-600 bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-1 focus:ring-offset-gray-400"
         :class="[{ 'border-red-500': error }]"
-        :type="type"
+        :type="type === 'password' && showPassword ? 'text' : type"
         :value="value"
         :required="required"
         v-bind="$attrs"
         v-on="listeners"
       />
+      <span
+        v-if="enablePasswordToggle && type === 'password'"
+        class="absolute transform -translate-y-1/2 cursor-pointer select-none top-1/2 right-4 material-icons"
+        @click="showPassword = !showPassword"
+        >remove_red_eye</span
+      >
     </div>
-
     <span
       v-if="error && error.length"
       class="py-2 text-xs font-bold text-red-500"
@@ -49,6 +34,12 @@
 <script>
 import Vue from 'vue'
 export default Vue.extend({
+  data () {
+    return {
+      showPassword: false
+    }
+  },
+
   props: {
     type: {
       type: String,
@@ -73,6 +64,10 @@ export default Vue.extend({
     error: {
       type: String,
       default: ''
+    },
+    enablePasswordToggle: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
