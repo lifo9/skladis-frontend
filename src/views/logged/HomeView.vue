@@ -1,3 +1,12 @@
 <template>
-  <span>Home sweet home 2</span>
+  <div>
+    <barcode-scanner />
+  </div>
 </template>
+
+<script>
+import BarcodeScanner from '../../components/admin/BarcodeScanner.vue'
+export default {
+  components: { BarcodeScanner }
+}
+</script>
