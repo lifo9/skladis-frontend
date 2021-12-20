@@ -31,7 +31,6 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'LoggedMainView',
       component: LoggedMainView,
       beforeEnter: (to, from, next) => {
         redirectSignedOut(to, from, next)
