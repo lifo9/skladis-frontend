@@ -2,6 +2,7 @@
   "Activation failed": "Activation failed",
   "Activation successful": "Activation successful",
   "appName": "Sklad IS",
+  "Cancel": "Cancel",
   "Email address": "Email address",
   "First name": "First name",
   "Home": "Home",
@@ -13,6 +14,7 @@
   "Passwords have to match": "Passwords have to match",
   "Registration successful message": "Registration was successful. The confirmation email was sent to your email address.",
   "Registration": "Registration",
+  "Scan": "Scan",
   "Sign In": "Sign In",
   "Sign Up": "Sign Up",
   "You will be redirected to the sign in page": "You will be redirected to the sign in page"

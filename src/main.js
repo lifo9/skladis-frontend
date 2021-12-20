@@ -7,6 +7,9 @@ import router from './router'
 import { store } from './backend/store/store'
 import 'material-icons/iconfont/material-icons.css'
 import './assets/tailwind.css'
+import filters from './plugins/filters'
+
+Vue.use(filters)
 
 Vue.config.productionTip = false
 
