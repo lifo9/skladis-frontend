@@ -1,5 +1,5 @@
 <template>
-  <a @click="signOut">{{ $t('Logout') }}</a>
+  <p @click="signOut">{{ $t('Logout') }}</p>
 </template>
 
 <script>
