@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full p-2 text-center">
+  <div class="w-full max-w-sm p-2">
     <div class="modal" :class="!scanning ? 'hidden' : 'flex justify-center'">
       <div id="interactive" class="viewport scanner"></div>
       <r-button variant="danger" class="z-50 w-full" @click="finishScanning">
@@ -8,10 +8,29 @@
       </r-button>
       <span class="grid-x"></span>
     </div>
-    <r-button class="w-full" @click="initializeScanner">
-      <span class="mr-2 material-icons">document_scanner</span
-      >{{ $t('Scan') | uppercase }}
-    </r-button>
+    <div>
+      <div class="flex flex-wrap px-1 py-2 overflow-hidden">
+        <div class="w-1/4 overflow-hidden">
+          <b>{{ $t('Format') }}:</b>
+        </div>
+
+        <div class="w-3/4 overflow-hidden">
+          {{ format }}
+        </div>
+
+        <div class="w-1/4 overflow-hidden">
+          <b>{{ $t('Code') }}:</b>
+        </div>
+
+        <div class="w-3/4 overflow-hidden">
+          {{ code }}
+        </div>
+      </div>
+      <r-button class="w-full" @click="initializeScanner">
+        <span class="mr-2 material-icons">document_scanner</span
+        >{{ $t('Scan') | uppercase }}
+      </r-button>
+    </div>
   </div>
 </template>
 
@@ -24,7 +43,9 @@ export default {
 
   data () {
     return {
-      scanning: false
+      scanning: false,
+      format: undefined,
+      code: undefined
     }
   },
 
@@ -60,13 +81,18 @@ export default {
       Quagga.onDetected(this.finishScanning)
 
       this.scanning = true
+      this.format = undefined
+      this.code = undefined
       document.body.classList.add('modal-open')
     },
     finishScanning (result) {
       if (result.codeResult) {
+        this.format = result.codeResult.format
+        this.code = result.codeResult.code
+
         this.$emit('input', {
-          format: result.codeResult.format,
-          code: result.codeResult.code
+          format: this.format,
+          code: this.code
         })
       }
       this.scanning = false
