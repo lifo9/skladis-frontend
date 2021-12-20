@@ -1,6 +1,10 @@
 <template>
   <div>
     <h1 class="my-4 text-3xl text-center">{{ $t('Registration') }}</h1>
+    <p class="flex items-center text-blue-600">
+      <span class="material-icons">arrow_back</span>
+      <router-link to="/sign-in">{{ $t('Sign In') }}</router-link>
+    </p>
     <r-form
       @submit.prevent="signUp"
       :error="error"
@@ -100,8 +104,6 @@ export default {
     signUpSuccess () {
       this.email = this.password = this.passwordConfirmation = this.firstName = this.lastName =
         ''
-
-      this.$router.push('/')
 
       this.$root.$emit(
         'alert',
