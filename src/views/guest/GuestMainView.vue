@@ -6,6 +6,7 @@
       <sign-in v-if="isSignIn" />
       <sign-up v-if="isSignUp" />
       <forgot-password v-if="isForgotPassword" />
+      <router-view />
     </main>
     <my-footer class="fixed" />
   </div>

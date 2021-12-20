@@ -32,3 +32,9 @@ export async function signUp (
     registration_key: registrationKey
   })
 }
+
+export async function activate (activationKey) {
+  return plainAxiosInstance.post('/signup/activate', {
+    activation_key: activationKey
+  })
+}

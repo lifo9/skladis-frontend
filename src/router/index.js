@@ -7,6 +7,7 @@ import LoggedMainView from '../views/logged/LoggedMainView'
 import GuestMainView from '../views/guest/GuestMainView'
 
 // pages
+import ActivateUser from '../components/ActivateUser'
 import HomeView from '../views/logged/HomeView'
 
 Vue.use(Router)
@@ -52,12 +53,19 @@ export default new Router({
       }
     },
     {
-      path: '/sign-up/:registration_key',
+      path: '/sign-up/:registration_key?',
       name: 'SignUp',
       component: GuestMainView,
       beforeEnter: (to, from, next) => {
         redirectSignedIn(to, from, next)
-      }
+      },
+      children: [
+        {
+          path: 'activate/:activation_key',
+          name: 'ActivateUser',
+          component: ActivateUser
+        }
+      ]
     },
     {
       path: '/forgot-password',

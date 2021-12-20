@@ -1,4 +1,6 @@
 {
+  "Activation failed": "Aktivácia zlyhala",
+  "Activation successful": "Aktivácia bola úspešná",
   "appName": "Sklad IS",
   "Email address": "Email",
   "First name": "Meno",
@@ -12,5 +14,6 @@
   "Registration successful message": "Registrácia prebehla úspešne. Potvrdzovací email bol zaslaný na Vašu emailovú adresu.",
   "Registration": "Registrácia",
   "Sign In": "Prihlásiť sa",
-  "Sign Up": "Registrovať"
+  "Sign Up": "Registrovať",
+  "You will be redirected to the sign in page": "Budete presmerovaný na stránku prihlásenia"
 }

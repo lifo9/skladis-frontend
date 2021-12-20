@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="message !== null"
-    class="absolute right-0 z-50 flex max-w-sm px-4 py-3 m-4 text-xl leading-none rounded-md cursor-pointer"
+    class="absolute right-0 z-50 flex max-w-sm p-2 px-4 py-3 m-4 text-xl leading-none rounded-md cursor-pointer"
     :class="{
       info: level === 'info',
       success: level === 'success',
@@ -10,10 +10,10 @@
     role="alert"
     @click="message = null"
   >
-    <span>
+    <span class="mr-4">
       {{ message }}
     </span>
-    <span @click="message = null" class="absolute top-0 right-0 pt-1 pr-2 ">
+    <span @click="message = null" class="absolute top-0 right-0 p-2 ">
       &times;
     </span>
   </div>
