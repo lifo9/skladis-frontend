@@ -26,11 +26,6 @@
       :disabled="loading"
       >{{ $t('Sign In') }}</r-button
     >
-    <div>
-      <router-link to="/forgot-password">{{
-        $t('Forgot Password')
-      }}</router-link>
-    </div>
   </r-form>
 </template>
 

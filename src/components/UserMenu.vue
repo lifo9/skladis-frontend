@@ -23,12 +23,6 @@
         <li v-if="!this.$store.state.signedIn" @click="navigate('SignIn')">
           <p>{{ $t('Sign In') }}</p>
         </li>
-        <li
-          v-if="!this.$store.state.signedIn"
-          @click="navigate('ForgotPassword')"
-        >
-          <p>{{ $t('Forgot Password') }}</p>
-        </li>
         <li v-if="this.$store.state.signedIn">
           <logout />
         </li>

@@ -65,14 +65,6 @@ export default new Router({
           component: ActivateUser
         }
       ]
-    },
-    {
-      path: '/forgot-password',
-      name: 'ForgotPassword',
-      component: GuestMainView,
-      beforeEnter: (to, from, next) => {
-        redirectSignedIn(to, from, next)
-      }
     }
   ]
 })
