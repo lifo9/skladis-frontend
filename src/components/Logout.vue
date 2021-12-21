@@ -10,9 +10,9 @@ export default {
     async signOut () {
       try {
         await signOut()
-        this.$store.commit('unsetCurrentUser')
-        this.$router.replace('/sign-in')
       } catch (error) {}
+      this.$store.commit('unsetCurrentUser')
+      this.$router.replace('/sign-in')
     }
   }
 }
