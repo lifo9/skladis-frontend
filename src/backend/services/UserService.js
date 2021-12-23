@@ -1,7 +1,7 @@
 import { plainAxiosInstance, securedAxiosInstance } from './ApiService'
 
 export async function getCurrentUser () {
-  return plainAxiosInstance.get('/me')
+  return securedAxiosInstance.get('/me')
 }
 
 export async function signIn (email, password) {
