@@ -92,7 +92,7 @@ securedAxiosInstance.interceptors.response.use(null, async error => {
           if (!signOut) {
             getCurrentUser().then(meResponse =>
               store.commit('setCurrentUser', {
-                currentUser: meResponse.data,
+                currentUser: meResponse.data.data.attributes,
                 csrf: csrf
               })
             )
