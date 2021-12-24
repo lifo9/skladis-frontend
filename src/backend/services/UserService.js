@@ -1,18 +1,20 @@
 import { plainAxiosInstance, securedAxiosInstance } from './ApiService'
 
+export const SIGN_IN_URL = '/signin'
+
 export async function getCurrentUser () {
   return securedAxiosInstance.get('/me')
 }
 
 export async function signIn (email, password) {
-  return plainAxiosInstance.post('/signin', {
+  return plainAxiosInstance.post(SIGN_IN_URL, {
     email: email,
     password: password
   })
 }
 
 export async function signOut () {
-  return securedAxiosInstance.delete('/signin')
+  return securedAxiosInstance.delete(SIGN_IN_URL)
 }
 
 export async function signUp (

@@ -8,9 +8,7 @@ import { signOut } from '../backend/services/UserService'
 export default {
   methods: {
     async signOut () {
-      try {
-        await signOut()
-      } catch (error) {}
+      await signOut()
       this.$store.commit('unsetCurrentUser')
       this.$router.replace('/sign-in')
     }

@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { store } from '../store/store'
 import { getVueLocale } from './LanguageService'
+import { getCurrentUser, SIGN_IN_URL } from './UserService'
 
 const API_URL = process.env.ROOT_API
 const appLocale = getVueLocale()
@@ -62,6 +63,9 @@ securedAxiosInstance.interceptors.response.use(null, async error => {
     (error.response.status === 401 || error.response.status === 403)
   ) {
     const originalRequest = error.config
+    const signOut =
+      originalRequest.method.toUpperCase() === 'DELETE' &&
+      originalRequest.url === SIGN_IN_URL
     const refreshToken = store.state.csrf
 
     if (isRefreshing) {
@@ -85,13 +89,16 @@ securedAxiosInstance.interceptors.response.use(null, async error => {
         .post('/refresh', {}, { headers: { 'X-CSRF-TOKEN': refreshToken } })
         .then(response => {
           const csrf = response.data.csrf
-          plainAxiosInstance.get('/me').then(meResponse =>
-            store.commit('setCurrentUser', {
-              currentUser: meResponse.data,
-              csrf: csrf
-            })
-          )
+          if (!signOut) {
+            getCurrentUser().then(meResponse =>
+              store.commit('setCurrentUser', {
+                currentUser: meResponse.data,
+                csrf: csrf
+              })
+            )
+          }
           processQueue(null, csrf)
+          originalRequest.headers['X-CSRF-TOKEN'] = csrf
           resolve(axios(originalRequest))
         })
         .catch(err => {
