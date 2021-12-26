@@ -9,6 +9,7 @@ import GuestMainView from '../views/guest/GuestMainView'
 // pages
 import ActivateUser from '../components/ActivateUser'
 import HomeView from '../views/logged/HomeView'
+import ContactsView from '../views/logged/contacts/ContactsView'
 
 Vue.use(Router)
 
@@ -40,6 +41,11 @@ export default new Router({
           path: '',
           name: 'Home',
           component: HomeView
+        },
+        {
+          path: 'contacts',
+          name: 'Contacts',
+          component: ContactsView
         }
       ]
     },
