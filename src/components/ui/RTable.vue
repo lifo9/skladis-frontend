@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!loading" class="my-4 overflow-auto rounded sm:shadow">
+  <div v-if="!loading" class="overflow-auto rounded sm:shadow">
     <table>
       <thead>
         <tr>

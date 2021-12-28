@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!notFound" class="my-4">
     <r-table :headers="headers" :rows="contacts" :loading="loading" />
     <pagination
       v-if="contacts.length > 1"
@@ -8,6 +8,9 @@
       :total="total"
       @change="changePage"
     />
+  </div>
+  <div v-else class="my-4">
+    <p><b>0</b> {{ $t('results') }}</p>
   </div>
 </template>
 
@@ -21,6 +24,7 @@ export default {
   data () {
     return {
       loading: false,
+      notFound: false,
       headers: [],
       contacts: [],
       currentPage: 1,
@@ -44,6 +48,8 @@ export default {
         this.contacts = data
         this.perPage = parseInt(headers['per-page'])
         this.total = parseInt(headers['total'])
+      } else {
+        this.notFound = true
       }
 
       this.loading = false
