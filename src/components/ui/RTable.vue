@@ -3,8 +3,10 @@
     <table>
       <thead>
         <tr>
-          <th v-if="bulkSelect" scope="col">
+          <th v-if="bulkSelect" scope="col" class="bulk-select">
+            <span class="sm:hidden">{{ $t('Select All') }} &nbsp;</span>
             <r-input
+              class="flex flex-wrap items-center justify-start sm:justify-center"
               type="checkbox"
               @change="selectAll"
               :value="isSelectedAll"
@@ -18,9 +20,14 @@
           </th>
         </tr>
       </thead>
+      <br v-if="bulkSelect" class="sm:hidden" />
       <tbody>
         <tr v-for="(row, idx1) in rows" :key="row.id ? row.id : idx1">
-          <td v-if="bulkSelect">
+          <td
+            v-if="bulkSelect"
+            :data-title="$t('Select')"
+            class="flex flex-wrap items-center justify-start sm:justify-center"
+          >
             <r-input
               type="checkbox"
               :value="isSelected(row.id)"
@@ -129,8 +136,11 @@ table {
 thead {
   @apply text-white bg-gray-800;
 }
-thead tr {
-  @apply hidden sm:table-row;
+thead tr > th {
+  @apply hidden sm:table-cell;
+}
+thead tr > th.bulk-select {
+  @apply flex sm:table-cell;
 }
 th {
   @apply px-4 py-3 text-xs font-medium tracking-wider text-left uppercase;
