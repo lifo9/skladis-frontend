@@ -5,7 +5,7 @@
     >
       {{ $t('Contacts') }}
     </h1>
-    <crud-table :get-method="endpoint" :bulk-select="true" />
+    <crud-table :get-endpoint="getEndpoint" :bulk-select="true" />
   </div>
 </template>
 
@@ -17,7 +17,7 @@ export default {
   components: { CrudTable },
   data () {
     return {
-      endpoint: getContacts
+      getEndpoint: getContacts
     }
   }
 }

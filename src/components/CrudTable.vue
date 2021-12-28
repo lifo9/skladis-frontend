@@ -30,7 +30,7 @@ import { arrayUnique } from '../backend/utils/helpers'
 export default {
   components: { RTable, Pagination },
   props: {
-    getMethod: {
+    getEndpoint: {
       type: Function,
       required: true
     },
@@ -62,7 +62,7 @@ export default {
       this.loading = true
       this.notFound = false
 
-      const contacts = await this.getMethod({
+      const contacts = await this.getEndpoint({
         page: this.currentPage,
         perPage: this.perPage
       })
