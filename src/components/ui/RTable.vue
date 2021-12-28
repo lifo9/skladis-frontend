@@ -12,6 +12,7 @@
               :value="isSelectedAll"
             />
           </th>
+          <th v-if="rows.length > 0 && rows[0].id">ID</th>
           <th v-for="header in headers" :key="header" scope="col">
             {{ $t(header) }}
           </th>
@@ -33,6 +34,9 @@
               :value="isSelected(row.id)"
               @change="select(row.id, $event)"
             />
+          </td>
+          <td v-if="row.id" :data-title="$t('ID')">
+            {{ row.id }}
           </td>
           <td
             v-for="(col, idx2) in extractData(row)"

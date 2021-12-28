@@ -2,15 +2,15 @@
   <div v-if="!notFound" class="my-4">
     <r-table
       :headers="headers"
-      :rows="contacts"
+      :rows="pagedContacts"
       :loading="loading"
-      :bulk-select="true"
+      :bulk-select="bulkSelect"
       :selected="selected"
       @addSelected="handleAddSelected"
       @removeSelected="handleRemoveSelected"
     />
     <pagination
-      v-if="contacts.length > 1"
+      v-if="contacts.length && total > perPage"
       :current="currentPage"
       :per-page="perPage"
       :total="total"
@@ -38,26 +38,56 @@ export default {
       contacts: [],
       selected: [],
       currentPage: 1,
-      perPage: 0,
-      total: 0
+      currentApiPage: undefined,
+      apiPerPage: undefined,
+      total: 0,
+      // future props
+      perPage: 29,
+      bulkSelect: false
     }
   },
   mounted () {
     this.fetchData()
+  },
+  computed: {
+    pagedContacts () {
+      let from = 0
+      let to = 0
+
+      if (this.perPage <= this.apiPerPage) {
+        const current =
+          this.currentPage === 1
+            ? 1
+            : this.currentPage % this.normalizedPerPage === 0
+              ? this.normalizedPerPage
+              : this.currentPage % this.normalizedPerPage
+        from = (current - 1) * this.perPage
+        to = current * this.perPage
+      }
+
+      return this.contacts.slice(from, to)
+    },
+    normalizedPerPage () {
+      return Math.ceil(this.apiPerPage / this.perPage)
+    }
   },
   methods: {
     async fetchData () {
       this.loading = true
       this.notFound = false
 
-      const contacts = await getContacts(this.currentPage)
+      const apiPage = this.apiPerPage
+        ? Math.ceil(this.currentPage / this.normalizedPerPage)
+        : 1
+      const contacts = await getContacts(apiPage)
       const data = contacts.data.data
       const headers = contacts.headers
 
       if (data.length > 0) {
         this.headers = Object.keys(data[0].attributes)
         this.contacts = data
-        this.perPage = parseInt(headers['per-page'])
+        this.currentApiPage = apiPage
+        this.apiPerPage = parseInt(headers['per-page'])
         this.total = parseInt(headers['total'])
       } else {
         this.notFound = true
@@ -67,7 +97,15 @@ export default {
     },
     changePage (page) {
       this.currentPage = page
-      this.fetchData()
+
+      if (this.perPage <= this.apiPerPage) {
+        const range = Array.from(new Array(this.normalizedPerPage), (x, i) =>
+          Math.abs(i - this.normalizedPerPage * this.currentApiPage)
+        )
+        if (!range.includes(page)) {
+          this.fetchData()
+        }
+      }
     },
     handleAddSelected (selected) {
       this.selected = arrayUnique(this.selected.concat(selected))
