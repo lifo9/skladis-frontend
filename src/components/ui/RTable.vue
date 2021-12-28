@@ -3,6 +3,13 @@
     <table>
       <thead>
         <tr>
+          <th v-if="bulkSelect" scope="col">
+            <r-input
+              type="checkbox"
+              @change="selectAll"
+              :value="isSelectedAll"
+            />
+          </th>
           <th v-for="header in headers" :key="header" scope="col">
             {{ $t(header) }}
           </th>
@@ -13,6 +20,13 @@
       </thead>
       <tbody>
         <tr v-for="(row, idx1) in rows" :key="row.id ? row.id : idx1">
+          <td v-if="bulkSelect">
+            <r-input
+              type="checkbox"
+              :value="isSelected(row.id)"
+              @change="select(row.id, $event)"
+            />
+          </td>
           <td
             v-for="(col, idx2) in extractData(row)"
             :key="idx2"
@@ -31,9 +45,10 @@
 </template>
 
 <script>
+import RInput from './RInput.vue'
 import Spinner from './Spinner.vue'
 export default {
-  components: { Spinner },
+  components: { Spinner, RInput },
   props: {
     loading: {
       type: Boolean,
@@ -50,11 +65,58 @@ export default {
     actions: {
       type: Array,
       default: undefined
+    },
+    bulkSelect: {
+      type: Boolean,
+      default: false
+    },
+    selected: {
+      type: Array,
+      default: undefined
+    }
+  },
+  data () {
+    return {
+      currentlySelected: []
+    }
+  },
+  updated () {
+    this.currentlySelected = this.selected
+  },
+  computed: {
+    isSelectedAll () {
+      return this.rows.every(row => this.selected.includes(row.id))
     }
   },
   methods: {
     extractData (row) {
       return row.attributes ? row.attributes : row
+    },
+    select (rowId, checked) {
+      if (checked) {
+        this.currentlySelected.push(rowId)
+        this.$emit('addSelected', this.currentlySelected)
+      } else {
+        const index = this.currentlySelected.indexOf(rowId)
+        if (index !== -1) {
+          this.currentlySelected.splice(index, 1)
+        }
+        this.$emit('removeSelected', rowId)
+      }
+    },
+    selectAll (checked) {
+      const rowIds = this.rows.map(row => row.id)
+
+      if (checked) {
+        this.currentlySelected = rowIds
+        this.$emit('addSelected', rowIds)
+      } else {
+        this.currentlySelected = []
+        this.$emit('removeSelected', rowIds)
+      }
+    },
+    isSelected (rowId) {
+      return this.currentlySelected.includes(rowId)
     }
   }
 }

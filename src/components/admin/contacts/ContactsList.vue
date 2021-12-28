@@ -1,6 +1,14 @@
 <template>
   <div v-if="!notFound" class="my-4">
-    <r-table :headers="headers" :rows="contacts" :loading="loading" />
+    <r-table
+      :headers="headers"
+      :rows="contacts"
+      :loading="loading"
+      :bulk-select="true"
+      :selected="selected"
+      @addSelected="handleAddSelected"
+      @removeSelected="handleRemoveSelected"
+    />
     <pagination
       v-if="contacts.length > 1"
       :current="currentPage"
@@ -18,6 +26,7 @@
 import { getContacts } from '../../../backend/services/ContactsService'
 import Pagination from '../../ui/Pagination.vue'
 import RTable from '../../ui/RTable.vue'
+import { arrayUnique } from '../../../backend/utils/helpers'
 
 export default {
   components: { RTable, Pagination },
@@ -27,6 +36,7 @@ export default {
       notFound: false,
       headers: [],
       contacts: [],
+      selected: [],
       currentPage: 1,
       perPage: 0,
       total: 0
@@ -38,6 +48,7 @@ export default {
   methods: {
     async fetchData () {
       this.loading = true
+      this.notFound = false
 
       const contacts = await getContacts(this.currentPage)
       const data = contacts.data.data
@@ -57,6 +68,12 @@ export default {
     changePage (page) {
       this.currentPage = page
       this.fetchData()
+    },
+    handleAddSelected (selected) {
+      this.selected = arrayUnique(this.selected.concat(selected))
+    },
+    handleRemoveSelected (selected) {
+      this.selected = this.selected.filter(s => selected.indexOf(s) === -1)
     }
   }
 }

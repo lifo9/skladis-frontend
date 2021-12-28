@@ -12,6 +12,7 @@
         :type="type === 'password' && showPassword ? 'text' : type"
         :value="value"
         :required="required"
+        :checked="type === 'checkbox' && value === true"
         v-bind="$attrs"
         v-on="listeners"
       />
@@ -58,7 +59,7 @@ export default Vue.extend({
       default: ''
     },
     value: {
-      type: [String, Number],
+      type: [String, Number, Boolean],
       default: undefined
     },
     error: {
@@ -75,7 +76,11 @@ export default Vue.extend({
       return {
         ...this.$listeners,
         input: e => this.$emit('input', e.target.value),
-        change: e => this.$emit('change', e.target.value)
+        change: e =>
+          this.$emit(
+            'change',
+            this.type === 'checkbox' ? e.target.checked : e.target.value
+          )
       }
     }
   }
