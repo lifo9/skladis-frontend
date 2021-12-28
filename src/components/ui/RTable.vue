@@ -6,7 +6,7 @@
           <th v-if="bulkSelect" scope="col" class="bulk-select">
             <span class="sm:hidden">{{ $t('Select All') }} &nbsp;</span>
             <r-input
-              class="flex flex-wrap items-center justify-start sm:justify-center"
+              class="flex flex-wrap items-center justify-start ml-auto sm:justify-center sm:ml-0"
               type="checkbox"
               @change="selectAll"
               :value="isSelectedAll"
@@ -26,7 +26,7 @@
           <td
             v-if="bulkSelect"
             :data-title="$t('Select')"
-            class="flex flex-wrap items-center justify-start sm:justify-center"
+            class="flex flex-wrap items-center justify-end sm:justify-center"
           >
             <r-input
               type="checkbox"
