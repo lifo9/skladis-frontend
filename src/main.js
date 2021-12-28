@@ -2,6 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import { i18n } from './plugins/i18n'
+import LastModal from 'vue-last-modal'
 import App from './App'
 import router from './router'
 import { store } from './backend/store/store'
@@ -10,6 +11,7 @@ import './assets/tailwind.css'
 import filters from './plugins/filters'
 
 Vue.use(filters)
+Vue.use(LastModal)
 
 Vue.config.productionTip = false
 

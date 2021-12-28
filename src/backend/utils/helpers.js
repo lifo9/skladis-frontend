@@ -14,3 +14,11 @@ export function arrayUnique (array) {
 
   return a
 }
+
+export function enableScroll () {
+  document.body.classList.remove('modal-open')
+}
+
+export function disableScroll () {
+  document.body.classList.add('modal-open')
+}
