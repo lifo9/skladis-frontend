@@ -1,9 +1,17 @@
 <template>
   <div>
-    Contacts
+    <h1
+      class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate"
+    >
+      {{ $t('Contacts') }}
+    </h1>
+    <contacts-list />
   </div>
 </template>
 
 <script>
-export default {}
+import ContactsList from '../../../components/admin/contacts/ContactsList.vue'
+export default {
+  components: { ContactsList }
+}
 </script>
