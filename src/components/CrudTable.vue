@@ -1,0 +1,94 @@
+<template>
+  <div v-if="!notFound" class="my-4">
+    <r-table
+      :headers="headers"
+      :rows="contacts"
+      :loading="loading"
+      :bulk-select="bulkSelect"
+      :selected="selected"
+      @addSelected="handleAddSelected"
+      @removeSelected="handleRemoveSelected"
+    />
+    <pagination
+      v-if="total > 1"
+      :current="currentPage"
+      :per-page="perPage"
+      :total="total"
+      @change="changePage"
+    />
+  </div>
+  <div v-else class="my-4">
+    <p><b>0</b> {{ $t('results') }}</p>
+  </div>
+</template>
+
+<script>
+import Pagination from './ui/Pagination.vue'
+import RTable from './ui/RTable.vue'
+import { arrayUnique } from '../backend/utils/helpers'
+
+export default {
+  components: { RTable, Pagination },
+  props: {
+    getMethod: {
+      type: Function,
+      required: true
+    },
+    bulkSelect: {
+      type: Boolean,
+      default: false
+    },
+    perPage: {
+      type: Number,
+      default: 20
+    }
+  },
+  data () {
+    return {
+      loading: false,
+      notFound: false,
+      headers: [],
+      contacts: [],
+      selected: [],
+      currentPage: 1,
+      total: 0
+    }
+  },
+  mounted () {
+    this.fetchData()
+  },
+  methods: {
+    async fetchData () {
+      this.loading = true
+      this.notFound = false
+
+      const contacts = await this.getMethod({
+        page: this.currentPage,
+        perPage: this.perPage
+      })
+      const data = contacts.data.data
+      const headers = contacts.headers
+
+      if (data.length > 0) {
+        this.headers = Object.keys(data[0].attributes)
+        this.contacts = data
+        this.total = parseInt(headers['total'])
+      } else {
+        this.notFound = true
+      }
+
+      this.loading = false
+    },
+    changePage (page) {
+      this.currentPage = page
+      this.fetchData()
+    },
+    handleAddSelected (selected) {
+      this.selected = arrayUnique(this.selected.concat(selected))
+    },
+    handleRemoveSelected (selected) {
+      this.selected = this.selected.filter(s => selected.indexOf(s) === -1)
+    }
+  }
+}
+</script>

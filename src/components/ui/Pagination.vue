@@ -55,26 +55,70 @@
               />
             </svg>
           </a>
-          <div v-for="page in totalPages" :key="page">
-            <a
-              href="javascript:"
-              class="relative z-10 inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 border"
-              :class="
-                current === page
-                  ? 'text-blue-600 border-blue-500 bg-blue-50'
-                  : ''
-              "
-              @click="changePage(page)"
-            >
-              {{ page }}
-            </a>
-            <!-- <span
-              v-if="totalPages > 5 && page === middle"
+          <div v-if="total < 6">
+            <pagination-number />
+            <div v-for="page in totalPages" :key="page">
+              <pagination-number
+                :current="current"
+                :page="page"
+                @change="changePage"
+              />
+              <span></span>
+            </div>
+          </div>
+          <div v-else>
+            <pagination-number
+              :current="current"
+              :page="1"
+              @change="changePage"
+            />
+            <span
+              v-if="current > 3"
               class="relative z-10 inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 border"
             >
               ...
-            </span> -->
-            <span></span>
+            </span>
+            <pagination-number
+              v-if="current === totalPages"
+              :current="current"
+              :page="current - 2"
+              @change="changePage"
+            />
+            <pagination-number
+              v-if="current > 2"
+              :current="current"
+              :page="current - 1"
+              @change="changePage"
+            />
+            <pagination-number
+              v-if="current != 1 && current !== totalPages"
+              :current="current"
+              :page="current"
+              @change="changePage"
+            />
+            <pagination-number
+              v-if="current < totalPages - 1"
+              :current="current"
+              :page="current + 1"
+              @change="changePage"
+            />
+            <pagination-number
+              v-if="current === 1"
+              :current="current"
+              :page="current + 2"
+              @change="changePage"
+            />
+            <span
+              v-if="current < totalPages - 2"
+              class="relative z-10 inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 border"
+            >
+              ...
+            </span>
+            <pagination-number
+              :current="current"
+              :page="totalPages"
+              @change="changePage"
+            />
           </div>
           <a
             href="javascript:"
@@ -103,7 +147,9 @@
 </template>
 
 <script>
+import PaginationNumber from './PaginationNumber.vue'
 export default {
+  components: { PaginationNumber },
   props: {
     current: {
       type: Number,
