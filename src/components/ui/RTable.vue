@@ -217,9 +217,6 @@ td {
 td.actions {
   @apply sm:p-1;
 }
-.transform-rotate-180 {
-  transform: rotate(180deg);
-}
 
 @media (max-width: 640px) {
   td:before {

@@ -22,3 +22,9 @@ export default {
   }
 }
 </script>
+
+<style lang="postcss">
+.transform-rotate-180 {
+  transform: rotate(180deg);
+}
+</style>
