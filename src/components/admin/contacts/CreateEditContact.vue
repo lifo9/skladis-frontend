@@ -51,7 +51,6 @@
 </template>
 
 <script>
-// first, last, email, phone
 import RButton from '../../ui/RButton.vue'
 import RForm from '../../ui/RForm.vue'
 import RInput from '../../ui/RInput.vue'
