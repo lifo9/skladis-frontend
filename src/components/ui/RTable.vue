@@ -3,7 +3,7 @@
     <table>
       <thead>
         <tr>
-          <th v-if="bulkSelect" scope="col" class="bulk-select">
+          <th v-if="bulkSelect" scope="col" class="sm:w-16 bulk-select">
             <span class="sm:hidden">{{ $t('Select All') }} &nbsp;</span>
             <r-input
               class="flex flex-wrap items-center justify-start ml-auto sm:justify-center sm:ml-0"
@@ -45,7 +45,29 @@
           >
             {{ col }}
           </td>
-          <td v-if="actions" :data-title="$t('Actions')"></td>
+          <td v-if="actions" :data-title="$t('Actions')" class="actions">
+            <div class="flex flex-wrap items-center justify-start w-max">
+              <navigation-item
+                routeName="ContactsEdit"
+                :params="{ id: row.id }"
+                class="m-1"
+                type="button"
+                size="verySmall"
+                icon="edit"
+                :label="$t('Edit').toUpperCase()"
+              ></navigation-item>
+              <r-button
+                variant="danger"
+                size="verySmall"
+                class="m-1"
+                @click="deleteItem(row.id)"
+              >
+                <span class="material-icons">delete</span>&nbsp;{{
+                  $t('Delete').toUpperCase()
+                }}
+              </r-button>
+            </div>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -56,10 +78,12 @@
 </template>
 
 <script>
+import NavigationItem from '../NavigationItem.vue'
+import RButton from './RButton.vue'
 import RInput from './RInput.vue'
 import Spinner from './Spinner.vue'
 export default {
-  components: { Spinner, RInput },
+  components: { Spinner, RInput, RButton, NavigationItem },
   props: {
     loading: {
       type: Boolean,
@@ -74,8 +98,8 @@ export default {
       required: true
     },
     actions: {
-      type: Array,
-      default: undefined
+      type: Boolean,
+      default: false
     },
     bulkSelect: {
       type: Boolean,
@@ -126,6 +150,9 @@ export default {
         this.$emit('removeSelected', rowIds)
       }
     },
+    deleteItem (rowId) {
+      this.$emit('deleteItem', rowId)
+    },
     isSelected (rowId) {
       return this.currentlySelected.includes(rowId)
     }
@@ -158,6 +185,9 @@ tbody tr {
 
 td {
   @apply relative w-full px-4 sm:py-4 text-sm break-words sm:w-auto pt-8 pb-2;
+}
+td.actions {
+  @apply sm:p-1;
 }
 
 @media (max-width: 640px) {

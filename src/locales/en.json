@@ -7,9 +7,12 @@
   "Back": "Back",
   "Cancel": "Cancel",
   "Code": "Code",
+  "Contact was successfully created": "Contact was successfully created",
+  "Contact was successfully updated": "Contact was successfully updated",
   "Contacts": "Contacts",
   "Create": "Create",
   "Delete": "Delete",
+  "Edit": "Edit",
   "Email address": "Email address",
   "email": "Email",
   "First name": "First name",
@@ -41,5 +44,6 @@
   "Sign In": "Sign In",
   "Sign Up": "Sign Up",
   "to": "to",
+  "Update": "Update",
   "You will be redirected to the sign in page": "You will be redirected to the sign in page"
 }

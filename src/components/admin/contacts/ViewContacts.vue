@@ -2,6 +2,7 @@
   <crud-table
     :get-endpoint="getEndpoint"
     :delete-endpoint="deleteEndpoint"
+    create-route-name="ContactsCreate"
     :bulk-select="true"
   />
 </template>

@@ -5,14 +5,17 @@
         variant="danger"
         size="small"
         :disabled="selected.length === 0"
-        @click="deleteSelected"
+        @click="deleteItems"
       >
-        {{ $t('Delete').toUpperCase() }}&nbsp;
+        <span class="material-icons">delete</span>&nbsp;{{
+          $t('Delete').toUpperCase()
+        }}&nbsp;
         <span v-if="selected.length > 0">{{ selected.length }}</span>
       </r-button>
       <navigation-item
-        route-name="ContactsCreate"
+        :route-name="createRouteName"
         :label="$t('Create').toUpperCase()"
+        icon="add"
         type="button"
         size="small"
       />
@@ -24,8 +27,10 @@
         :loading="loading"
         :bulk-select="bulkSelect"
         :selected="selected"
+        :actions="true"
         @addSelected="handleAddSelected"
         @removeSelected="handleRemoveSelected"
+        @deleteItem="deleteItems"
       />
       <pagination
         v-if="total > 1"
@@ -58,6 +63,10 @@ export default {
     },
     deleteEndpoint: {
       type: Function,
+      required: true
+    },
+    createRouteName: {
+      type: String,
       required: true
     },
     bulkSelect: {
@@ -115,10 +124,11 @@ export default {
     handleRemoveSelected (selected) {
       this.selected = this.selected.filter(s => selected.indexOf(s) === -1)
     },
-    async deleteSelected () {
+    async deleteItems (id) {
       const confirmation = await this.$modal(ConfirmationModal)
       if (confirmation) {
-        Promise.all(this.selected.map(id => this.deleteEndpoint(id)))
+        const toDelete = typeof id === 'string' ? [id] : this.selected
+        Promise.all(toDelete.map(id => this.deleteEndpoint(id)))
           .then(results => {
             if (
               results.reduce((_total, value) => {

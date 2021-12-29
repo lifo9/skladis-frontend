@@ -12,7 +12,7 @@ import HomeView from '../views/logged/HomeView'
 
 // contacts
 import ContactsView from '../views/logged/ContactsView'
-import CreateContact from '../components/admin/contacts/CreateContact'
+import CreateEditContact from '../components/admin/contacts/CreateEditContact'
 import ViewContacts from '../components/admin/contacts/ViewContacts'
 
 Vue.use(Router)
@@ -58,7 +58,12 @@ export default new Router({
             {
               path: 'create',
               name: 'ContactsCreate',
-              component: CreateContact
+              component: CreateEditContact
+            },
+            {
+              path: 'edit/:id',
+              name: 'ContactsEdit',
+              component: CreateEditContact
             }
           ]
         }

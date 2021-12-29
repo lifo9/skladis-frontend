@@ -2,7 +2,7 @@
   <component
     :is="type"
     v-on="$listeners"
-    class="inline-flex items-center justify-center text-base font-medium leading-6 transition duration-150 ease-in-out border border-transparent rounded-md active:bg-blue-700"
+    class="inline-flex items-center justify-center font-medium leading-6 transition duration-150 ease-in-out border border-transparent rounded-md active:bg-blue-700"
     :class="btnClass"
     :loading="loading"
     :disabled="disabled"
@@ -18,7 +18,7 @@
 import Vue from 'vue'
 import Spinner from './Spinner.vue'
 
-const sizes = ['small', 'normal', 'full']
+const sizes = ['verySmall', 'small', 'normal', 'full']
 const variants = ['primary', 'secondary', 'danger']
 
 export default Vue.extend({
@@ -54,9 +54,10 @@ export default Vue.extend({
     btnClass () {
       return {
         'cursor-not-allowed': this.disabled === true,
-        'px-4 py-2 max-w-md': this.size === 'small',
-        'px-6 py-3 max-w-md': this.size === 'normal',
-        'px-6 py-3 w-full': this.size === 'full',
+        'px-2 py-1 max-w-sm text-sm': this.size === 'verySmall',
+        'px-4 py-2 max-w-md text-base': this.size === 'small',
+        'px-6 py-3 max-w-md text-base': this.size === 'normal',
+        'px-6 py-3 w-full text-base': this.size === 'full',
 
         'text-white bg-blue-600 hover:bg-blue-500 focus:border-blue-700':
           this.variant === 'primary',

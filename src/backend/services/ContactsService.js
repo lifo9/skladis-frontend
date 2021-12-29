@@ -2,6 +2,10 @@ import { securedAxiosInstance } from './ApiService'
 
 export const CONTACTS_URL = '/contacts'
 
+export function getContact (id) {
+  return securedAxiosInstance.get(CONTACTS_URL + '/' + id)
+}
+
 export function getContacts ({ page, perPage, searchQuery } = {}) {
   let params = {}
   if (page) {
@@ -17,7 +21,19 @@ export function getContacts ({ page, perPage, searchQuery } = {}) {
   return securedAxiosInstance.get(CONTACTS_URL, { params: params })
 }
 
-export function createContact (firstName, lastName, email, phone) {
+export function updateContact ({ id, firstName, lastName, email, phone } = {}) {
+  const params = {
+    first_name: firstName,
+    last_name: lastName,
+    email: email,
+    phone: phone
+  }
+  return securedAxiosInstance.patch(CONTACTS_URL + '/' + id, {
+    contact: params
+  })
+}
+
+export function createContact ({ firstName, lastName, email, phone } = {}) {
   const params = {
     first_name: firstName,
     last_name: lastName,

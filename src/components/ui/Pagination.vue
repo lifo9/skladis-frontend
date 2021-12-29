@@ -56,7 +56,6 @@
             </svg>
           </a>
           <div v-if="total < 6">
-            <pagination-number />
             <div v-for="page in totalPages" :key="page">
               <pagination-number
                 :current="current"

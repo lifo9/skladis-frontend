@@ -7,9 +7,12 @@
   "Back": "Späť",
   "Cancel": "Zrušiť",
   "Code": "Kód",
+  "Contact was successfully created": "Kontakt bol úspešne vytvorený",
+  "Contact was successfully updated": "Kontakt bol úspešne aktualizovaný",
   "Contacts": "Kontakty",
   "Create": "Vytvoriť",
   "Delete": "Odstrániť",
+  "Edit": "Upraviť",
   "Email address": "Email",
   "email": "Email",
   "First name": "Meno",
@@ -41,5 +44,6 @@
   "Sign In": "Prihlásiť sa",
   "Sign Up": "Registrovať",
   "to": "do",
+  "Update": "Upraviť",
   "You will be redirected to the sign in page": "Budete presmerovaný na stránku prihlásenia"
 }

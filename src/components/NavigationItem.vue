@@ -1,9 +1,9 @@
 <template>
   <li
     v-if="type === 'list'"
-    @click="navigate(routeName)"
+    @click="navigate"
     class="navigation-menu-item"
-    :class="isActiveRoute(routeName) ? 'active' : ''"
+    :class="isActiveRoute ? 'active' : ''"
   >
     <div>
       <span v-if="icon" class="material-icons">{{ icon }}</span>
@@ -13,7 +13,7 @@
   </li>
   <r-button
     v-else-if="type === 'button'"
-    @click="navigate(routeName)"
+    @click="navigate"
     :size="size ? size : ''"
   >
     <span v-if="icon" class="material-icons">{{ icon }}</span>
@@ -53,16 +53,21 @@ export default {
       default: undefined
     }
   },
+  computed: {
+    isActiveRoute () {
+      return this.$router.currentRoute.name === this.routeName
+    }
+  },
   methods: {
-    navigate (routeName) {
-      if (this.$router.currentRoute.name !== routeName) {
-        const route = this.$router.resolve({ name: routeName })
+    navigate () {
+      if (this.$router.currentRoute.name !== this.routeName) {
+        const route = this.$router.resolve({
+          name: this.routeName,
+          params: this.params
+        })
         this.$router.push(route.href)
       }
       this.$emit('navigated')
-    },
-    isActiveRoute (routeName) {
-      return this.$router.currentRoute.name === routeName
     }
   }
 }
