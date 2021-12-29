@@ -26,7 +26,7 @@
     <div v-if="!notFound">
       <r-table
         :headers="headers"
-        :rows="contacts"
+        :rows="rows"
         :loading="loading"
         :bulk-select="bulkSelect"
         :selected="selected"
@@ -90,7 +90,7 @@ export default {
       loading: false,
       notFound: false,
       headers: [],
-      contacts: [],
+      rows: [],
       selected: [],
       searchQuery: '',
       currentPage: 1,
@@ -107,19 +107,19 @@ export default {
       this.loading = true
       this.notFound = false
 
-      const contacts = await this.getEndpoint({
+      const rows = await this.getEndpoint({
         page: this.currentPage,
         perPage: this.perPage,
         searchQuery: this.searchQuery,
         order: this.order,
         orderBy: this.orderBy
       })
-      const data = contacts.data.data
-      const headers = contacts.headers
+      const data = rows.data.data
+      const headers = rows.headers
 
       if (data.length > 0) {
         this.headers = Object.keys(data[0].attributes)
-        this.contacts = data
+        this.rows = data
         this.total = parseInt(headers['total'])
       } else {
         this.notFound = true
