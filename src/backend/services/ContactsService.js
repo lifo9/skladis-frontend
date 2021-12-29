@@ -6,7 +6,13 @@ export function getContact (id) {
   return securedAxiosInstance.get(CONTACTS_URL + '/' + id)
 }
 
-export function getContacts ({ page, perPage, searchQuery } = {}) {
+export function getContacts ({
+  page,
+  perPage,
+  searchQuery,
+  order,
+  orderBy
+} = {}) {
   let params = {}
   if (page) {
     params.page = page
@@ -16,6 +22,12 @@ export function getContacts ({ page, perPage, searchQuery } = {}) {
   }
   if (perPage) {
     params.per_page = perPage
+  }
+  if (order) {
+    params.order = order
+  }
+  if (orderBy) {
+    params.order_by = orderBy
   }
 
   return securedAxiosInstance.get(CONTACTS_URL, { params: params })

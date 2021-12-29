@@ -31,9 +31,12 @@
         :bulk-select="bulkSelect"
         :selected="selected"
         :actions="true"
+        :order="order"
+        :orderBy="orderBy"
         @addSelected="handleAddSelected"
         @removeSelected="handleRemoveSelected"
         @deleteItem="deleteItems"
+        @order="changeOrder"
       />
       <pagination
         v-if="total > 1"
@@ -91,7 +94,9 @@ export default {
       selected: [],
       searchQuery: '',
       currentPage: 1,
-      total: 0
+      total: 0,
+      order: 'asc',
+      orderBy: 'id'
     }
   },
   mounted () {
@@ -105,7 +110,9 @@ export default {
       const contacts = await this.getEndpoint({
         page: this.currentPage,
         perPage: this.perPage,
-        searchQuery: this.searchQuery
+        searchQuery: this.searchQuery,
+        order: this.order,
+        orderBy: this.orderBy
       })
       const data = contacts.data.data
       const headers = contacts.headers
@@ -160,6 +167,11 @@ export default {
             this.fetchData()
           })
       }
+    },
+    changeOrder (order) {
+      this.order = order.orderBy !== this.orderBy ? this.order : order.order
+      this.orderBy = order.orderBy
+      this.fetchData()
     }
   }
 }

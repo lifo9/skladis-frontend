@@ -12,9 +12,23 @@
               :value="isSelectedAll"
             />
           </th>
-          <th v-if="rows.length > 0 && rows[0].id">ID</th>
-          <th v-for="header in headers" :key="header" scope="col">
-            {{ $t(header) }}
+          <th v-if="rows.length > 0 && rows[0].id" @click="changeOrder('id')">
+            <div class="flex items-center justify-start">
+              <span>ID</span>
+              <order-arrow v-if="orderBy === 'id'" :order="order" />
+            </div>
+          </th>
+          <th
+            v-for="header in headers"
+            :key="header"
+            scope="col"
+            class="cursor-pointer"
+            @click="changeOrder(header)"
+          >
+            <div class="flex items-center justify-start">
+              {{ $t(header) }}
+              <order-arrow v-if="orderBy === header" :order="order" />
+            </div>
           </th>
           <th v-if="actions" scope="col">
             {{ $t('Actions') }}
@@ -54,7 +68,7 @@
                 type="button"
                 size="verySmall"
                 icon="edit"
-                :label="$t('Edit').toUpperCase()"
+                label=""
               ></navigation-item>
               <r-button
                 variant="danger"
@@ -62,9 +76,7 @@
                 class="m-1"
                 @click="deleteItem(row.id)"
               >
-                <span class="material-icons">delete</span>&nbsp;{{
-                  $t('Delete').toUpperCase()
-                }}
+                <span class="material-icons">delete</span>
               </r-button>
             </div>
           </td>
@@ -79,11 +91,13 @@
 
 <script>
 import NavigationItem from '../NavigationItem.vue'
+import OrderArrow from './OrderArrow.vue'
 import RButton from './RButton.vue'
 import RInput from './RInput.vue'
 import Spinner from './Spinner.vue'
+
 export default {
-  components: { Spinner, RInput, RButton, NavigationItem },
+  components: { Spinner, RInput, RButton, NavigationItem, OrderArrow },
   props: {
     loading: {
       type: Boolean,
@@ -108,6 +122,14 @@ export default {
     selected: {
       type: Array,
       default: undefined
+    },
+    orderBy: {
+      type: String,
+      default: 'id'
+    },
+    order: {
+      type: String,
+      default: 'asc'
     }
   },
   data () {
@@ -153,6 +175,12 @@ export default {
     deleteItem (rowId) {
       this.$emit('deleteItem', rowId)
     },
+    changeOrder (orderBy) {
+      this.$emit('order', {
+        orderBy: orderBy,
+        order: this.order === 'asc' ? 'desc' : 'asc'
+      })
+    },
     isSelected (rowId) {
       return this.currentlySelected.includes(rowId)
     }
@@ -174,7 +202,7 @@ thead tr > th.bulk-select {
   @apply flex sm:table-cell;
 }
 th {
-  @apply px-4 py-3 text-xs font-medium tracking-wider text-left uppercase;
+  @apply px-4 py-3 text-xs font-medium tracking-wider text-left uppercase select-none;
 }
 tbody {
   @apply bg-white;
@@ -188,6 +216,9 @@ td {
 }
 td.actions {
   @apply sm:p-1;
+}
+.transform-rotate-180 {
+  transform: rotate(180deg);
 }
 
 @media (max-width: 640px) {
