@@ -1,7 +1,9 @@
 <template>
   <div class="my-4">
-    <div class="flex flex-wrap items-center justify-end my-4 space-x-4">
+    <div class="flex flex-wrap items-center justify-start my-4 sm:justify-end">
+      <search class="m-2" @search="handleSearch" />
       <r-button
+        class="m-2"
         variant="danger"
         size="small"
         :disabled="selected.length === 0"
@@ -13,6 +15,7 @@
         <span v-if="selected.length > 0">{{ selected.length }}</span>
       </r-button>
       <navigation-item
+        class="m-2"
         :route-name="createRouteName"
         :label="$t('Create').toUpperCase()"
         icon="add"
@@ -53,9 +56,10 @@ import { arrayUnique } from '../backend/utils/helpers'
 import RButton from './ui/RButton.vue'
 import ConfirmationModal from './ui/ConfirmationModal.vue'
 import NavigationItem from './NavigationItem.vue'
+import Search from './ui/Search.vue'
 
 export default {
-  components: { RTable, Pagination, RButton, NavigationItem },
+  components: { RTable, Pagination, RButton, NavigationItem, Search },
   props: {
     getEndpoint: {
       type: Function,
@@ -85,6 +89,7 @@ export default {
       headers: [],
       contacts: [],
       selected: [],
+      searchQuery: '',
       currentPage: 1,
       total: 0
     }
@@ -99,7 +104,8 @@ export default {
 
       const contacts = await this.getEndpoint({
         page: this.currentPage,
-        perPage: this.perPage
+        perPage: this.perPage,
+        searchQuery: this.searchQuery
       })
       const data = contacts.data.data
       const headers = contacts.headers
@@ -123,6 +129,10 @@ export default {
     },
     handleRemoveSelected (selected) {
       this.selected = this.selected.filter(s => selected.indexOf(s) === -1)
+    },
+    handleSearch (searchQuery) {
+      this.searchQuery = searchQuery
+      this.fetchData()
     },
     async deleteItems (id) {
       const confirmation = await this.$modal(ConfirmationModal)
