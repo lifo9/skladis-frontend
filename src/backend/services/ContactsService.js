@@ -16,3 +16,7 @@ export function getContacts ({ page, perPage, searchQuery } = {}) {
 
   return securedAxiosInstance.get(CONTACTS_URL, { params: params })
 }
+
+export function deleteContact (id) {
+  return securedAxiosInstance.delete(CONTACTS_URL + '/' + id)
+}

@@ -1,5 +1,6 @@
 <template>
   <li
+    v-if="type === 'list'"
     @click="navigate(routeName)"
     class="navigation-menu-item"
     :class="isActiveRoute(routeName) ? 'active' : ''"
@@ -10,14 +11,30 @@
       <span>{{ $t(label) }}</span>
     </div>
   </li>
+  <r-button v-else-if="type === 'button'" @click="navigate(routeName)">
+    <span v-if="icon" class="material-icons">{{ icon }}</span>
+    &nbsp;
+    <span>{{ label }}</span>
+  </r-button>
 </template>
 
 <script>
+import RButton from './ui/RButton.vue'
+
 export default {
+  components: { RButton },
   props: {
+    type: {
+      type: String,
+      default: 'list'
+    },
     routeName: {
       type: String,
       required: true
+    },
+    params: {
+      type: Object,
+      default: undefined
     },
     label: {
       type: String,

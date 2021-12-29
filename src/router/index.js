@@ -9,7 +9,11 @@ import GuestMainView from '../views/guest/GuestMainView'
 // pages
 import ActivateUser from '../components/ActivateUser'
 import HomeView from '../views/logged/HomeView'
+
+// contacts
 import ContactsView from '../views/logged/contacts/ContactsView'
+import CreateContact from '../components/admin/contacts/CreateContact'
+import ViewContacts from '../components/admin/contacts/ViewContacts'
 
 Vue.use(Router)
 
@@ -44,8 +48,19 @@ export default new Router({
         },
         {
           path: 'contacts',
-          name: 'Contacts',
-          component: ContactsView
+          component: ContactsView,
+          children: [
+            {
+              path: '',
+              name: 'ContactsView',
+              component: ViewContacts
+            },
+            {
+              path: 'create',
+              name: 'ContactsCreate',
+              component: CreateContact
+            }
+          ]
         }
       ]
     },

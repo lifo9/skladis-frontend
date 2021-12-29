@@ -1,5 +1,20 @@
 <template>
   <div v-if="!notFound" class="my-4">
+    <div class="flex flex-wrap items-center justify-end my-4 space-x-4">
+      <r-button
+        variant="danger"
+        :disabled="selected.length === 0"
+        @click="deleteSelected"
+      >
+        {{ $t('Delete').toUpperCase() }}&nbsp;
+        <span v-if="selected.length > 0">{{ selected.length }}</span>
+      </r-button>
+      <navigation-item
+        route-name="ContactsCreate"
+        :label="$t('Create').toUpperCase()"
+        type="button"
+      />
+    </div>
     <r-table
       :headers="headers"
       :rows="contacts"
@@ -26,11 +41,18 @@
 import Pagination from './ui/Pagination.vue'
 import RTable from './ui/RTable.vue'
 import { arrayUnique } from '../backend/utils/helpers'
+import RButton from './ui/RButton.vue'
+import ConfirmationModal from './ui/ConfirmationModal.vue'
+import NavigationItem from './NavigationItem.vue'
 
 export default {
-  components: { RTable, Pagination },
+  components: { RTable, Pagination, RButton, NavigationItem },
   props: {
     getEndpoint: {
+      type: Function,
+      required: true
+    },
+    deleteEndpoint: {
       type: Function,
       required: true
     },
@@ -88,6 +110,32 @@ export default {
     },
     handleRemoveSelected (selected) {
       this.selected = this.selected.filter(s => selected.indexOf(s) === -1)
+    },
+    async deleteSelected () {
+      const confirmation = await this.$modal(ConfirmationModal)
+      if (confirmation) {
+        Promise.all(this.selected.map(id => this.deleteEndpoint(id)))
+          .then(results => {
+            if (
+              results.reduce((_total, value) => {
+                return value.status === 204
+              })
+            ) {
+              this.$root.$emit(
+                'alert',
+                'success',
+                this.$t('Items were successfully deleted')
+              )
+            }
+          })
+          .catch(error => {
+            this.$root.$emit('alert', 'alert', error)
+          })
+          .finally(() => {
+            this.selected = []
+            this.fetchData()
+          })
+      }
     }
   }
 }

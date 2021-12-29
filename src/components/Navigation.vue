@@ -20,7 +20,7 @@
           v-on:navigated="toggleMenu"
         />
         <navigation-item
-          route-name="Contacts"
+          route-name="ContactsView"
           label="Contacts"
           icon="contacts"
           v-on:navigated="toggleMenu"

@@ -5,20 +5,6 @@
     >
       {{ $t('Contacts') }}
     </h1>
-    <crud-table :get-endpoint="getEndpoint" :bulk-select="true" />
+    <router-view />
   </div>
 </template>
-
-<script>
-import CrudTable from '../../../components/CrudTable.vue'
-import { getContacts } from '../../../backend/services/ContactsService'
-
-export default {
-  components: { CrudTable },
-  data () {
-    return {
-      getEndpoint: getContacts
-    }
-  }
-}
-</script>
