@@ -55,7 +55,11 @@
 <script>
 import Pagination from './ui/Pagination.vue'
 import RTable from './ui/RTable.vue'
-import { arrayUnique } from '../backend/utils/helpers'
+import {
+  arrayUnique,
+  enableScroll,
+  disableScroll
+} from '../backend/utils/helpers'
 import RButton from './ui/RButton.vue'
 import ConfirmationModal from './ui/ConfirmationModal.vue'
 import NavigationItem from './NavigationItem.vue'
@@ -142,7 +146,9 @@ export default {
       this.fetchData()
     },
     async deleteItems (id) {
+      disableScroll()
       const confirmation = await this.$modal(ConfirmationModal)
+
       if (confirmation) {
         const toDelete = typeof id === 'string' ? [id] : this.selected
         Promise.all(toDelete.map(id => this.deleteEndpoint(id)))
@@ -167,6 +173,7 @@ export default {
             this.fetchData()
           })
       }
+      enableScroll()
     },
     changeOrder (order) {
       this.order = order.orderBy !== this.orderBy ? this.order : order.order
