@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!notFound" class="my-4">
+  <div class="my-4">
     <div class="flex flex-wrap items-center justify-end my-4 space-x-4">
       <r-button
         variant="danger"
@@ -17,25 +17,27 @@
         size="small"
       />
     </div>
-    <r-table
-      :headers="headers"
-      :rows="contacts"
-      :loading="loading"
-      :bulk-select="bulkSelect"
-      :selected="selected"
-      @addSelected="handleAddSelected"
-      @removeSelected="handleRemoveSelected"
-    />
-    <pagination
-      v-if="total > 1"
-      :current="currentPage"
-      :per-page="perPage"
-      :total="total"
-      @change="changePage"
-    />
-  </div>
-  <div v-else class="my-4">
-    <p><b>0</b> {{ $t('results') }}</p>
+    <div v-if="!notFound">
+      <r-table
+        :headers="headers"
+        :rows="contacts"
+        :loading="loading"
+        :bulk-select="bulkSelect"
+        :selected="selected"
+        @addSelected="handleAddSelected"
+        @removeSelected="handleRemoveSelected"
+      />
+      <pagination
+        v-if="total > 1"
+        :current="currentPage"
+        :per-page="perPage"
+        :total="total"
+        @change="changePage"
+      />
+    </div>
+    <div v-else class="my-4">
+      <p><b>0</b> {{ $t('results') }}</p>
+    </div>
   </div>
 </template>
 
