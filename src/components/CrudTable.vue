@@ -3,6 +3,7 @@
     <div class="flex flex-wrap items-center justify-end my-4 space-x-4">
       <r-button
         variant="danger"
+        size="small"
         :disabled="selected.length === 0"
         @click="deleteSelected"
       >
@@ -13,6 +14,7 @@
         route-name="ContactsCreate"
         :label="$t('Create').toUpperCase()"
         type="button"
+        size="small"
       />
     </div>
     <r-table

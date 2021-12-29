@@ -11,7 +11,11 @@
       <span>{{ $t(label) }}</span>
     </div>
   </li>
-  <r-button v-else-if="type === 'button'" @click="navigate(routeName)">
+  <r-button
+    v-else-if="type === 'button'"
+    @click="navigate(routeName)"
+    :size="size ? size : ''"
+  >
     <span v-if="icon" class="material-icons">{{ icon }}</span>
     &nbsp;
     <span>{{ label }}</span>
@@ -43,6 +47,10 @@ export default {
     icon: {
       type: String,
       default: ''
+    },
+    size: {
+      type: String,
+      default: undefined
     }
   },
   methods: {
