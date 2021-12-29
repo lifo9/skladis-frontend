@@ -11,7 +11,7 @@ import ActivateUser from '../components/ActivateUser'
 import HomeView from '../views/logged/HomeView'
 
 // contacts
-import ContactsView from '../views/logged/contacts/ContactsView'
+import ContactsView from '../views/logged/ContactsView'
 import CreateContact from '../components/admin/contacts/CreateContact'
 import ViewContacts from '../components/admin/contacts/ViewContacts'
 
