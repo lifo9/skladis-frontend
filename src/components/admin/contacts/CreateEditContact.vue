@@ -40,10 +40,10 @@
         :disabled="loading"
       >
         <span v-if="contactId">
-          {{ $t('Update').toUpperCase() }}
+          {{ $t('Update') | uppercase }}
         </span>
         <span v-else>
-          {{ $t('Create').toUpperCase() }}
+          {{ $t('Create') | uppercase }}
         </span>
       </r-button>
     </r-form>

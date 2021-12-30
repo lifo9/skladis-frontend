@@ -10,14 +10,14 @@
         @click="deleteItems"
       >
         <span class="material-icons">delete</span>&nbsp;{{
-          $t('Delete').toUpperCase()
+          $t('Delete') | uppercase
         }}&nbsp;
         <span v-if="selected.length > 0">{{ selected.length }}</span>
       </r-button>
       <navigation-item
         class="m-2"
         :route-name="createRouteName"
-        :label="$t('Create').toUpperCase()"
+        :label="$t('Create') | uppercase"
         icon="add"
         type="button"
         size="small"
