@@ -3,10 +3,28 @@
     <table>
       <thead>
         <tr>
+          <th class="ordering">
+            <div class="flex items-center justify-between w-full">
+              {{ $t('Order') }}
+              <div class="flex flex-wrap items-center justify-end">
+                <r-select
+                  :options="orderingOptions"
+                  :disableDefaultOption="true"
+                  :value="orderBy"
+                  @input="changeOrder"
+                />
+                <order-arrow
+                  class="ml-2 text-3xl"
+                  :order="order"
+                  @click="changeOrder(orderBy)"
+                />
+              </div>
+            </div>
+          </th>
           <th v-if="bulkSelect" scope="col" class="sm:w-16 bulk-select">
             <span class="sm:hidden">{{ $t('Select All') }} &nbsp;</span>
             <r-input
-              class="flex flex-wrap items-center justify-start ml-auto sm:justify-center sm:ml-0"
+              class="flex flex-wrap items-center justify-start w-6 ml-auto sm:justify-center sm:ml-0"
               type="checkbox"
               @change="selectAll"
               :value="isSelectedAll"
@@ -94,10 +112,18 @@ import NavigationItem from '../NavigationItem.vue'
 import OrderArrow from './OrderArrow.vue'
 import RButton from './RButton.vue'
 import RInput from './RInput.vue'
+import RSelect from './RSelect.vue'
 import Spinner from './Spinner.vue'
 
 export default {
-  components: { Spinner, RInput, RButton, NavigationItem, OrderArrow },
+  components: {
+    Spinner,
+    RInput,
+    RButton,
+    NavigationItem,
+    OrderArrow,
+    RSelect
+  },
   props: {
     loading: {
       type: Boolean,
@@ -143,6 +169,15 @@ export default {
   computed: {
     isSelectedAll () {
       return this.rows.every(row => this.selected.includes(row.id))
+    },
+    orderingOptions () {
+      const options = ['id'].concat(this.headers).map(header => {
+        return {
+          id: header,
+          value: header === 'id' ? 'ID' : this.$t(header)
+        }
+      })
+      return options
     }
   },
   methods: {
@@ -200,6 +235,9 @@ thead tr > th {
 }
 thead tr > th.bulk-select {
   @apply flex sm:table-cell;
+}
+thead tr > th.ordering {
+  @apply flex sm:hidden;
 }
 th {
   @apply px-4 py-3 text-xs font-medium tracking-wider text-left uppercase select-none;
