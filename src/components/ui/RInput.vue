@@ -1,13 +1,13 @@
 <template>
   <div>
-    <label v-if="label" class="block mb-1 text-sm font-medium text-neutral-600">
+    <label v-if="label" class="block mb-1 text-sm font-medium text-gray-800">
       {{ label }}
       <span v-if="required" class="text-red-500">*</span>
     </label>
 
     <div class="relative">
       <input
-        class="block w-full px-5 py-3 text-base placeholder-gray-400 transition duration-500 ease-in-out transform border border-transparent rounded-md text-neutral-600 bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-1 focus:ring-offset-gray-400"
+        class="block w-full px-5 py-3 text-base text-gray-900 placeholder-gray-400 transition duration-500 ease-in-out transform border border-gray-400 rounded-md bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-1 focus:ring-offset-blue-600"
         :class="[{ 'border-red-500': error }]"
         :type="type === 'password' && showPassword ? 'text' : type"
         :value="value"
