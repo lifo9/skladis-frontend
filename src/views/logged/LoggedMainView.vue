@@ -8,7 +8,7 @@
         type="desktop"
         :key="$route.fullPath"
       />
-      <div class="min-h-screen md:ml-64">
+      <div class="min-h-screen px-4 py-2 md:ml-64">
         <router-view />
       </div>
     </main>

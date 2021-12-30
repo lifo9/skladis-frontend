@@ -10,6 +10,11 @@ import GuestMainView from '../views/guest/GuestMainView'
 import ActivateUser from '../components/ActivateUser'
 import HomeView from '../views/logged/HomeView'
 
+// contacts
+import ContactsView from '../views/logged/ContactsView'
+import CreateEditContact from '../components/admin/contacts/CreateEditContact'
+import ViewContacts from '../components/admin/contacts/ViewContacts'
+
 Vue.use(Router)
 
 function redirectSignedOut (to, from, next) {
@@ -40,6 +45,27 @@ export default new Router({
           path: '',
           name: 'Home',
           component: HomeView
+        },
+        {
+          path: 'contacts',
+          component: ContactsView,
+          children: [
+            {
+              path: '',
+              name: 'ContactsView',
+              component: ViewContacts
+            },
+            {
+              path: 'create',
+              name: 'ContactsCreate',
+              component: CreateEditContact
+            },
+            {
+              path: 'edit/:id',
+              name: 'ContactsEdit',
+              component: CreateEditContact
+            }
+          ]
         }
       ]
     },

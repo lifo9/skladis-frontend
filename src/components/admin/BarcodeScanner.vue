@@ -35,6 +35,7 @@
 </template>
 
 <script>
+// TODO - Refactor !
 import Quagga from 'quagga'
 import RButton from '../ui/RButton.vue'
 

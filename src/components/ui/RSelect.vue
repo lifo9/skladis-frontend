@@ -4,14 +4,13 @@
       {{ label }}
       <span v-if="required" class="text-red-500">*</span>
     </label>
-    <div class="w-full">
+    <div class="w-full form-select">
       <select
         class="
       min-w-full
-      form-select
       appearance-none
       w-full
-      px-3
+      pl-3 pr-7
       py-1.5
       text-base
       font-normal
@@ -104,9 +103,15 @@ export function optionsFromValues (values, dictionary) {
 
 <style lang="postcss">
 .form-select {
-  -moz-padding-start: calc(0.75rem - 3px);
+  @apply relative;
+}
+.form-select::before {
+  @apply absolute top-1/2 transform -translate-y-1/2 mx-2 right-0;
+  content: '';
+  width: 16px;
+  height: 12px;
   background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3E%3C/svg%3E");
-  background-position: right 0.75rem center;
   background-size: 16px 12px;
+  background-repeat: no-repeat;
 }
 </style>
