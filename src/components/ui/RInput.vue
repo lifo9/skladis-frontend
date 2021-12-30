@@ -7,7 +7,7 @@
 
     <div class="relative">
       <input
-        class="block w-full px-5 py-3 text-base text-gray-900 placeholder-gray-400 transition duration-500 ease-in-out transform border border-gray-400 rounded-md bg-gray-50 focus:outline-none focus:border-transparent focus:ring-2 focus:ring-white focus:ring-offset-1 focus:ring-offset-blue-600"
+        class="block w-full px-5 py-3 text-base text-gray-900 placeholder-gray-400 transition duration-500 ease-in-out transform border border-gray-300 rounded-md bg-gray-50 focus:outline-none focus:border-transparent focus:border-blue-600"
         :class="[{ 'border-red-500': error }]"
         :type="type === 'password' && showPassword ? 'text' : type"
         :value="value"
