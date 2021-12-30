@@ -22,6 +22,7 @@
       />
       <r-input
         v-model="email"
+        type="email"
         :label="$t('email')"
         required="required"
         :disabled="loading"
