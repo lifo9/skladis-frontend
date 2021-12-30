@@ -15,6 +15,10 @@ import ContactsView from '../views/logged/ContactsView'
 import CreateEditContact from '../components/admin/contacts/CreateEditContact'
 import ViewContacts from '../components/admin/contacts/ViewContacts'
 
+// users
+import UsersView from '../views/logged/admin/UsersView'
+import ViewUsers from '../components/admin/users/ViewUsers'
+
 Vue.use(Router)
 
 function redirectSignedOut (to, from, next) {
@@ -64,6 +68,17 @@ export default new Router({
               path: 'edit/:id',
               name: 'ContactsEdit',
               component: CreateEditContact
+            }
+          ]
+        },
+        {
+          path: 'users',
+          component: UsersView,
+          children: [
+            {
+              path: '',
+              name: 'UsersView',
+              component: ViewUsers
             }
           ]
         }

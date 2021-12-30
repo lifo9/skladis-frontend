@@ -25,6 +25,12 @@
           icon="contacts"
           v-on:navigated="toggleMenu"
         />
+        <navigation-item
+          route-name="UsersView"
+          label="Users"
+          icon="person"
+          v-on:navigated="toggleMenu"
+        />
       </ul>
     </div>
   </div>

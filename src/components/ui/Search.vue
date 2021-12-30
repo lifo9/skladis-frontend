@@ -3,7 +3,7 @@
     <form @submit.prevent="search">
       <input
         v-model="searchQuery"
-        class="h-10 px-5 pr-16 text-sm bg-white border border-gray-200 rounded-md focus:outline-none"
+        class="block w-full h-10 px-5 py-3 text-base text-gray-900 placeholder-gray-400 transition duration-500 ease-in-out transform border border-gray-300 rounded-md bg-gray-50 focus:outline-none focus:border-transparent focus:border-blue-600"
         type="search"
         name="search"
         :placeholder="$t('Search')"
