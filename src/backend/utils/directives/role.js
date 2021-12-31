@@ -11,7 +11,7 @@ export function checkRole (el, binding, vnode, old) {
 export function isCurrentUserInRole (role) {
   const currentUserRoles = store.state.currentUser.roles
 
-  if (currentUserRoles.includes(role)) {
+  if (currentUserRoles && currentUserRoles.includes(role)) {
     return true
   }
 
