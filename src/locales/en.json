@@ -1,5 +1,6 @@
 {
   "Actions": "Actions",
+  "Activate": "Activate",
   "Activation failed": "Activation failed",
   "Activation successful": "Activation successful",
   "active": "active",
@@ -12,6 +13,7 @@
   "Contact was successfully updated": "Contact was successfully updated",
   "Contacts": "Contacts",
   "Create": "Create",
+  "Deactivate": "Deactivate",
   "Delete": "Delete",
   "Edit": "Edit",
   "Email address": "Email address",
@@ -49,6 +51,8 @@
   "Sign Up": "Sign Up",
   "to": "to",
   "Update": "Update",
+  "User was successfully activated": "User was successfully activated",
+  "User was successfully deactivated": "User was successfully deactivated",
   "Users": "Users",
   "You will be redirected to the sign in page": "You will be redirected to the sign in page"
 }

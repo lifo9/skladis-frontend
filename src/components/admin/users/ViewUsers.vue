@@ -13,7 +13,7 @@
 <script>
 import CrudTable from '../../CrudTable.vue'
 import { deleteUser, getUsers } from '../../../backend/services/UsersService'
-import CustomAction from '../../CustomAction.vue'
+import UserActivationToggle from '../../UserActivationToggle.vue'
 
 export default {
   components: { CrudTable },
@@ -21,7 +21,7 @@ export default {
     return {
       getEndpoint: getUsers,
       deleteEndpoint: deleteUser,
-      customActions: [CustomAction]
+      customActions: [UserActivationToggle]
     }
   }
 }

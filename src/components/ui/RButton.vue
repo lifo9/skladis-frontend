@@ -19,7 +19,7 @@ import Vue from 'vue'
 import Spinner from './Spinner.vue'
 
 const sizes = ['verySmall', 'small', 'normal', 'full']
-const variants = ['primary', 'secondary', 'danger']
+const variants = ['primary', 'secondary', 'danger', 'success']
 
 export default Vue.extend({
   components: { Spinner },
@@ -61,6 +61,8 @@ export default Vue.extend({
 
         'text-white bg-blue-600 hover:bg-blue-500 focus:border-blue-700':
           this.variant === 'primary',
+        'text-white bg-green-600 hover:bg-green-500 focus:border-green-700':
+          this.variant === 'success',
         'text-white bg-gray-600 hover:bg-gray-500 focus:border-gray-700':
           this.variant === 'secondary',
         'text-white bg-red-600 hover:bg-red-500 focus:border-red-700':

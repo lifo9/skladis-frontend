@@ -1,5 +1,6 @@
 {
   "Actions": "Akcie",
+  "Activate": "Aktivovať",
   "Activation failed": "Aktivácia zlyhala",
   "Activation successful": "Aktivácia bola úspešná",
   "active": "aktívny",
@@ -12,6 +13,7 @@
   "Contact was successfully updated": "Kontakt bol úspešne aktualizovaný",
   "Contacts": "Kontakty",
   "Create": "Vytvoriť",
+  "Deactivate": "Deaktivovať",
   "Delete": "Odstrániť",
   "Edit": "Upraviť",
   "Email address": "Email",
@@ -49,6 +51,8 @@
   "Sign Up": "Registrovať",
   "to": "do",
   "Update": "Upraviť",
+  "User was successfully activated": "Používateľ bol úspešne aktivovaný",
+  "User was successfully deactivated": "Používateľ bol úspešne deaktivovaný",
   "Users": "Používatelia",
   "You will be redirected to the sign in page": "Budete presmerovaný na stránku prihlásenia"
 }
