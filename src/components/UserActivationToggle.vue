@@ -1,8 +1,8 @@
 <template>
-  <div class="m-1">
+  <div class="m-1" v-if="!isCurrentlyLoggedIn">
     <r-button
       class="w-28"
-      v-if="row.attributes.active === false"
+      v-if="!isActive"
       variant="success"
       size="verySmall"
       @click="handleActivation(true)"
@@ -10,7 +10,7 @@
     >
     <r-button
       class="w-28"
-      v-else-if="row.attributes.active === true"
+      v-else
       variant="danger"
       size="verySmall"
       @click="handleActivation(false)"
@@ -24,6 +24,7 @@ import RButton from './ui/RButton.vue'
 import { enableScroll, disableScroll } from '../backend/utils/helpers'
 import ConfirmationModal from './ui/ConfirmationModal.vue'
 import { activateUser, deactivateUser } from '../backend/services/UsersService'
+import { store } from '../backend/store/store'
 
 export default {
   components: { RButton },
@@ -31,6 +32,14 @@ export default {
     row: {
       type: Object,
       required: true
+    }
+  },
+  computed: {
+    isCurrentlyLoggedIn () {
+      return this.row.id === store.state.currentUser.id
+    },
+    isActive () {
+      return this.row.attributes.active === true
     }
   },
   methods: {

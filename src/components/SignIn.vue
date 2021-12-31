@@ -70,7 +70,7 @@ export default {
       try {
         const me = await getCurrentUser()
         this.$store.commit('setCurrentUser', {
-          currentUser: me.data.data.attributes,
+          currentUser: { id: me.data.data.id, ...me.data.data.attributes },
           csrf: response.data.csrf
         })
         this.error = ''
