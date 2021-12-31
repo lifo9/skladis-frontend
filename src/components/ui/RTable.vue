@@ -75,12 +75,18 @@
             :key="idx2"
             :data-title="$t(idx2)"
           >
-            {{ col }}
+            <span
+              v-if="typeof col === 'boolean'"
+              class="font-bold material-icons"
+              :class="col ? 'text-green-600' : 'text-red-600'"
+              >{{ col ? 'check' : 'close' }}</span
+            >
+            <span v-else>{{ col | arrayToString }}</span>
           </td>
           <td v-if="actions" :data-title="$t('Actions')" class="actions">
             <div class="flex flex-wrap items-center justify-start w-max">
               <navigation-item
-                routeName="ContactsEdit"
+                :routeName="editRouteName"
                 :params="{ id: row.id }"
                 class="m-1"
                 type="button"
@@ -156,6 +162,10 @@ export default {
     order: {
       type: String,
       default: 'asc'
+    },
+    editRouteName: {
+      type: String,
+      default: undefined
     }
   },
   data () {

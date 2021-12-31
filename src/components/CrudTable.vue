@@ -33,6 +33,7 @@
         :actions="true"
         :order="order"
         :orderBy="orderBy"
+        :editRouteName="editRouteName"
         @addSelected="handleAddSelected"
         @removeSelected="handleRemoveSelected"
         @deleteItem="deleteItems"
@@ -77,6 +78,10 @@ export default {
       required: true
     },
     createRouteName: {
+      type: String,
+      required: true
+    },
+    editRouteName: {
       type: String,
       required: true
     },

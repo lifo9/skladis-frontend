@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import { store } from '../backend/store/store'
+import { isCurrentUserInRole } from '../backend/utils/directives/role'
+import { CONSTANTS } from '../plugins/constants'
 
 // main views
 import LoggedMainView from '../views/logged/LoggedMainView'
@@ -18,6 +20,8 @@ import ViewContacts from '../components/admin/contacts/ViewContacts'
 // users
 import UsersView from '../views/logged/admin/UsersView'
 import ViewUsers from '../components/admin/users/ViewUsers'
+import CreateUser from '../components/admin/users/CreateUser'
+import EditUser from '../components/admin/users/EditUser'
 
 Vue.use(Router)
 
@@ -35,7 +39,7 @@ function redirectSignedIn (to, from, next) {
   next()
 }
 
-export default new Router({
+export const router = new Router({
   mode: 'history',
   routes: [
     {
@@ -78,7 +82,26 @@ export default new Router({
             {
               path: '',
               name: 'UsersView',
+              meta: {
+                role: CONSTANTS.roles.admin
+              },
               component: ViewUsers
+            },
+            {
+              path: 'create',
+              name: 'UserCreate',
+              meta: {
+                role: CONSTANTS.roles.admin
+              },
+              component: CreateUser
+            },
+            {
+              path: 'edit/:id',
+              name: 'UserEdit',
+              meta: {
+                role: CONSTANTS.roles.admin
+              },
+              component: EditUser
             }
           ]
         }
@@ -108,4 +131,13 @@ export default new Router({
       ]
     }
   ]
+})
+
+router.beforeEach((to, from, next) => {
+  const requiredRole = to.meta.role
+
+  if (requiredRole && !isCurrentUserInRole(requiredRole)) {
+    next('/')
+  }
+  next()
 })

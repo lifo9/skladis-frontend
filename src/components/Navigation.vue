@@ -26,6 +26,7 @@
           v-on:navigated="toggleMenu"
         />
         <navigation-item
+          v-role="constants.roles.admin"
           route-name="UsersView"
           label="Users"
           icon="person"

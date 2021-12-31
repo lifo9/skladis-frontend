@@ -1,36 +1,13 @@
-import { securedAxiosInstance } from './ApiService'
+import CrudService from './CrudService'
 
-export const CONTACTS_URL = '/contacts'
+const crud = new CrudService('/contacts', 'contact')
 
 export function getContact (id) {
-  return securedAxiosInstance.get(CONTACTS_URL + '/' + id)
+  return crud.getRecord(id)
 }
 
-export function getContacts ({
-  page,
-  perPage,
-  searchQuery,
-  order,
-  orderBy
-} = {}) {
-  let params = {}
-  if (page) {
-    params.page = page
-  }
-  if (searchQuery) {
-    params.search = searchQuery
-  }
-  if (perPage) {
-    params.per_page = perPage
-  }
-  if (order) {
-    params.order = order
-  }
-  if (orderBy) {
-    params.order_by = orderBy
-  }
-
-  return securedAxiosInstance.get(CONTACTS_URL, { params: params })
+export function getContacts (params) {
+  return crud.getRecords(params)
 }
 
 export function updateContact ({ id, firstName, lastName, email, phone } = {}) {
@@ -40,9 +17,8 @@ export function updateContact ({ id, firstName, lastName, email, phone } = {}) {
     email: email,
     phone: phone
   }
-  return securedAxiosInstance.patch(CONTACTS_URL + '/' + id, {
-    contact: params
-  })
+
+  return crud.updateRecord(id, params)
 }
 
 export function createContact ({ firstName, lastName, email, phone } = {}) {
@@ -52,9 +28,9 @@ export function createContact ({ firstName, lastName, email, phone } = {}) {
     email: email,
     phone: phone
   }
-  return securedAxiosInstance.post(CONTACTS_URL, { contact: params })
+  return crud.createRecord(params)
 }
 
 export function deleteContact (id) {
-  return securedAxiosInstance.delete(CONTACTS_URL + '/' + id)
+  return crud.deleteRecord(id)
 }
