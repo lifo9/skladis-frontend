@@ -85,6 +85,7 @@
           </td>
           <td v-if="actions" :data-title="$t('Actions')" class="actions">
             <div class="flex flex-wrap items-center justify-start w-max">
+              <slot :row="row"></slot>
               <navigation-item
                 :routeName="editRouteName"
                 :params="{ id: row.id }"

@@ -38,7 +38,13 @@
         @removeSelected="handleRemoveSelected"
         @deleteItem="deleteItems"
         @order="changeOrder"
-      />
+      >
+        <template slot-scope="{ row }">
+          <div v-for="(customAction, idx) in customActions" :key="idx">
+            <component v-bind:is="customAction" :row="row"></component>
+          </div>
+        </template>
+      </r-table>
       <pagination
         v-if="total > 1"
         :current="currentPage"
@@ -92,6 +98,10 @@ export default {
     perPage: {
       type: Number,
       default: 20
+    },
+    customActions: {
+      type: Array,
+      default: undefined
     }
   },
   data () {

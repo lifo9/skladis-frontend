@@ -5,19 +5,23 @@
     create-route-name="UserCreate"
     edit-route-name="UserEdit"
     :bulk-select="true"
-  />
+    :custom-actions="customActions"
+  >
+  </crud-table>
 </template>
 
 <script>
 import CrudTable from '../../CrudTable.vue'
 import { deleteUser, getUsers } from '../../../backend/services/UsersService'
+import CustomAction from '../../CustomAction.vue'
 
 export default {
   components: { CrudTable },
   data () {
     return {
       getEndpoint: getUsers,
-      deleteEndpoint: deleteUser
+      deleteEndpoint: deleteUser,
+      customActions: [CustomAction]
     }
   }
 }
