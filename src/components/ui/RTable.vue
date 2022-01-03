@@ -37,7 +37,7 @@
             </div>
           </th>
           <th
-            v-for="header in headers"
+            v-for="header in parsedHeaders"
             :key="header"
             scope="col"
             class="cursor-pointer"
@@ -71,7 +71,7 @@
             {{ row.id }}
           </td>
           <td
-            v-for="(col, idx2) in extractData(row)"
+            v-for="(col, idx2) in extractedRowData[idx1]"
             :key="idx2"
             :data-title="$t(idx2)"
           >
@@ -167,6 +167,14 @@ export default {
     editRouteName: {
       type: String,
       default: undefined
+    },
+    relationshipCols: {
+      type: Array,
+      default: undefined
+    },
+    included: {
+      type: Array,
+      default: undefined
     }
   },
   data () {
@@ -182,19 +190,52 @@ export default {
       return this.rows.every(row => this.selected.includes(row.id))
     },
     orderingOptions () {
-      const options = ['id'].concat(this.headers).map(header => {
+      const options = ['id'].concat(this.parsedHeaders).map(header => {
         return {
           id: header,
           value: header === 'id' ? 'ID' : this.$t(header)
         }
       })
       return options
+    },
+    parsedHeaders () {
+      const customHeaders = this.relationshipCols
+        ? this.relationshipCols
+          .map(header => header.attributes.map(attr => attr.label))
+          .flat()
+        : []
+      return this.headers.concat(customHeaders)
+    },
+    extractedRowData () {
+      let extractedData = []
+
+      this.rows.forEach(row => {
+        const attributes = row.attributes ? row.attributes : row
+        const relationships = row.relationships
+        let customAttributes = {}
+
+        for (let relationship in relationships) {
+          const relIds = relationships[relationship].data.map(rel => rel.id)
+          const headerAttributes = this.relationshipCols
+            .filter(header => header.relationship === relationship)
+            .map(header => header.attributes)
+
+          if (headerAttributes.length === 1) {
+            headerAttributes[0].forEach(attr => {
+              customAttributes[attr.label] = relIds.map(id =>
+                this.getAttributeValueFromIncluded(id, 'role', attr.id)
+              )
+            })
+          }
+        }
+
+        extractedData.push({ ...attributes, ...customAttributes })
+      })
+
+      return extractedData
     }
   },
   methods: {
-    extractData (row) {
-      return row.attributes ? row.attributes : row
-    },
     select (rowId, checked) {
       if (checked) {
         this.currentlySelected.push(rowId)
@@ -229,6 +270,15 @@ export default {
     },
     isSelected (rowId) {
       return this.currentlySelected.includes(rowId)
+    },
+    getAttributeValueFromIncluded (id, type, attribute) {
+      const attr = this.included.filter(
+        inc => inc.type === type && inc.id === id
+      )
+
+      if (attr.length === 1) {
+        return attr[0].attributes[attribute]
+      }
     }
   }
 }

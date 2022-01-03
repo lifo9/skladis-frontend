@@ -69,8 +69,18 @@ export default {
       }
       try {
         const me = await getCurrentUser()
+        const userId = me.data.data.id
+        const attributes = me.data.data.attributes
+        const roles = me.data.included
+          .filter(inc => inc.type === 'role')
+          .map(role => role.attributes.name)
+
         this.$store.commit('setCurrentUser', {
-          currentUser: { id: me.data.data.id, ...me.data.data.attributes },
+          currentUser: {
+            id: userId,
+            ...attributes,
+            roles: roles
+          },
           csrf: response.data.csrf
         })
         this.error = ''

@@ -6,6 +6,7 @@
     edit-route-name="UserEdit"
     :bulk-select="true"
     :custom-actions="customActions"
+    :relationship-cols="relationshipCols"
   >
   </crud-table>
 </template>
@@ -21,7 +22,13 @@ export default {
     return {
       getEndpoint: getUsers,
       deleteEndpoint: deleteUser,
-      customActions: [UserActivationToggle]
+      customActions: [UserActivationToggle],
+      relationshipCols: [
+        {
+          relationship: 'roles',
+          attributes: [{ id: 'name', label: this.$t('roles') }]
+        }
+      ]
     }
   }
 }

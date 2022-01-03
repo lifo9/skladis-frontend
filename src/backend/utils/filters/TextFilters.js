@@ -9,3 +9,7 @@ export function arrayToString (array, delimiter = ',') {
 
   return array.join(delimiter + ' ')
 }
+
+export function capitalize (text) {
+  return text.charAt(0).toUpperCase() + text.slice(1)
+}

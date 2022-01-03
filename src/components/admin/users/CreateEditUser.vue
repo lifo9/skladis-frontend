@@ -1,0 +1,248 @@
+<template>
+  <div>
+    <router-link
+      class="flex items-center text-blue-600"
+      :to="{ name: 'UsersView' }"
+    >
+      <span class="material-icons">arrow_back</span>
+      {{ $t('Back') }}
+    </router-link>
+    <r-form
+      @submit.prevent="create"
+      :error="error"
+      class="w-full max-w-md mx-auto my-14"
+    >
+      <r-input
+        v-model="email"
+        type="email"
+        :label="$t('email')"
+        required="required"
+        :disabled="loading"
+      />
+      <r-input
+        v-model="first_name"
+        :label="$t('first_name')"
+        required="required"
+        :disabled="loading"
+      />
+      <r-input
+        v-model="last_name"
+        :label="$t('last_name')"
+        required="required"
+        :disabled="loading"
+      />
+      <r-input v-model="phone" :label="$t('phone')" :disabled="loading" />
+
+      <r-input
+        v-if="userId"
+        v-model="changePassword"
+        type="checkbox"
+        :one-line="true"
+        :label="$t('Change password')"
+      />
+      <div v-if="changePassword || !userId">
+        <r-input
+          v-model="password"
+          :required="changePassword || !userId"
+          type="password"
+          :label="$t('Password')"
+          :enablePasswordToggle="true"
+        />
+
+        <r-input
+          class="mt-6"
+          v-model="passwordConfirmation"
+          :required="changePassword || !userId"
+          type="password"
+          :label="$t('Password confirmation')"
+          :enablePasswordToggle="true"
+        />
+      </div>
+
+      <r-input
+        v-model="active"
+        type="checkbox"
+        :one-line="true"
+        :label="$t('active') | capitalize"
+      />
+
+      <label class="block mb-1 text-sm font-medium text-gray-800">
+        {{ $t('roles') | capitalize }}
+        <span class="text-red-500">*</span>
+      </label>
+      <multiselect
+        v-model="roles"
+        :options="availableRoles"
+        :multiple="true"
+        :taggable="true"
+        :searchable="false"
+        :allow-empty="false"
+        :required="true"
+        track-by="id"
+        label="name"
+        :placeholder="$t('roles')"
+        :tag-placeholder="$t('roles')"
+        :select-label="$t('select')"
+        :selected-label="$t('deselect')"
+        :deselect-label="$t('deselect')"
+      />
+
+      <r-button
+        type="submit"
+        size="full"
+        :loading="loading"
+        :disabled="loading"
+      >
+        <span v-if="userId">
+          {{ $t('Update') | uppercase }}
+        </span>
+        <span v-else>
+          {{ $t('Create') | uppercase }}
+        </span>
+      </r-button>
+    </r-form>
+  </div>
+</template>
+
+<script>
+import RButton from '../../ui/RButton.vue'
+import RForm from '../../ui/RForm.vue'
+import RInput from '../../ui/RInput.vue'
+import {
+  getUser,
+  createUser,
+  updateUser
+} from '../../../backend/services/UsersService'
+import { getRoles } from '../../../backend/services/RoleService'
+import Multiselect from 'vue-multiselect'
+
+export default {
+  components: { RForm, RButton, RInput, Multiselect },
+  data () {
+    return {
+      error: '',
+      loading: false,
+      first_name: '',
+      last_name: '',
+      email: '',
+      phone: '',
+      active: undefined,
+      changePassword: false,
+      password: '',
+      passwordConfirmation: '',
+      roles: [],
+      availableRoles: []
+    }
+  },
+  mounted () {
+    this.fetchData()
+  },
+  computed: {
+    userId () {
+      return this.$route.params.id
+    }
+  },
+  methods: {
+    async fetchData () {
+      this.loading = true
+      try {
+        const roles = await getRoles()
+        this.availableRoles = roles.data.data.map(role => {
+          return {
+            id: role.id,
+            name: role.attributes.name
+          }
+        })
+
+        if (this.userId) {
+          const user = await getUser(this.userId)
+          const data = user.data.data.attributes
+          const relationships = user.data.data.relationships
+          for (let [key, value] of Object.entries(data)) {
+            this[key] = value
+          }
+          for (let [key, relationship] of Object.entries(relationships)) {
+            this[key] = relationship.data
+              .map(rel => {
+                if (key === 'roles') {
+                  const userRoles = this.availableRoles.filter(
+                    role => role.id === rel.id
+                  )
+
+                  return userRoles
+                }
+                return rel.id
+              })
+              .flat()
+          }
+        }
+      } catch (error) {}
+      this.loading = false
+    },
+    async create () {
+      if (!this.validateFields()) {
+        return
+      }
+
+      this.loading = true
+      const endpoint = this.userId ? updateUser : createUser
+      const password =
+        !this.userId || this.changePassword ? { password: this.password } : {}
+      try {
+        await endpoint({
+          ...password,
+          id: this.userId,
+          firstName: this.first_name,
+          lastName: this.last_name,
+          email: this.email,
+          phone: this.phone,
+          active: this.active,
+          roles: this.roles.map(role => parseInt(role.id))
+        })
+        this.$root.$emit(
+          'alert',
+          'success',
+          this.userId
+            ? this.$t('User was successfully updated')
+            : this.$t('User was successfully created')
+        )
+        this.resetForm()
+      } catch (error) {
+        this.$root.$emit('alert', 'alert', error)
+      }
+      this.loading = false
+    },
+    validateFields () {
+      this.error = ''
+      if (
+        (this.changePassword || !this.userId) &&
+        this.password !== this.passwordConfirmation
+      ) {
+        this.error = this.$t('Passwords have to match')
+        return false
+      }
+
+      if (this.roles.length === 0) {
+        this.error = this.$t('Select role for the user')
+        return false
+      }
+
+      return true
+    },
+    resetForm () {
+      if (!this.userId) {
+        this.first_name = ''
+        this.last_name = ''
+        this.email = ''
+        this.phone = ''
+        this.roles = []
+      }
+      this.changePassword = false
+      this.password = ''
+      this.passwordConfirmation = ''
+    }
+  }
+}
+</script>
+
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>

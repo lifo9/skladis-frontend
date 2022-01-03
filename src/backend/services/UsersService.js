@@ -12,14 +12,58 @@ export function getUsers (params) {
   return crud.getRecords(params)
 }
 
+export function updateUser ({
+  id,
+  firstName,
+  lastName,
+  email,
+  phone,
+  active,
+  roles,
+  password
+} = {}) {
+  const params = {
+    first_name: firstName,
+    last_name: lastName,
+    email: email,
+    phone: phone,
+    active: active,
+    role_ids: roles,
+    password: password
+  }
+
+  return crud.updateRecord(id, params)
+}
+
+export function createUser ({
+  firstName,
+  lastName,
+  email,
+  phone,
+  active,
+  roles,
+  password
+} = {}) {
+  const params = {
+    first_name: firstName,
+    last_name: lastName,
+    email: email,
+    phone: phone,
+    active: active,
+    role_ids: roles,
+    password: password
+  }
+  return crud.createRecord(params)
+}
+
 export function deleteUser (id) {
   return crud.deleteRecord(id)
 }
 
 export function activateUser (id) {
-  return securedAxiosInstance.patch(API_PATH + '/' + id + '/activate')
+  return securedAxiosInstance.post(API_PATH + '/' + id + '/activation')
 }
 
 export function deactivateUser (id) {
-  return securedAxiosInstance.patch(API_PATH + '/' + id + '/deactivate')
+  return securedAxiosInstance.delete(API_PATH + '/' + id + '/activation')
 }

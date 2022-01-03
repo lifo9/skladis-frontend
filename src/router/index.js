@@ -20,8 +20,7 @@ import ViewContacts from '../components/admin/contacts/ViewContacts'
 // users
 import UsersView from '../views/logged/admin/UsersView'
 import ViewUsers from '../components/admin/users/ViewUsers'
-import CreateUser from '../components/admin/users/CreateUser'
-import EditUser from '../components/admin/users/EditUser'
+import CreateEditUser from '../components/admin/users/CreateEditUser'
 
 Vue.use(Router)
 
@@ -93,7 +92,7 @@ export const router = new Router({
               meta: {
                 role: CONSTANTS.roles.admin
               },
-              component: CreateUser
+              component: CreateEditUser
             },
             {
               path: 'edit/:id',
@@ -101,7 +100,7 @@ export const router = new Router({
               meta: {
                 role: CONSTANTS.roles.admin
               },
-              component: EditUser
+              component: CreateEditUser
             }
           ]
         }

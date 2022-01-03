@@ -34,6 +34,8 @@
         :order="order"
         :orderBy="orderBy"
         :editRouteName="editRouteName"
+        :relationship-cols="relationshipCols"
+        :included="included"
         @addSelected="handleAddSelected"
         @removeSelected="handleRemoveSelected"
         @deleteItem="deleteItems"
@@ -102,6 +104,10 @@ export default {
     customActions: {
       type: Array,
       default: undefined
+    },
+    relationshipCols: {
+      type: Array,
+      default: undefined
     }
   },
   data () {
@@ -110,6 +116,7 @@ export default {
       notFound: false,
       headers: [],
       rows: [],
+      included: [],
       selected: [],
       searchQuery: '',
       currentPage: 1,
@@ -134,7 +141,12 @@ export default {
         orderBy: this.orderBy
       })
       const data = rows.data.data
+      const included = rows.data.included
       const headers = rows.headers
+
+      if (included && included.length > 0) {
+        this.included = included
+      }
 
       if (data.length > 0) {
         this.headers = Object.keys(data[0].attributes)

@@ -1,14 +1,20 @@
 <template>
-  <div>
-    <label v-if="label" class="block mb-1 text-sm font-medium text-gray-800">
+  <div :class="oneLine ? 'flex justify-between items-center space-x-4' : ''">
+    <label
+      v-if="label"
+      class="block text-sm font-medium text-gray-800"
+      :class="oneLine ? 'mb-0' : 'mb-1'"
+    >
       {{ label }}
       <span v-if="required" class="text-red-500">*</span>
     </label>
 
     <div class="relative">
       <input
-        class="block w-full px-5 py-3 text-base text-gray-900 placeholder-gray-400 transition duration-500 ease-in-out transform border border-gray-300 rounded-md bg-gray-50 focus:outline-none focus:border-transparent focus:border-blue-600"
-        :class="[{ 'border-red-500': error }]"
+        class="block px-5 py-3 text-base text-gray-900 placeholder-gray-400 transition duration-500 ease-in-out transform border border-gray-300 rounded-md bg-gray-50 focus:outline-none focus:border-transparent focus:border-blue-600"
+        :class="[
+          { 'border-red-500': error, 'w-auto': oneLine, 'w-full': !oneLine }
+        ]"
         :type="type === 'password' && showPassword ? 'text' : type"
         :value="value"
         :required="required"
@@ -74,13 +80,21 @@ export default Vue.extend({
     enablePasswordToggle: {
       type: Boolean,
       default: false
+    },
+    oneLine: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
     listeners () {
       return {
         ...this.$listeners,
-        input: e => this.$emit('input', e.target.value),
+        input: e =>
+          this.$emit(
+            'input',
+            this.type === 'checkbox' ? e.target.checked : e.target.value
+          ),
         change: e =>
           this.$emit(
             'change',
