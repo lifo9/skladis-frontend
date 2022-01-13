@@ -1,8 +1,22 @@
 <template>
-  <div>
-    <h1 class="mt-4 mb-8 text-4xl font-bold text-gray-900 sm:truncate">
-      {{ $t('Users') }}
-    </h1>
-    <router-view />
-  </div>
+  <router-view />
 </template>
+
+<script>
+export default {
+  mounted () {
+    this.setTitle()
+  },
+  updated () {
+    this.setTitle()
+  },
+  beforeDestroy () {
+    this.$store.commit('unsetCurrentTitle')
+  },
+  methods: {
+    setTitle () {
+      this.$store.commit('setCurrentTitle', this.$t('Users'))
+    }
+  }
+}
+</script>

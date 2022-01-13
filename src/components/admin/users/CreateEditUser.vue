@@ -136,6 +136,13 @@ export default {
   },
   mounted () {
     this.fetchData()
+    this.setTitle()
+  },
+  updated () {
+    this.setTitle()
+  },
+  beforeDestroy () {
+    this.$store.commit('unsetCurrentTitle')
   },
   computed: {
     userId () {
@@ -240,6 +247,14 @@ export default {
       this.changePassword = false
       this.password = ''
       this.passwordConfirmation = ''
+    },
+    setTitle () {
+      if (this.email) {
+        this.$store.commit(
+          'setCurrentTitle',
+          this.$t('Users') + ' - ' + this.email
+        )
+      }
     }
   }
 }

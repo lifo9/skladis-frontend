@@ -11,7 +11,8 @@ export const store = new Vuex.Store({
     currentUser: {},
     signedIn: false,
     csrf: null,
-    appLanguage: localStorage.getItem('appLanguage') || getStartingLocale()
+    appLanguage: localStorage.getItem('appLanguage') || getStartingLocale(),
+    currentTitle: ''
   },
   getters: {
     getAppLanguage: state => state.appLanguage
@@ -35,6 +36,12 @@ export const store = new Vuex.Store({
       state.appLanguage = language
       i18n.locale = language
       localStorage.setItem('language', language)
+    },
+    setCurrentTitle (state, title) {
+      state.currentTitle = title
+    },
+    unsetCurrentTitle (state) {
+      state.currentTitle = ''
     }
   },
   plugins: [createPersistedState()]
