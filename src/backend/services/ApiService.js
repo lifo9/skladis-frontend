@@ -1,7 +1,8 @@
 import axios from 'axios'
 import { store } from '../store/store'
 import { getVueLocale } from './LanguageService'
-import { getCurrentUser, SIGN_IN_URL } from './UserService'
+import { SIGN_IN_URL } from './UserService'
+import { getMyProfile } from './MyProfileService'
 
 const API_URL = process.env.ROOT_API
 const appLocale = getVueLocale()
@@ -90,8 +91,8 @@ securedAxiosInstance.interceptors.response.use(null, async error => {
         .then(response => {
           const csrf = response.data.csrf
           if (!signOut) {
-            getCurrentUser().then(meResponse =>
-              store.commit('setCurrentUser', {
+            getMyProfile().then(meResponse =>
+              store.commit('setLoggedInUser', {
                 currentUser: meResponse.data.data.attributes,
                 csrf: csrf
               })

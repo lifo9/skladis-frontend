@@ -22,6 +22,8 @@ import UsersView from '../views/logged/admin/UsersView'
 import ViewUsers from '../components/admin/users/ViewUsers'
 import CreateEditUser from '../components/admin/users/CreateEditUser'
 
+import MyProfile from '../components/admin/MyProfile'
+
 Vue.use(Router)
 
 function redirectSignedOut (to, from, next) {
@@ -103,6 +105,11 @@ export const router = new Router({
               component: CreateEditUser
             }
           ]
+        },
+        {
+          path: 'profile',
+          name: 'MyProfile',
+          component: MyProfile
         }
       ]
     },

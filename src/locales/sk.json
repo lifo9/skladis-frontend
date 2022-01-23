@@ -30,6 +30,7 @@
   "Last name": "Priezvisko",
   "last_name": "Priezvisko",
   "Logout": "Odhlásiť",
+  "My profile": "Môj profil",
   "Next": "Ďalej",
   "Not found": "Nenájdené",
   "of": "z",
@@ -60,5 +61,6 @@
   "User was successfully deactivated": "Používateľ bol úspešne deaktivovaný",
   "User was successfully updated": "Používateľ bol úspešne aktualizovaný",
   "Users": "Používatelia",
-  "You will be redirected to the sign in page": "Budete presmerovaný na stránku prihlásenia"
+  "You will be redirected to the sign in page": "Budete presmerovaný na stránku prihlásenia",
+  "Your profile was successfully updated": "Váš profil bol úspešne aktualizovaný"
 }

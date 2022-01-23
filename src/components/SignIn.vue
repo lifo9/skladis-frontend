@@ -30,7 +30,8 @@
 </template>
 
 <script>
-import { signIn, getCurrentUser } from '../backend/services/UserService'
+import { signIn } from '../backend/services/UserService'
+import { getMyProfile } from '../backend/services/MyProfileService'
 import RButton from './ui/RButton.vue'
 import RForm from './ui/RForm.vue'
 import RInput from './ui/RInput.vue'
@@ -68,14 +69,14 @@ export default {
         return
       }
       try {
-        const me = await getCurrentUser()
+        const me = await getMyProfile()
         const userId = me.data.data.id
         const attributes = me.data.data.attributes
         const roles = me.data.included
           .filter(inc => inc.type === 'role')
           .map(role => role.attributes.name)
 
-        this.$store.commit('setCurrentUser', {
+        this.$store.commit('setLoggedInUser', {
           currentUser: {
             id: userId,
             ...attributes,

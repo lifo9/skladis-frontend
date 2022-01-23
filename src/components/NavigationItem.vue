@@ -20,6 +20,9 @@
     &nbsp;
     <span>{{ label }}</span>
   </r-button>
+  <p v-else-if="type === 'plain'" @click="navigate" :size="size ? size : ''">
+    {{ label }}
+  </p>
 </template>
 
 <script>

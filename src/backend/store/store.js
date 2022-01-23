@@ -18,10 +18,13 @@ export const store = new Vuex.Store({
     getAppLanguage: state => state.appLanguage
   },
   mutations: {
-    setCurrentUser (state, { currentUser, csrf }) {
+    setLoggedInUser (state, { currentUser, csrf }) {
       state.currentUser = currentUser
       state.signedIn = true
       state.csrf = csrf
+    },
+    setCurrentUser (state, { currentUser }) {
+      state.currentUser = currentUser
     },
     unsetCurrentUser (state) {
       state.currentUser = {}

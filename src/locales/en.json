@@ -30,6 +30,7 @@
   "Last name": "Last name",
   "last_name": "Last name",
   "Logout": "Logout",
+  "My profile": "My profile",
   "Next": "Next",
   "Not found": "Not found",
   "of": "of",
@@ -60,5 +61,6 @@
   "User was successfully deactivated": "User was successfully deactivated",
   "User was successfully updated": "User was successfully updated",
   "Users": "Users",
-  "You will be redirected to the sign in page": "You will be redirected to the sign in page"
+  "You will be redirected to the sign in page": "You will be redirected to the sign in page",
+  "Your profile was successfully updated": "Your profile was successfully updated"
 }
