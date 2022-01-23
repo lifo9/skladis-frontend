@@ -20,6 +20,9 @@
     &nbsp;
     <span>{{ label }}</span>
   </r-button>
+  <p v-else-if="type === 'plain'" @click="navigate" :size="size ? size : ''">
+    {{ label }}
+  </p>
 </template>
 
 <script>
@@ -59,15 +62,17 @@ export default {
     }
   },
   methods: {
-    navigate () {
+    async navigate () {
       if (this.$router.currentRoute.name !== this.routeName) {
         const route = this.$router.resolve({
           name: this.routeName,
           params: this.params
         })
-        this.$router.push(route.href)
+        try {
+          await this.$router.push(route.href)
+          this.$emit('navigated')
+        } catch (error) {}
       }
-      this.$emit('navigated')
     }
   }
 }

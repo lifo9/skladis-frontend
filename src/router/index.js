@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import { store } from '../backend/store/store'
+import { isCurrentUserInRole } from '../backend/utils/directives/role'
+import { CONSTANTS } from '../plugins/constants'
 
 // main views
 import LoggedMainView from '../views/logged/LoggedMainView'
@@ -14,6 +16,13 @@ import HomeView from '../views/logged/HomeView'
 import ContactsView from '../views/logged/ContactsView'
 import CreateEditContact from '../components/admin/contacts/CreateEditContact'
 import ViewContacts from '../components/admin/contacts/ViewContacts'
+
+// users
+import UsersView from '../views/logged/admin/UsersView'
+import ViewUsers from '../components/admin/users/ViewUsers'
+import CreateEditUser from '../components/admin/users/CreateEditUser'
+
+import MyProfile from '../components/admin/MyProfile'
 
 Vue.use(Router)
 
@@ -31,7 +40,7 @@ function redirectSignedIn (to, from, next) {
   next()
 }
 
-export default new Router({
+export const router = new Router({
   mode: 'history',
   routes: [
     {
@@ -66,6 +75,41 @@ export default new Router({
               component: CreateEditContact
             }
           ]
+        },
+        {
+          path: 'users',
+          component: UsersView,
+          children: [
+            {
+              path: '',
+              name: 'UsersView',
+              meta: {
+                role: CONSTANTS.roles.admin
+              },
+              component: ViewUsers
+            },
+            {
+              path: 'create',
+              name: 'UserCreate',
+              meta: {
+                role: CONSTANTS.roles.admin
+              },
+              component: CreateEditUser
+            },
+            {
+              path: 'edit/:id',
+              name: 'UserEdit',
+              meta: {
+                role: CONSTANTS.roles.admin
+              },
+              component: CreateEditUser
+            }
+          ]
+        },
+        {
+          path: 'profile',
+          name: 'MyProfile',
+          component: MyProfile
         }
       ]
     },
@@ -93,4 +137,13 @@ export default new Router({
       ]
     }
   ]
+})
+
+router.beforeEach((to, from, next) => {
+  const requiredRole = to.meta.role
+
+  if (requiredRole && !isCurrentUserInRole(requiredRole)) {
+    next('/')
+  }
+  next()
 })

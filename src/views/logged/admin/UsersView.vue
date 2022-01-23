@@ -15,7 +15,7 @@ export default {
   },
   methods: {
     setTitle () {
-      this.$store.commit('setCurrentTitle', this.$t('Contacts'))
+      this.$store.commit('setCurrentTitle', this.$t('Users'))
     }
   }
 }

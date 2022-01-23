@@ -74,6 +74,13 @@ export default {
   },
   mounted () {
     this.fetchData()
+    this.setTitle()
+  },
+  updated () {
+    this.setTitle()
+  },
+  beforeDestroy () {
+    this.$store.commit('unsetCurrentTitle')
   },
   computed: {
     contactId () {
@@ -125,6 +132,14 @@ export default {
       this.last_name = ''
       this.email = ''
       this.phone = ''
+    },
+    setTitle () {
+      if (this.email) {
+        this.$store.commit(
+          'setCurrentTitle',
+          this.$t('Contacts') + ' - ' + this.email
+        )
+      }
     }
   }
 }

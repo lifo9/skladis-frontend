@@ -3,6 +3,7 @@
     :get-endpoint="getEndpoint"
     :delete-endpoint="deleteEndpoint"
     create-route-name="ContactsCreate"
+    edit-route-name="ContactsEdit"
     :bulk-select="true"
   />
 </template>

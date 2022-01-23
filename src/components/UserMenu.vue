@@ -1,6 +1,6 @@
 <template>
   <div class="relative flex text-gray-800 bg-white rounded-full cursor-pointer">
-    <div @click="toggleMenu">
+    <div @click="toggleMenu" v-click-outside="hideMenu">
       <span class="w-8 text-2xl text-center select-none material-icons-sharp"
         >person</span
       >
@@ -16,6 +16,14 @@
       <ul class="user-menu">
         <li v-if="this.$store.state.signedIn" class="not-hoverable">
           <p>{{ this.$store.state.currentUser.email }}</p>
+        </li>
+        <li v-if="this.$store.state.signedIn">
+          <navigation-item
+            class="text-left"
+            type="plain"
+            route-name="MyProfile"
+            label="My profile"
+          />
         </li>
         <li class="not-hoverable">
           <p><language-switcher @input="toggleMenu" /></p>
@@ -34,8 +42,9 @@
 <script>
 import LanguageSwitcher from './LanguageSwitcher.vue'
 import Logout from './Logout.vue'
+import NavigationItem from './NavigationItem.vue'
 export default {
-  components: { Logout, LanguageSwitcher },
+  components: { Logout, LanguageSwitcher, NavigationItem },
   data () {
     return {
       menuHidden: true
@@ -51,6 +60,11 @@ export default {
     },
     toggleMenu () {
       this.menuHidden = !this.menuHidden
+    },
+    hideMenu () {
+      if (!this.menuHidden) {
+        this.menuHidden = true
+      }
     }
   }
 }

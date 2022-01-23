@@ -4,14 +4,18 @@ import Vue from 'vue'
 import { i18n } from './plugins/i18n'
 import LastModal from 'vue-last-modal'
 import App from './App'
-import router from './router'
+import { router } from './router'
 import { store } from './backend/store/store'
 import 'material-icons/iconfont/material-icons.css'
 import './assets/tailwind.css'
 import filters from './plugins/filters'
+import directives from './plugins/directives'
+import { CONSTANTS } from './plugins/constants'
 
 Vue.use(filters)
+Vue.use(directives)
 Vue.use(LastModal)
+Vue.prototype.constants = CONSTANTS
 
 Vue.config.productionTip = false
 

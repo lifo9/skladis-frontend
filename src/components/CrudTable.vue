@@ -33,11 +33,20 @@
         :actions="true"
         :order="order"
         :orderBy="orderBy"
+        :editRouteName="editRouteName"
+        :relationship-cols="relationshipCols"
+        :included="included"
         @addSelected="handleAddSelected"
         @removeSelected="handleRemoveSelected"
         @deleteItem="deleteItems"
         @order="changeOrder"
-      />
+      >
+        <template slot-scope="{ row }">
+          <div v-for="(customAction, idx) in customActions" :key="idx">
+            <component v-bind:is="customAction" :row="row"></component>
+          </div>
+        </template>
+      </r-table>
       <pagination
         v-if="total > 1"
         :current="currentPage"
@@ -80,6 +89,10 @@ export default {
       type: String,
       required: true
     },
+    editRouteName: {
+      type: String,
+      required: true
+    },
     bulkSelect: {
       type: Boolean,
       default: false
@@ -87,6 +100,14 @@ export default {
     perPage: {
       type: Number,
       default: 20
+    },
+    customActions: {
+      type: Array,
+      default: undefined
+    },
+    relationshipCols: {
+      type: Array,
+      default: undefined
     }
   },
   data () {
@@ -95,6 +116,7 @@ export default {
       notFound: false,
       headers: [],
       rows: [],
+      included: [],
       selected: [],
       searchQuery: '',
       currentPage: 1,
@@ -119,7 +141,12 @@ export default {
         orderBy: this.orderBy
       })
       const data = rows.data.data
+      const included = rows.data.included
       const headers = rows.headers
+
+      if (included && included.length > 0) {
+        this.included = included
+      }
 
       if (data.length > 0) {
         this.headers = Object.keys(data[0].attributes)

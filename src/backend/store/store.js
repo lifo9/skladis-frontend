@@ -11,16 +11,20 @@ export const store = new Vuex.Store({
     currentUser: {},
     signedIn: false,
     csrf: null,
-    appLanguage: localStorage.getItem('appLanguage') || getStartingLocale()
+    appLanguage: localStorage.getItem('appLanguage') || getStartingLocale(),
+    currentTitle: ''
   },
   getters: {
     getAppLanguage: state => state.appLanguage
   },
   mutations: {
-    setCurrentUser (state, { currentUser, csrf }) {
+    setLoggedInUser (state, { currentUser, csrf }) {
       state.currentUser = currentUser
       state.signedIn = true
       state.csrf = csrf
+    },
+    setCurrentUser (state, { currentUser }) {
+      state.currentUser = currentUser
     },
     unsetCurrentUser (state) {
       state.currentUser = {}
@@ -35,6 +39,12 @@ export const store = new Vuex.Store({
       state.appLanguage = language
       i18n.locale = language
       localStorage.setItem('language', language)
+    },
+    setCurrentTitle (state, title) {
+      state.currentTitle = title
+    },
+    unsetCurrentTitle (state) {
+      state.currentTitle = ''
     }
   },
   plugins: [createPersistedState()]
