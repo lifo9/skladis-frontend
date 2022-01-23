@@ -1,6 +1,6 @@
 <template>
   <div class="relative flex text-gray-800 bg-white rounded-full cursor-pointer">
-    <div @click="toggleMenu">
+    <div @click="toggleMenu" v-click-outside="hideMenu">
       <span class="w-8 text-2xl text-center select-none material-icons-sharp"
         >person</span
       >
@@ -60,6 +60,11 @@ export default {
     },
     toggleMenu () {
       this.menuHidden = !this.menuHidden
+    },
+    hideMenu () {
+      if (!this.menuHidden) {
+        this.menuHidden = true
+      }
     }
   }
 }
