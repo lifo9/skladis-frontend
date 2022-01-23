@@ -22,7 +22,7 @@
             class="text-left"
             type="plain"
             route-name="MyProfile"
-            label="My profile"
+            :label="$t('My profile')"
           />
         </li>
         <li class="not-hoverable">
