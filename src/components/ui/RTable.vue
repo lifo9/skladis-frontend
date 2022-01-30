@@ -36,6 +36,7 @@
               <order-arrow v-if="orderBy === 'id'" :order="order" />
             </div>
           </th>
+          <slot name="customColsBeforeHeaders" />
           <th
             v-for="header in parsedHeaders"
             :key="header"
@@ -48,6 +49,7 @@
               <order-arrow v-if="orderBy === header" :order="order" />
             </div>
           </th>
+          <slot name="customColsAfterHeaders" />
           <th v-if="actions" scope="col">
             {{ $t('Actions') }}
           </th>
@@ -59,7 +61,7 @@
           <td
             v-if="bulkSelect"
             :data-title="$t('Select')"
-            class="flex flex-wrap items-center justify-end sm:justify-center"
+            class="flex flex-wrap items-center justify-end sm:justify-center has-title"
           >
             <r-input
               type="checkbox"
@@ -67,13 +69,15 @@
               @change="select(row.id, $event)"
             />
           </td>
-          <td v-if="row.id" :data-title="$t('ID')">
+          <td v-if="row.id" :data-title="$t('ID')" class="has-title">
             {{ row.id }}
           </td>
+          <slot :row="getUnfilteredRowById(row.id)" name="customColsBefore" />
           <td
             v-for="(col, idx2) in extractedRowData[idx1]"
             :key="idx2"
             :data-title="$t(idx2)"
+            class="has-title"
           >
             <span
               v-if="typeof col === 'boolean'"
@@ -83,9 +87,10 @@
             >
             <span v-else>{{ col | arrayToString }}</span>
           </td>
+          <slot :row="getUnfilteredRowById(row.id)" name="customColsAfter" />
           <td v-if="actions" :data-title="$t('Actions')" class="actions">
             <div class="flex flex-wrap items-center justify-start w-max">
-              <slot :row="row"></slot>
+              <slot :row="getUnfilteredRowById(row.id)" name="customActions" />
               <navigation-item
                 :routeName="editRouteName"
                 :params="{ id: row.id }"
@@ -175,6 +180,10 @@ export default {
     included: {
       type: Array,
       default: undefined
+    },
+    hiddenCols: {
+      type: Array,
+      default: undefined
     }
   },
   data () {
@@ -210,7 +219,13 @@ export default {
       let extractedData = []
 
       this.rows.forEach(row => {
-        const attributes = row.attributes ? row.attributes : row
+        const attributes = row.attributes
+          ? Object.fromEntries(
+            Object.entries(row.attributes).filter(
+              ([key]) => !this.hiddenCols || !this.hiddenCols.includes(key)
+            )
+          )
+          : row
         const relationships = row.relationships
         let customAttributes = {}
 
@@ -279,6 +294,16 @@ export default {
       if (attr.length === 1) {
         return attr[0].attributes[attribute]
       }
+    },
+    getUnfilteredRowById (id) {
+      const rows = this.rows.filter(row => {
+        return row.attributes && row.id === id
+      })
+
+      if (rows.length === 1) {
+        return rows[0]
+      }
+      return {}
     }
   }
 }
@@ -311,14 +336,17 @@ tbody tr {
 }
 
 td {
-  @apply relative w-full px-4 sm:py-4 text-sm break-words sm:w-auto pt-8 pb-2;
+  @apply relative w-full px-4 sm:py-4 text-sm break-words sm:w-auto pb-2;
+}
+td.has-title {
+  @apply pt-8;
 }
 td.actions {
   @apply sm:p-1;
 }
 
 @media (max-width: 640px) {
-  td:before {
+  td.has-title:before {
     @apply px-2 py-1 text-xs font-medium tracking-wider text-left uppercase absolute top-0 left-0 text-white bg-gray-800;
     content: attr(data-title);
   }

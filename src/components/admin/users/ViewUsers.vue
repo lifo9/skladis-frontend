@@ -5,6 +5,7 @@
     create-route-name="UserCreate"
     edit-route-name="UserEdit"
     :bulk-select="true"
+    :custom-cols-before="customCols"
     :custom-actions="customActions"
     :relationship-cols="relationshipCols"
     :hiddenCols="['avatar']"
@@ -16,6 +17,7 @@
 import CrudTable from '../../CrudTable.vue'
 import { deleteUser, getUsers } from '../../../backend/services/UsersService'
 import UserActivationToggle from '../../UserActivationToggle.vue'
+import UserAvatarImage from '../../UserAvatarImage.vue'
 
 export default {
   components: { CrudTable },
@@ -24,6 +26,12 @@ export default {
       getEndpoint: getUsers,
       deleteEndpoint: deleteUser,
       customActions: [UserActivationToggle],
+      customCols: [
+        {
+          header: '',
+          component: UserAvatarImage
+        }
+      ],
       relationshipCols: [
         {
           relationship: 'roles',

@@ -1,5 +1,5 @@
 <template>
-  <div class="my-4">
+  <div class="container my-4">
     <div class="flex flex-wrap items-center justify-start my-4 sm:justify-end">
       <search class="m-2" @search="handleSearch" />
       <r-button
@@ -23,10 +23,10 @@
         size="small"
       />
     </div>
-    <div v-if="!notFound && filteredHeaders && filteredRows">
+    <div v-if="!notFound && filteredHeaders">
       <r-table
         :headers="filteredHeaders"
-        :rows="filteredRows"
+        :rows="rows"
         :loading="loading"
         :bulk-select="bulkSelect"
         :selected="selected"
@@ -36,15 +36,59 @@
         :editRouteName="editRouteName"
         :relationship-cols="relationshipCols"
         :included="included"
+        :hiddenCols="hiddenCols"
         @addSelected="handleAddSelected"
         @removeSelected="handleRemoveSelected"
         @deleteItem="deleteItems"
         @order="changeOrder"
       >
-        <template slot-scope="{ row }">
-          <div v-for="(customAction, idx) in customActions" :key="idx">
+        <template v-slot:customActions="{ row }">
+          <div
+            v-for="(customAction, idx) in customActions"
+            :key="'customAction_' + idx"
+          >
             <component v-bind:is="customAction" :row="row"></component>
           </div>
+        </template>
+        <template v-slot:customColsBeforeHeaders>
+          <th
+            v-for="(customCol, idx) in customColsBefore"
+            :key="'customColBeforeHeader_' + idx"
+          >
+            <div class="flex items-center justify-start">
+              <span>{{ customCol.header }}</span>
+            </div>
+          </th>
+        </template>
+        <template v-slot:customColsBefore="{ row }">
+          <td
+            v-for="(customCol, idx) in customColsBefore"
+            :key="'customColBefore_' + idx"
+            :data-title="customCol.header"
+            :class="customCol.header.length > 0 ? 'has-title' : ''"
+          >
+            <component v-bind:is="customCol.component" :row="row"></component>
+          </td>
+        </template>
+        <template v-slot:customColsAfterHeaders>
+          <th
+            v-for="(customCol, idx) in customColsAfter"
+            :key="'customColAfterHeader_' + idx"
+          >
+            <div class="flex items-center justify-start">
+              <span>{{ customCol.header }}</span>
+            </div>
+          </th>
+        </template>
+        <template v-slot:customColsAfter="{ row }">
+          <td
+            v-for="(customCol, idx) in customColsAfter"
+            :key="'customColAfter_' + idx"
+            :data-title="customCol.header"
+            :class="customCol.header.length > 0 ? 'has-title' : ''"
+          >
+            <component v-bind:is="customCol.component" :row="row"></component>
+          </td>
         </template>
       </r-table>
       <pagination
@@ -112,6 +156,14 @@ export default {
     hiddenCols: {
       type: Array,
       default: undefined
+    },
+    customColsBefore: {
+      type: Array,
+      default: undefined
+    },
+    customColsAfter: {
+      type: Array,
+      default: undefined
     }
   },
   data () {
@@ -136,23 +188,6 @@ export default {
       }
 
       return this.headers.filter(header => !this.hiddenCols.includes(header))
-    },
-    filteredRows () {
-      if (!this.hiddenCols) {
-        return this.rows
-      }
-
-      return this.rows.map(row => {
-        return {
-          ...row,
-          attributes: Object.keys(row.attributes)
-            .filter(col => !this.hiddenCols.includes(col))
-            .reduce((obj, key) => {
-              obj[key] = row.attributes[key]
-              return obj
-            }, {})
-        }
-      })
     }
   },
   mounted () {
