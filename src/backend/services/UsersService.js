@@ -2,7 +2,8 @@ import CrudService from './CrudService'
 import { securedAxiosInstance } from './ApiService'
 
 const API_PATH = '/users'
-const crud = new CrudService(API_PATH, 'user')
+const TYPE = 'user'
+const crud = new CrudService(API_PATH, TYPE)
 
 export function getUser (id) {
   return crud.getRecord(id)
@@ -20,8 +21,10 @@ export function updateUser ({
   phone,
   active,
   roles,
-  password
+  password,
+  avatar
 } = {}) {
+  let formData = new FormData()
   const params = {
     first_name: firstName,
     last_name: lastName,
@@ -32,7 +35,16 @@ export function updateUser ({
     password: password
   }
 
-  return crud.updateRecord(id, params)
+  if (avatar) {
+    formData.append(`${TYPE}[avatar]`, avatar)
+  }
+  for (const key in params) {
+    if (params[key]) {
+      formData.append(`${TYPE}[${key}]`, params[key])
+    }
+  }
+
+  return crud.updateRecord(id, formData, true)
 }
 
 export function createUser ({
@@ -42,8 +54,10 @@ export function createUser ({
   phone,
   active,
   roles,
-  password
+  password,
+  avatar
 } = {}) {
+  let formData = new FormData()
   const params = {
     first_name: firstName,
     last_name: lastName,
@@ -53,11 +67,25 @@ export function createUser ({
     role_ids: roles,
     password: password
   }
-  return crud.createRecord(params)
+
+  if (avatar) {
+    formData.append(`${TYPE}[avatar]`, avatar)
+  }
+  for (const key in params) {
+    if (params[key]) {
+      formData.append(`${TYPE}[${key}]`, params[key])
+    }
+  }
+
+  return crud.createRecord(formData, true)
 }
 
 export function deleteUser (id) {
   return crud.deleteRecord(id)
+}
+
+export function deleteAvatar (id) {
+  return securedAxiosInstance.delete(`${API_PATH}/${id}/avatar`)
 }
 
 export function activateUser (id) {

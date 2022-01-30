@@ -12,8 +12,10 @@ export function updateMyProfile ({
   lastName,
   email,
   phone,
-  password
+  password,
+  avatar
 } = {}) {
+  let formData = new FormData()
   const params = {
     first_name: firstName,
     last_name: lastName,
@@ -21,8 +23,19 @@ export function updateMyProfile ({
     phone: phone,
     password: password
   }
-  let payload = {}
-  payload[TYPE] = params
 
-  return securedAxiosInstance.patch(API_PATH, payload)
+  if (avatar) {
+    formData.append(`${TYPE}[avatar]`, avatar)
+  }
+  for (const key in params) {
+    if (params[key]) {
+      formData.append(`${TYPE}[${key}]`, params[key])
+    }
+  }
+
+  return securedAxiosInstance.patch(API_PATH, formData)
+}
+
+export function deleteAvatar () {
+  return securedAxiosInstance.delete(API_PATH + '/avatar')
 }

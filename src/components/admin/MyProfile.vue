@@ -8,6 +8,20 @@
       :error="error"
       class="w-full max-w-md mx-auto my-14"
     >
+      <image-upload
+        :key="avatar"
+        :label="$t('Avatar')"
+        :disabled="loading"
+        @change="handleAvatarChange"
+      >
+        <template v-slot:image>
+          <img
+            v-if="avatar"
+            :src="avatar"
+            class="object-contain text-center max-h-48 "
+          />
+        </template>
+      </image-upload>
       <r-input
         v-model="email"
         type="email"
@@ -74,11 +88,13 @@ import RForm from '../ui/RForm.vue'
 import RInput from '../ui/RInput.vue'
 import {
   getMyProfile,
-  updateMyProfile
+  updateMyProfile,
+  deleteAvatar
 } from '../../backend/services/MyProfileService'
+import ImageUpload from '../ui/ImageUpload.vue'
 
 export default {
-  components: { RForm, RButton, RInput },
+  components: { RForm, RButton, RInput, ImageUpload },
   data () {
     return {
       error: '',
@@ -89,7 +105,10 @@ export default {
       phone: '',
       changePassword: false,
       password: '',
-      passwordConfirmation: ''
+      passwordConfirmation: '',
+      avatar: '',
+      avatarFile: undefined,
+      deleteAvatar: false
     }
   },
   mounted () {
@@ -121,8 +140,13 @@ export default {
           firstName: this.first_name,
           lastName: this.last_name,
           email: this.email,
-          phone: this.phone
+          phone: this.phone,
+          avatar: this.avatarFile
         })
+
+        if (this.deleteAvatar) {
+          await deleteAvatar()
+        }
 
         const me = await getMyProfile()
         const userId = me.data.data.id
@@ -150,6 +174,15 @@ export default {
         this.$root.$emit('alert', 'alert', error)
       }
       this.loading = false
+    },
+    handleAvatarChange (file) {
+      if (!file) {
+        this.deleteAvatar = true
+      } else {
+        this.deleteAvatar = false
+      }
+
+      this.avatarFile = file
     },
     validateFields () {
       this.error = ''

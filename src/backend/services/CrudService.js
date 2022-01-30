@@ -29,15 +29,23 @@ class CrudService {
   getRecord (id) {
     return securedAxiosInstance.get(this.API_PATH + '/' + id)
   }
-  createRecord (params) {
+  createRecord (params, formData = false) {
     let payload = {}
-    payload[this.TYPE] = params
+    if (formData) {
+      payload = params
+    } else {
+      payload[this.TYPE] = params
+    }
 
     return securedAxiosInstance.post(this.API_PATH, payload)
   }
-  updateRecord (id, params) {
+  updateRecord (id, params, formData = false) {
     let payload = {}
-    payload[this.TYPE] = params
+    if (formData) {
+      payload = params
+    } else {
+      payload[this.TYPE] = params
+    }
 
     return securedAxiosInstance.patch(this.API_PATH + '/' + id, payload)
   }

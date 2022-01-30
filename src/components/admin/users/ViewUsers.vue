@@ -7,6 +7,7 @@
     :bulk-select="true"
     :custom-actions="customActions"
     :relationship-cols="relationshipCols"
+    :hiddenCols="['avatar']"
   >
   </crud-table>
 </template>

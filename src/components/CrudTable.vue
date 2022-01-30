@@ -25,8 +25,8 @@
     </div>
     <div v-if="!notFound">
       <r-table
-        :headers="headers"
-        :rows="rows"
+        :headers="filteredHeaders"
+        :rows="filteredRows"
         :loading="loading"
         :bulk-select="bulkSelect"
         :selected="selected"
@@ -108,6 +108,10 @@ export default {
     relationshipCols: {
       type: Array,
       default: undefined
+    },
+    hiddenCols: {
+      type: Array,
+      default: undefined
     }
   },
   data () {
@@ -123,6 +127,32 @@ export default {
       total: 0,
       order: 'asc',
       orderBy: 'id'
+    }
+  },
+  computed: {
+    filteredHeaders () {
+      if (!this.hiddenCols) {
+        return this.headers
+      }
+
+      return this.headers.filter(header => !this.hiddenCols.includes(header))
+    },
+    filteredRows () {
+      if (!this.hiddenCols) {
+        return this.data
+      }
+
+      return this.rows.map(row => {
+        return {
+          ...row,
+          attributes: Object.keys(row.attributes)
+            .filter(col => !this.hiddenCols.includes(col))
+            .reduce((obj, key) => {
+              obj[key] = row.attributes[key]
+              return obj
+            }, {})
+        }
+      })
     }
   },
   mounted () {
