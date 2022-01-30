@@ -1,5 +1,5 @@
 <template>
-  <div class="container my-4">
+  <div class="my-4">
     <div class="flex flex-wrap items-center justify-start my-4 sm:justify-end">
       <search class="m-2" @search="handleSearch" />
       <r-button
