@@ -8,6 +8,20 @@
       {{ $t('Back') }}
     </router-link>
     <r-form @submit.prevent="create" class="w-full max-w-md mx-auto my-14">
+      <image-upload
+        :key="avatar != '' ? avatar : updated.toString()"
+        :label="$t('Avatar')"
+        :disabled="loading"
+        @change="handleAvatarChange"
+      >
+        <template v-slot:image>
+          <img
+            v-if="avatar"
+            :src="avatar"
+            class="object-contain w-64 text-center max-h-48"
+          />
+        </template>
+      </image-upload>
       <r-input
         v-model="first_name"
         :label="$t('first_name')"
@@ -58,18 +72,24 @@ import RInput from '../../ui/RInput.vue'
 import {
   getContact,
   createContact,
-  updateContact
+  updateContact,
+  deleteAvatar
 } from '../../../backend/services/ContactsService'
+import ImageUpload from '../../ui/ImageUpload.vue'
 
 export default {
-  components: { RForm, RButton, RInput },
+  components: { RForm, RButton, RInput, ImageUpload },
   data () {
     return {
       loading: false,
       first_name: '',
       last_name: '',
       email: '',
-      phone: ''
+      phone: '',
+      avatar: '',
+      avatarFile: undefined,
+      deleteAvatar: false,
+      updated: false
     }
   },
   mounted () {
@@ -87,14 +107,21 @@ export default {
   methods: {
     async create () {
       this.loading = true
+      this.updated = false
+
       const endpoint = this.contactId ? updateContact : createContact
       try {
+        if (this.deleteAvatar) {
+          await deleteAvatar(this.contactId)
+        }
+
         await endpoint({
           id: this.contactId,
           firstName: this.first_name,
           lastName: this.last_name,
           email: this.email,
-          phone: this.phone
+          phone: this.phone,
+          avatar: this.avatarFile
         })
         this.$root.$emit(
           'alert',
@@ -104,6 +131,7 @@ export default {
             : this.$t('Contact was successfully created')
         )
         if (!this.contactId) {
+          this.updated = true
           this.resetForm()
         }
       } catch (error) {
@@ -129,6 +157,18 @@ export default {
       this.last_name = ''
       this.email = ''
       this.phone = ''
+      this.avatar = ''
+      this.avatarFile = undefined
+      this.deleteAvatar = false
+    },
+    handleAvatarChange (file) {
+      if (!file) {
+        this.deleteAvatar = true
+      } else {
+        this.deleteAvatar = false
+      }
+
+      this.avatarFile = file
     },
     setTitle () {
       if (this.email) {

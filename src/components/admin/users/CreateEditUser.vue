@@ -13,7 +13,7 @@
       class="w-full max-w-md mx-auto my-14"
     >
       <image-upload
-        :key="avatar"
+        :key="avatar != '' ? avatar : updated.toString()"
         :label="$t('Avatar')"
         :disabled="loading"
         @change="handleAvatarChange"
@@ -150,7 +150,8 @@ export default {
       availableRoles: [],
       avatar: '',
       avatarFile: undefined,
-      deleteAvatar: false
+      deleteAvatar: false,
+      updated: false
     }
   },
   mounted () {
@@ -203,6 +204,8 @@ export default {
       this.loading = false
     },
     async create () {
+      this.updated = false
+
       if (!this.validateFields()) {
         return
       }
@@ -251,6 +254,9 @@ export default {
             ? this.$t('User was successfully updated')
             : this.$t('User was successfully created')
         )
+        if (!this.userId) {
+          this.updated = true
+        }
         this.resetForm()
       } catch (error) {
         this.$root.$emit('alert', 'alert', error)
