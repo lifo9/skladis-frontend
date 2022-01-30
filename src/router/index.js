@@ -142,6 +142,8 @@ export const router = new Router({
 router.beforeEach((to, from, next) => {
   const requiredRole = to.meta.role
 
+  store.commit('unsetCurrentTitle')
+
   if (requiredRole && !isCurrentUserInRole(requiredRole)) {
     next('/')
   }

@@ -10,9 +10,6 @@ export default {
   updated () {
     this.setTitle()
   },
-  beforeDestroy () {
-    this.$store.commit('unsetCurrentTitle')
-  },
   methods: {
     setTitle () {
       this.$store.commit('setCurrentTitle', this.$t('Users'))

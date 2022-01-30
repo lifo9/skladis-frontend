@@ -114,9 +114,6 @@ export default {
   mounted () {
     this.fetchData()
   },
-  beforeDestroy () {
-    this.$store.commit('unsetCurrentTitle')
-  },
   methods: {
     async fetchData () {
       this.loading = true

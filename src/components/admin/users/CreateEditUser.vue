@@ -160,9 +160,6 @@ export default {
   updated () {
     this.setTitle()
   },
-  beforeDestroy () {
-    this.$store.commit('unsetCurrentTitle')
-  },
   computed: {
     userId () {
       return this.$route.params.id

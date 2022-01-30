@@ -79,9 +79,6 @@ export default {
   updated () {
     this.setTitle()
   },
-  beforeDestroy () {
-    this.$store.commit('unsetCurrentTitle')
-  },
   computed: {
     contactId () {
       return this.$route.params.id
