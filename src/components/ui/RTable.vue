@@ -61,7 +61,7 @@
           <td
             v-if="bulkSelect"
             :data-title="$t('Select')"
-            class="flex flex-wrap items-center justify-end sm:justify-center has-title"
+            class="flex flex-wrap items-center justify-end sm:table-cell has-title"
           >
             <r-input
               type="checkbox"
@@ -339,7 +339,7 @@ td {
   @apply relative w-full px-4 sm:py-4 text-sm break-words sm:w-auto pb-2;
 }
 td.has-title {
-  @apply pt-8;
+  @apply pt-8 sm:py-4;
 }
 td.actions {
   @apply sm:p-1;
