@@ -4,7 +4,7 @@
       {{ label }}
       <span v-if="required" class="text-red-500">*</span>
     </label>
-    <div class="relative">
+    <div class="relative" @dragover.prevent @drop.stop.prevent="dragFile">
       <div
         v-if="hasImageInSlot || (deleteImage && image)"
         class="absolute top-0 flex items-center justify-center text-gray-300 bg-white border-2 border-gray-300 rounded-full cursor-pointer hover:border-red-500 hover:text-red-500 right-2 w-7 h-7"
@@ -104,8 +104,16 @@ export default Vue.extend({
     }
   },
   methods: {
-    handleFileChange (e) {
-      const file = e.target.files[0]
+    dragFile (e) {
+      this.$refs.inputFile.files = e.dataTransfer.files
+      this.handleFileChange(undefined, e.dataTransfer.files[0])
+    },
+    handleFileChange (e, fileAttr = undefined) {
+      let file = fileAttr
+      if (!fileAttr) {
+        file = e.target.files[0]
+      }
+
       this.image = URL.createObjectURL(file)
 
       this.$emit('change', file)
