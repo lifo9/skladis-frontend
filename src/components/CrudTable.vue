@@ -23,7 +23,7 @@
         size="small"
       />
     </div>
-    <div v-if="!notFound">
+    <div v-if="!notFound && filteredHeaders && filteredRows">
       <r-table
         :headers="filteredHeaders"
         :rows="filteredRows"
@@ -139,7 +139,7 @@ export default {
     },
     filteredRows () {
       if (!this.hiddenCols) {
-        return this.data
+        return this.rows
       }
 
       return this.rows.map(row => {
