@@ -12,6 +12,20 @@
       :error="error"
       class="w-full max-w-md mx-auto my-14"
     >
+      <image-upload
+        :key="avatar"
+        :label="$t('Avatar')"
+        :disabled="loading"
+        @change="handleAvatarChange"
+      >
+        <template v-slot:image>
+          <img
+            v-if="avatar"
+            :src="avatar"
+            class="object-contain text-center max-h-48 "
+          />
+        </template>
+      </image-upload>
       <r-input
         v-model="email"
         type="email"
@@ -111,13 +125,15 @@ import RInput from '../../ui/RInput.vue'
 import {
   getUser,
   createUser,
-  updateUser
+  updateUser,
+  deleteAvatar
 } from '../../../backend/services/UsersService'
 import { getRoles } from '../../../backend/services/RoleService'
 import Multiselect from 'vue-multiselect'
+import ImageUpload from '../../ui/ImageUpload.vue'
 
 export default {
-  components: { RForm, RButton, RInput, Multiselect },
+  components: { RForm, RButton, RInput, Multiselect, ImageUpload },
   data () {
     return {
       error: '',
@@ -131,7 +147,10 @@ export default {
       password: '',
       passwordConfirmation: '',
       roles: [],
-      availableRoles: []
+      availableRoles: [],
+      avatar: '',
+      avatarFile: undefined,
+      deleteAvatar: false
     }
   },
   mounted () {
@@ -196,7 +215,11 @@ export default {
       const password =
         !this.userId || this.changePassword ? { password: this.password } : {}
       try {
-        await endpoint({
+        if (this.deleteAvatar) {
+          await deleteAvatar(this.userId)
+        }
+
+        const newUser = await endpoint({
           ...password,
           id: this.userId,
           firstName: this.first_name,
@@ -204,8 +227,26 @@ export default {
           email: this.email,
           phone: this.phone,
           active: this.active,
-          roles: this.roles.map(role => parseInt(role.id))
+          roles: this.roles.map(role => parseInt(role.id)),
+          avatar: this.avatarFile
         })
+
+        if (this.userId === this.$store.state.currentUser.id) {
+          const userId = newUser.data.data.id
+          const attributes = newUser.data.data.attributes
+          const roles = newUser.data.included
+            .filter(inc => inc.type === 'role')
+            .map(role => role.attributes.name)
+
+          this.$store.commit('setCurrentUser', {
+            currentUser: {
+              id: userId,
+              ...attributes,
+              roles: roles
+            }
+          })
+        }
+
         this.$root.$emit(
           'alert',
           'success',
@@ -243,10 +284,22 @@ export default {
         this.email = ''
         this.phone = ''
         this.roles = []
+        this.avatar = ''
+        this.avatarFile = undefined
+        this.deleteAvatar = false
       }
       this.changePassword = false
       this.password = ''
       this.passwordConfirmation = ''
+    },
+    handleAvatarChange (file) {
+      if (!file) {
+        this.deleteAvatar = true
+      } else {
+        this.deleteAvatar = false
+      }
+
+      this.avatarFile = file
     },
     setTitle () {
       if (this.email) {
