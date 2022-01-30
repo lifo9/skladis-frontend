@@ -22,7 +22,7 @@
           <img
             v-if="avatar"
             :src="avatar"
-            class="object-contain text-center max-h-48 "
+            class="object-contain w-64 text-center max-h-48"
           />
         </template>
       </image-upload>

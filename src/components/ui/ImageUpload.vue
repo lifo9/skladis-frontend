@@ -30,7 +30,7 @@
         >
           <slot v-if="!image && !deleteImage" name="image" />
           <img
-            class="object-contain max-h-48"
+            class="object-contain w-64 max-h-48"
             v-if="hasImageInSlot || image"
             :src="image"
           />
