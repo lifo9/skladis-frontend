@@ -91,12 +91,22 @@ securedAxiosInstance.interceptors.response.use(null, async error => {
         .then(response => {
           const csrf = response.data.csrf
           if (!signOut) {
-            getMyProfile().then(meResponse =>
+            getMyProfile().then(me => {
+              const userId = me.data.data.id
+              const attributes = me.data.data.attributes
+              const roles = me.data.included
+                .filter(inc => inc.type === 'role')
+                .map(role => role.attributes.name)
+
               store.commit('setLoggedInUser', {
-                currentUser: meResponse.data.data.attributes,
+                currentUser: {
+                  id: userId,
+                  ...attributes,
+                  roles: roles
+                },
                 csrf: csrf
               })
-            )
+            })
           }
           processQueue(null, csrf)
           originalRequest.headers['X-CSRF-TOKEN'] = csrf
