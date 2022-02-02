@@ -57,7 +57,7 @@ class CrudService {
 
     for (const key in params) {
       if (Array.isArray(params[key])) {
-        for (var i = 0; i < params[key].length; i++) {
+        for (let i = 0; i < params[key].length; i++) {
           formData.append(`${this.TYPE}[${key}][]`, params[key][i])
         }
       } else {
