@@ -21,8 +21,7 @@ export function updateContact ({
   phone,
   avatar
 } = {}) {
-  let formData = new FormData()
-  const params = {
+  let params = {
     first_name: firstName,
     last_name: lastName,
     email: email,
@@ -30,15 +29,10 @@ export function updateContact ({
   }
 
   if (avatar) {
-    formData.append(`${TYPE}[avatar]`, avatar)
-  }
-  for (const key in params) {
-    if (params[key]) {
-      formData.append(`${TYPE}[${key}]`, params[key])
-    }
+    params = { ...params, avatar: avatar }
   }
 
-  return crud.updateRecord(id, formData, true)
+  return crud.updateRecord(id, params, true)
 }
 
 export function createContact ({
@@ -48,24 +42,19 @@ export function createContact ({
   phone,
   avatar
 } = {}) {
-  let formData = new FormData()
-  const params = {
+  let params = {
     first_name: firstName,
     last_name: lastName,
     email: email,
-    phone: phone
+    phone: phone,
+    avatar: avatar
   }
 
   if (avatar) {
-    formData.append(`${TYPE}[avatar]`, avatar)
-  }
-  for (const key in params) {
-    if (params[key]) {
-      formData.append(`${TYPE}[${key}]`, params[key])
-    }
+    params = { ...params, avatar: avatar }
   }
 
-  return crud.createRecord(formData, true)
+  return crud.createRecord(params, true)
 }
 
 export function deleteContact (id) {
