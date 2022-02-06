@@ -38,7 +38,8 @@ export default {
           header: this.$t('name'),
           component: CrudText,
           options: {
-            attribute: 'name'
+            attribute: 'name',
+            sort: true
           }
         },
         {
@@ -46,7 +47,8 @@ export default {
           component: CrudLink,
           options: {
             attribute: 'url',
-            newTab: true
+            newTab: true,
+            sort: true
           }
         }
       ]
