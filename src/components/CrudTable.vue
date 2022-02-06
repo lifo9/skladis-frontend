@@ -67,7 +67,11 @@
             :data-title="customCol.header"
             :class="customCol.header.length > 0 ? 'has-title' : ''"
           >
-            <component v-bind:is="customCol.component" :row="row"></component>
+            <component
+              v-bind:is="customCol.component"
+              :options="customCol.options"
+              :row="row"
+            ></component>
           </td>
         </template>
         <template v-slot:customColsAfterHeaders>
@@ -87,7 +91,11 @@
             :data-title="customCol.header"
             :class="customCol.header.length > 0 ? 'has-title' : ''"
           >
-            <component v-bind:is="customCol.component" :row="row"></component>
+            <component
+              v-bind:is="customCol.component"
+              :options="customCol.options"
+              :row="row"
+            ></component>
           </td>
         </template>
       </r-table>

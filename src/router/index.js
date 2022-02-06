@@ -24,6 +24,11 @@ import CreateEditUser from '../components/admin/users/CreateEditUser'
 
 import MyProfile from '../components/admin/MyProfile'
 
+// vendors
+import VendorsView from '../views/logged/VendorsView'
+import CreateEditVendor from '../components/admin/vendors/CreateEditVendor'
+import ViewVendors from '../components/admin/vendors/ViewVendors'
+
 Vue.use(Router)
 
 function redirectSignedOut (to, from, next) {
@@ -110,6 +115,27 @@ export const router = new Router({
           path: 'profile',
           name: 'MyProfile',
           component: MyProfile
+        },
+        {
+          path: 'vendors',
+          component: VendorsView,
+          children: [
+            {
+              path: '',
+              name: 'VendorsView',
+              component: ViewVendors
+            },
+            {
+              path: 'create',
+              name: 'VendorsCreate',
+              component: CreateEditVendor
+            },
+            {
+              path: 'edit/:id',
+              name: 'VendorsEdit',
+              component: CreateEditVendor
+            }
+          ]
         }
       ]
     },

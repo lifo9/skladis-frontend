@@ -20,6 +20,12 @@
           v-on:navigated="toggleMenu"
         />
         <navigation-item
+          route-name="VendorsView"
+          label="Vendors"
+          icon="business_center"
+          v-on:navigated="toggleMenu"
+        />
+        <navigation-item
           route-name="ContactsView"
           label="Contacts"
           icon="contacts"
