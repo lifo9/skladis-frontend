@@ -17,7 +17,7 @@
 import CrudTable from '../../CrudTable.vue'
 import { deleteUser, getUsers } from '../../../backend/services/UsersService'
 import UserActivationToggle from '../../UserActivationToggle.vue'
-import UserAvatarImage from '../../UserAvatarImage.vue'
+import AvatarImage from '../../AvatarImage.vue'
 
 export default {
   components: { CrudTable },
@@ -29,7 +29,10 @@ export default {
       customCols: [
         {
           header: '',
-          component: UserAvatarImage
+          component: AvatarImage,
+          options: {
+            attribute: 'avatar'
+          }
         }
       ],
       relationshipCols: [

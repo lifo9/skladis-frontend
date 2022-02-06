@@ -54,9 +54,27 @@
           <th
             v-for="(customCol, idx) in customColsBefore"
             :key="'customColBeforeHeader_' + idx"
+            :class="
+              customCol.options &&
+              customCol.options.sort &&
+              customCol.options.attribute
+                ? 'cursor-pointer'
+                : ''
+            "
+            @click="customColChangeOrder(customCol)"
           >
             <div class="flex items-center justify-start">
               <span>{{ customCol.header }}</span>
+              <order-arrow
+                v-if="
+                  customCol.options &&
+                    customCol.options.sort &&
+                    customCol.options.attribute &&
+                    orderBy === customCol.options.attribute
+                "
+                class="ml-2 text-3xl"
+                :order="order"
+              />
             </div>
           </th>
         </template>
@@ -67,16 +85,38 @@
             :data-title="customCol.header"
             :class="customCol.header.length > 0 ? 'has-title' : ''"
           >
-            <component v-bind:is="customCol.component" :row="row"></component>
+            <component
+              v-bind:is="customCol.component"
+              :options="customCol.options"
+              :row="row"
+            ></component>
           </td>
         </template>
         <template v-slot:customColsAfterHeaders>
           <th
             v-for="(customCol, idx) in customColsAfter"
             :key="'customColAfterHeader_' + idx"
+            :class="
+              customCol.options &&
+              customCol.options.sort &&
+              customCol.options.attribute
+                ? 'cursor-pointer'
+                : ''
+            "
+            @click="customColChangeOrder(customCol)"
           >
             <div class="flex items-center justify-start">
               <span>{{ customCol.header }}</span>
+              <order-arrow
+                v-if="
+                  customCol.options &&
+                    customCol.options.sort &&
+                    customCol.options.attribute &&
+                    orderBy === customCol.options.attribute
+                "
+                class="ml-2 text-3xl"
+                :order="order"
+              />
             </div>
           </th>
         </template>
@@ -87,7 +127,11 @@
             :data-title="customCol.header"
             :class="customCol.header.length > 0 ? 'has-title' : ''"
           >
-            <component v-bind:is="customCol.component" :row="row"></component>
+            <component
+              v-bind:is="customCol.component"
+              :options="customCol.options"
+              :row="row"
+            ></component>
           </td>
         </template>
       </r-table>
@@ -117,9 +161,17 @@ import RButton from './ui/RButton.vue'
 import ConfirmationModal from './ui/ConfirmationModal.vue'
 import NavigationItem from './NavigationItem.vue'
 import Search from './ui/Search.vue'
+import OrderArrow from './ui/OrderArrow.vue'
 
 export default {
-  components: { RTable, Pagination, RButton, NavigationItem, Search },
+  components: {
+    RTable,
+    Pagination,
+    RButton,
+    NavigationItem,
+    Search,
+    OrderArrow
+  },
   props: {
     getEndpoint: {
       type: Function,
@@ -266,6 +318,18 @@ export default {
           })
       }
       enableScroll()
+    },
+    customColChangeOrder (customCol) {
+      if (
+        customCol.options &&
+        customCol.options.sort &&
+        customCol.options.attribute
+      ) {
+        this.changeOrder({
+          orderBy: customCol.options.attribute,
+          order: this.order === 'asc' ? 'desc' : 'asc'
+        })
+      }
     },
     changeOrder (order) {
       this.order = order.orderBy !== this.orderBy ? this.order : order.order

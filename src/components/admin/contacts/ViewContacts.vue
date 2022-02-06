@@ -16,7 +16,7 @@ import {
   getContacts,
   deleteContact
 } from '../../../backend/services/ContactsService'
-import UserAvatarImageVue from '../../UserAvatarImage.vue'
+import AvatarImage from '../../AvatarImage.vue'
 
 export default {
   components: { CrudTable },
@@ -27,7 +27,10 @@ export default {
       customCols: [
         {
           header: '',
-          component: UserAvatarImageVue
+          component: AvatarImage,
+          options: {
+            attribute: 'avatar'
+          }
         }
       ]
     }

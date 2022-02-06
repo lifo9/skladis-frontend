@@ -30,7 +30,11 @@
               :value="isSelectedAll"
             />
           </th>
-          <th v-if="rows.length > 0 && rows[0].id" @click="changeOrder('id')">
+          <th
+            v-if="rows.length > 0 && rows[0].id"
+            @click="changeOrder('id')"
+            class="cursor-pointer"
+          >
             <div class="flex items-center justify-start">
               <span>ID</span>
               <order-arrow v-if="orderBy === 'id'" :order="order" />
