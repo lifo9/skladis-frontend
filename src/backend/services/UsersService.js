@@ -30,12 +30,15 @@ export function updateUser ({
     email: email,
     phone: phone,
     active: active,
-    role_ids: roles,
-    password: password
+    role_ids: roles
   }
 
   if (avatar) {
     params = { ...params, avatar: avatar }
+  }
+
+  if (password) {
+    params = { ...params, password: password }
   }
 
   return crud.updateRecord(id, params, true)

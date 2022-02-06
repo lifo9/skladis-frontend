@@ -47,6 +47,10 @@ class CrudService {
       payload[this.TYPE] = params
     }
 
+    if (!id) {
+      id = ''
+    }
+
     return securedAxiosInstance.patch(this.API_PATH + '/' + id, payload)
   }
   deleteRecord (id) {

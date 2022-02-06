@@ -1,7 +1,9 @@
+import CrudService from './CrudService'
 import { securedAxiosInstance } from './ApiService'
 
 const API_PATH = '/my-profile'
 const TYPE = 'user'
+const crud = new CrudService(API_PATH, TYPE)
 
 export async function getMyProfile () {
   return securedAxiosInstance.get(API_PATH)
@@ -15,25 +17,22 @@ export function updateMyProfile ({
   password,
   avatar
 } = {}) {
-  let formData = new FormData()
-  const params = {
+  let params = {
     first_name: firstName,
     last_name: lastName,
     email: email,
-    phone: phone,
-    password: password
+    phone: phone
   }
 
   if (avatar) {
-    formData.append(`${TYPE}[avatar]`, avatar)
-  }
-  for (const key in params) {
-    if (params[key]) {
-      formData.append(`${TYPE}[${key}]`, params[key])
-    }
+    params = { ...params, avatar: avatar }
   }
 
-  return securedAxiosInstance.patch(API_PATH, formData)
+  if (password) {
+    params = { ...params, password: password }
+  }
+
+  return crud.updateRecord(null, params, true)
 }
 
 export function deleteAvatar () {
