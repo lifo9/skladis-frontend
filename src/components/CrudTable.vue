@@ -184,7 +184,9 @@ export default {
     },
     deleteEndpoint: {
       type: Function,
-      required: true
+      default: function () {
+        return false
+      }
     },
     createRouteName: {
       type: String,
