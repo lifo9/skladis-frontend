@@ -3,6 +3,7 @@
     <div class="flex flex-wrap items-center justify-start my-4 sm:justify-end">
       <search class="m-2" @search="handleSearch" />
       <r-button
+        v-if="enableDefaultActions"
         class="m-2"
         variant="danger"
         size="small"
@@ -15,6 +16,7 @@
         <span v-if="selected.length > 0">{{ selected.length }}</span>
       </r-button>
       <navigation-item
+        v-if="enableDefaultActions"
         class="m-2"
         :route-name="createRouteName"
         :label="$t('Create') | uppercase"
@@ -30,7 +32,8 @@
         :loading="loading"
         :bulk-select="bulkSelect"
         :selected="selected"
-        :actions="true"
+        :enableDefaultActions="enableDefaultActions"
+        :enableCustomActions="customActions ? true : false"
         :order="order"
         :orderBy="orderBy"
         :editRouteName="editRouteName"
@@ -202,6 +205,10 @@ export default {
     customActions: {
       type: Array,
       default: undefined
+    },
+    enableDefaultActions: {
+      type: Boolean,
+      default: true
     },
     relationshipCols: {
       type: Array,

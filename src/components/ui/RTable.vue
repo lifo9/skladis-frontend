@@ -54,7 +54,7 @@
             </div>
           </th>
           <slot name="customColsAfterHeaders" />
-          <th v-if="actions" scope="col">
+          <th v-if="enableDefaultActions || enableCustomActions" scope="col">
             {{ $t('Actions') }}
           </th>
         </tr>
@@ -92,10 +92,15 @@
             <span v-else>{{ col | arrayToString }}</span>
           </td>
           <slot :row="getUnfilteredRowById(row.id)" name="customColsAfter" />
-          <td v-if="actions" :data-title="$t('Actions')" class="actions">
+          <td
+            v-if="enableDefaultActions || enableCustomActions"
+            :data-title="$t('Actions')"
+            class="actions"
+          >
             <div class="flex flex-wrap items-center justify-start w-max">
               <slot :row="getUnfilteredRowById(row.id)" name="customActions" />
               <navigation-item
+                v-if="enableDefaultActions"
                 :routeName="editRouteName"
                 :params="{ id: row.id }"
                 class="m-1"
@@ -105,6 +110,7 @@
                 label=""
               ></navigation-item>
               <r-button
+                v-if="enableDefaultActions"
                 variant="danger"
                 size="verySmall"
                 class="m-1"
@@ -153,7 +159,11 @@ export default {
       type: Array,
       required: true
     },
-    actions: {
+    enableDefaultActions: {
+      type: Boolean,
+      default: false
+    },
+    enableCustomActions: {
       type: Boolean,
       default: false
     },
