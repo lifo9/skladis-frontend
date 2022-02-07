@@ -20,11 +20,14 @@
 </template>
 
 <script>
-import RButton from './ui/RButton.vue'
-import { enableScroll, disableScroll } from '../backend/utils/helpers'
-import ConfirmationModal from './ui/ConfirmationModal.vue'
-import { activateUser, deactivateUser } from '../backend/services/UsersService'
-import { store } from '../backend/store/store'
+import RButton from '../../ui/RButton.vue'
+import { enableScroll, disableScroll } from '../../../backend/utils/helpers'
+import ConfirmationModal from '../../ui/ConfirmationModal'
+import {
+  activateUser,
+  deactivateUser
+} from '../../../backend/services/UsersService'
+import { store } from '../../../backend/store/store'
 
 export default {
   components: { RButton },
