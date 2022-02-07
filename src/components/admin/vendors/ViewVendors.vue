@@ -6,7 +6,7 @@
     edit-route-name="VendorsEdit"
     :bulk-select="true"
     :custom-cols-before="customCols"
-    :hiddenCols="['logo', 'url', 'name']"
+    :hideAllCols="true"
   />
 </template>
 

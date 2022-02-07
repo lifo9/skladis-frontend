@@ -37,6 +37,8 @@
         :relationship-cols="relationshipCols"
         :included="included"
         :hiddenCols="hiddenCols"
+        :customOrderingOptions="customOrderingOptions"
+        :hideAllCols="hideAllCols"
         @addSelected="handleAddSelected"
         @removeSelected="handleRemoveSelected"
         @deleteItem="deleteItems"
@@ -216,6 +218,10 @@ export default {
     customColsAfter: {
       type: Array,
       default: undefined
+    },
+    hideAllCols: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -235,11 +241,36 @@ export default {
   },
   computed: {
     filteredHeaders () {
-      if (!this.hiddenCols) {
+      if (this.hideAllCols) {
+        return []
+      } else if (!this.hiddenCols) {
         return this.headers
+      } else {
+        return this.headers.filter(header => !this.hiddenCols.includes(header))
       }
+    },
+    customOrderingOptions () {
+      const colsBefore = this.customColsBefore
+        ? this.customColsBefore
+          .filter(
+            col => col.options && col.options.attribute && col.options.sort
+          )
+          .map(col => {
+            return { header: col.header, option: col.options.attribute }
+          })
+        : []
 
-      return this.headers.filter(header => !this.hiddenCols.includes(header))
+      const colsAfter = this.customColsAfter
+        ? this.customColsAfter
+          .filter(
+            col => col.options && col.options.attribute && col.options.sort
+          )
+          .map(col => {
+            return { header: col.header, option: col.options.attribute }
+          })
+        : []
+
+      return [...colsBefore, ...colsAfter]
     }
   },
   mounted () {

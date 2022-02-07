@@ -188,6 +188,14 @@ export default {
     hiddenCols: {
       type: Array,
       default: undefined
+    },
+    hideAllCols: {
+      type: Boolean,
+      default: false
+    },
+    customOrderingOptions: {
+      type: Array,
+      default: undefined
     }
   },
   data () {
@@ -209,7 +217,14 @@ export default {
           value: header === 'id' ? 'ID' : this.$t(header)
         }
       })
-      return options
+
+      const customOrderingOptions = this.customOrderingOptions
+        ? this.customOrderingOptions.map(option => {
+          return { id: option.option, value: option.header }
+        })
+        : []
+
+      return [...options, ...customOrderingOptions]
     },
     parsedHeaders () {
       const customHeaders = this.relationshipCols
@@ -225,9 +240,12 @@ export default {
       this.rows.forEach(row => {
         const attributes = row.attributes
           ? Object.fromEntries(
-            Object.entries(row.attributes).filter(
-              ([key]) => !this.hiddenCols || !this.hiddenCols.includes(key)
-            )
+            this.hideAllCols
+              ? []
+              : Object.entries(row.attributes).filter(
+                ([key]) =>
+                  !this.hiddenCols || !this.hiddenCols.includes(key)
+              )
           )
           : row
         const relationships = row.relationships
