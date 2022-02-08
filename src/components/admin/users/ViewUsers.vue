@@ -16,7 +16,7 @@
 <script>
 import CrudTable from '../../CrudTable.vue'
 import { deleteUser, getUsers } from '../../../backend/services/UsersService'
-import UserActivationToggle from '../../UserActivationToggle.vue'
+import UserActivationToggle from './UserActivationToggle.vue'
 import AvatarImage from '../../AvatarImage.vue'
 
 export default {
