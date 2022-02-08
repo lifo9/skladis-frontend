@@ -1,6 +1,7 @@
 export const CONSTANTS = {
   roles: {
     admin: 'admin',
-    user: 'user'
+    user: 'user',
+    manager: 'manager'
   }
 }

@@ -29,6 +29,11 @@ import VendorsView from '../views/logged/VendorsView'
 import CreateEditVendor from '../components/admin/vendors/CreateEditVendor'
 import ViewVendors from '../components/admin/vendors/ViewVendors'
 
+// warehouses
+import WarehousesView from '../views/logged/WarehousesView'
+import CreateEditWarehouse from '../components/admin/warehouses/CreateEditWarehouse'
+import ViewWarehouses from '../components/admin/warehouses/ViewWarehouses'
+
 Vue.use(Router)
 
 function redirectSignedOut (to, from, next) {
@@ -134,6 +139,27 @@ export const router = new Router({
               path: 'edit/:id',
               name: 'VendorsEdit',
               component: CreateEditVendor
+            }
+          ]
+        },
+        {
+          path: 'warehouses',
+          component: WarehousesView,
+          children: [
+            {
+              path: '',
+              name: 'WarehousesView',
+              component: ViewWarehouses
+            },
+            {
+              path: 'create',
+              name: 'WarehouseCreate',
+              component: CreateEditWarehouse
+            },
+            {
+              path: 'edit/:id',
+              name: 'WarehouseEdit',
+              component: CreateEditWarehouse
             }
           ]
         }

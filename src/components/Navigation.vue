@@ -20,6 +20,13 @@
           v-on:navigated="toggleMenu"
         />
         <navigation-item
+          v-role="constants.roles.admin || constants.roles.manager"
+          route-name="WarehousesView"
+          label="Warehouses"
+          icon="warehouse"
+          v-on:navigated="toggleMenu"
+        />
+        <navigation-item
           route-name="VendorsView"
           label="Vendors"
           icon="business_center"
