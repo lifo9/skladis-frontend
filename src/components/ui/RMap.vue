@@ -2,7 +2,12 @@
   <div class="r-map">
     <l-map ref="rMap" :zoom="zoom" :center="center">
       <l-tile-layer :url="url"></l-tile-layer>
-      <l-marker v-if="marker" :lat-lng="markerLatLng"></l-marker>
+      <l-marker
+        v-if="marker"
+        :lat-lng="markerLatLng"
+        :draggable="true"
+        @update:latLng="handleMarkerUpdate"
+      ></l-marker>
       <leaflet-geo-search :options="geosearchOptions"></leaflet-geo-search>
     </l-map>
   </div>
@@ -66,6 +71,11 @@ export default {
       },
       center: [this.latitude, this.longitude],
       markerLatLng: [this.latitude, this.longitude]
+    }
+  },
+  methods: {
+    handleMarkerUpdate (coordinates) {
+      this.$emit('mapSearch', { x: coordinates.lng, y: coordinates.lat })
     }
   }
 }
