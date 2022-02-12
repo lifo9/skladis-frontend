@@ -144,7 +144,7 @@ export default {
     async fetchWarehouses () {
       this.loading = true
       try {
-        const warehouses = await getWarehouses()
+        const warehouses = await getWarehouses({ perPage: 100 }) // TODO:jf dynamic loading when paginated
         this.warehouses = warehouses.data.data.map(warehouse => {
           return {
             id: warehouse.id,
