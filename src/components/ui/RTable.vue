@@ -262,18 +262,27 @@ export default {
         let customAttributes = {}
 
         for (let relationship in relationships) {
-          const relIds = relationships[relationship].data.map(rel => rel.id)
-          const headerAttributes = this.relationshipCols
-            .filter(header => header.relationship === relationship)
-            .map(header => header.attributes)
-
-          if (headerAttributes.length === 1) {
-            headerAttributes[0].forEach(attr => {
-              customAttributes[attr.label] = relIds.map(id =>
-                this.getAttributeValueFromIncluded(id, 'role', attr.id)
-              )
-            })
+          const relationshipCol = this.relationshipCols.filter(
+            header => header.relationship === relationship
+          )
+          if (relationshipCol.length !== 1) {
+            continue
           }
+
+          const headerAttributes = relationshipCol[0].attributes
+          const relationshipType = relationshipCol[0].relationship_type
+          let relIds = []
+          if (Array.isArray(relationships[relationship].data)) {
+            relIds = relationships[relationship].data.map(rel => rel.id)
+          } else {
+            relIds = [relationships[relationship].data.id]
+          }
+
+          headerAttributes.forEach(attr => {
+            customAttributes[attr.label] = relIds.map(id =>
+              this.getAttributeValueFromIncluded(id, relationshipType, attr.id)
+            )
+          })
         }
 
         extractedData.push({ ...attributes, ...customAttributes })
