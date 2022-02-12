@@ -27,6 +27,13 @@
           v-on:navigated="toggleMenu"
         />
         <navigation-item
+          v-role="constants.roles.admin || constants.roles.manager"
+          route-name="RoomsView"
+          label="Rooms"
+          icon="meeting_room"
+          v-on:navigated="toggleMenu"
+        />
+        <navigation-item
           route-name="VendorsView"
           label="Vendors"
           icon="business_center"
