@@ -3,12 +3,11 @@
     v-if="type === 'list'"
     @click="navigate"
     class="navigation-menu-item"
-    :class="isActiveRoute ? 'active' : ''"
+    :class="{ isActiveRoute: 'active', isMenuExpanded: 'justify-center' }"
   >
-    <div>
+    <div class="flex flex-wrap space-x-2">
       <span v-if="icon" class="material-icons">{{ icon }}</span>
-      &nbsp;
-      <span>{{ $t(label) }}</span>
+      <span v-if="!onlyIcon">{{ $t(label) }}</span>
     </div>
   </li>
   <r-button
@@ -18,11 +17,19 @@
   >
     <span v-if="icon" class="material-icons">{{ icon }}</span>
     &nbsp;
-    <span>{{ label }}</span>
+    <span v-if="!onlyIcon">{{ label }}</span>
   </r-button>
   <p v-else-if="type === 'plain'" @click="navigate" :size="size ? size : ''">
-    {{ label }}
+    <span v-if="!onlyIcon">{{ label }}</span>
   </p>
+  <li
+    v-else-if="type === 'list-custom'"
+    class="navigation-menu-item"
+    :class="{ isMenuExpanded: 'justify-center' }"
+    @click="$emit('click')"
+  >
+    <slot />
+  </li>
 </template>
 
 <script>
@@ -37,7 +44,7 @@ export default {
     },
     routeName: {
       type: String,
-      required: true
+      default: undefined
     },
     params: {
       type: Object,
@@ -45,7 +52,7 @@ export default {
     },
     label: {
       type: String,
-      required: true
+      default: undefined
     },
     icon: {
       type: String,
@@ -54,6 +61,20 @@ export default {
     size: {
       type: String,
       default: undefined
+    },
+    onlyIcon: {
+      type: Boolean,
+      default: false
+    }
+  },
+  data () {
+    return {
+      isMenuExpanded: this.$store.getters.isMenuExpanded
+    }
+  },
+  watch: {
+    '$store.state.isMenuExpanded': function () {
+      this.isMenuExpanded = this.$store.getters.isMenuExpanded
     }
   },
   computed: {
@@ -80,7 +101,7 @@ export default {
 
 <style lang="postcss">
 .navigation-menu-item {
-  @apply block px-4 py-3 border-b border-gray-400 text-lg cursor-pointer;
+  @apply flex flex-wrap items-center px-4 py-3 border-b border-gray-400 text-lg cursor-pointer transition ease-in-out h-14;
 }
 .navigation-menu-item:hover,
 .navigation-menu-item.active {
