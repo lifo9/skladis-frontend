@@ -14,6 +14,10 @@ export default {
     row: {
       type: Object,
       required: true
+    },
+    included: {
+      type: Array,
+      default: undefined
     }
   }
 }

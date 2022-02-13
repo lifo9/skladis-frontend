@@ -37,7 +37,7 @@
         :order="order"
         :orderBy="orderBy"
         :editRouteName="editRouteName"
-        :relationship-cols="relationshipCols"
+        :relationship-cols="filteredRelationshipCols"
         :included="included"
         :hiddenCols="hiddenCols"
         :customOrderingOptions="customOrderingOptions"
@@ -52,7 +52,11 @@
             v-for="(customAction, idx) in customActions"
             :key="'customAction_' + idx"
           >
-            <component v-bind:is="customAction" :row="row"></component>
+            <component
+              v-bind:is="customAction"
+              :row="row"
+              :included="included"
+            ></component>
           </div>
         </template>
         <template v-slot:customColsBeforeHeaders>
@@ -62,7 +66,7 @@
             :class="
               customCol.options &&
               customCol.options.sort &&
-              customCol.options.attribute
+              customCol.options.orderBy
                 ? 'cursor-pointer'
                 : ''
             "
@@ -74,8 +78,8 @@
                 v-if="
                   customCol.options &&
                     customCol.options.sort &&
-                    customCol.options.attribute &&
-                    orderBy === customCol.options.attribute
+                    customCol.options.orderBy &&
+                    orderBy === customCol.options.orderBy
                 "
                 class="ml-2 text-3xl"
                 :order="order"
@@ -94,6 +98,7 @@
               v-bind:is="customCol.component"
               :options="customCol.options"
               :row="row"
+              :included="included"
             ></component>
           </td>
         </template>
@@ -104,7 +109,7 @@
             :class="
               customCol.options &&
               customCol.options.sort &&
-              customCol.options.attribute
+              customCol.options.orderBy
                 ? 'cursor-pointer'
                 : ''
             "
@@ -116,8 +121,8 @@
                 v-if="
                   customCol.options &&
                     customCol.options.sort &&
-                    customCol.options.attribute &&
-                    orderBy === customCol.options.attribute
+                    customCol.options.orderBy &&
+                    orderBy === customCol.options.orderBy
                 "
                 class="ml-2 text-3xl"
                 :order="order"
@@ -136,6 +141,7 @@
               v-bind:is="customCol.component"
               :options="customCol.options"
               :row="row"
+              :included="included"
             ></component>
           </td>
         </template>
@@ -264,24 +270,37 @@ export default {
           })
       }
     },
+    filteredRelationshipCols () {
+      if (this.hideAllCols) {
+        return []
+      } else if (!this.hiddenCols) {
+        return this.relationshipCols
+      } else {
+        return this.relationshipCols
+          ? this.relationshipCols.filter(
+            col => !this.hiddenCols.includes(col.relationship)
+          )
+          : undefined
+      }
+    },
     customOrderingOptions () {
       const colsBefore = this.customColsBefore
         ? this.customColsBefore
           .filter(
-            col => col.options && col.options.attribute && col.options.sort
+            col => col.options && col.options.orderBy && col.options.sort
           )
           .map(col => {
-            return { header: col.header, option: col.options.attribute }
+            return { id: col.options.orderBy, value: col.header }
           })
         : []
 
       const colsAfter = this.customColsAfter
         ? this.customColsAfter
           .filter(
-            col => col.options && col.options.attribute && col.options.sort
+            col => col.options && col.options.orderBy && col.options.sort
           )
           .map(col => {
-            return { header: col.header, option: col.options.attribute }
+            return { id: col.options.orderBy, value: col.header }
           })
         : []
 
@@ -369,10 +388,10 @@ export default {
       if (
         customCol.options &&
         customCol.options.sort &&
-        customCol.options.attribute
+        customCol.options.orderBy
       ) {
         this.changeOrder({
-          orderBy: customCol.options.attribute,
+          orderBy: customCol.options.orderBy,
           order: this.order === 'asc' ? 'desc' : 'asc'
         })
       }

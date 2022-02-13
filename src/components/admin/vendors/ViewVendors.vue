@@ -48,7 +48,8 @@ export default {
           options: {
             attribute: 'url',
             newTab: true,
-            sort: true
+            sort: true,
+            orderBy: 'url'
           }
         }
       ]

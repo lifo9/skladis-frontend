@@ -1,16 +1,20 @@
 <template>
-  <a
-    v-if="row.attributes[options.attribute]"
-    :href="row.attributes[options.attribute]"
-    :target="options.newTab ? '_blank' : ''"
-  >
-    <span v-if="options.customCaption">
-      {{ options.customCaption }}
-    </span>
-    <span v-else>
-      {{ row.attributes[options.attribute] }}
-    </span>
-  </a>
+  <div v-if="link">
+    <a
+      v-if="link && options.editLink"
+      href="#"
+      @click.prevent="handleNavigation"
+    >
+      <span v-if="label">
+        {{ label }}
+      </span>
+    </a>
+    <a v-else :href="link" :target="options.newTab ? '_blank' : ''">
+      <span v-if="label">
+        {{ label }}
+      </span>
+    </a>
+  </div>
 </template>
 
 <script>
@@ -23,6 +27,78 @@ export default {
     row: {
       type: Object,
       required: true
+    },
+    included: {
+      type: Array,
+      default: undefined
+    }
+  },
+
+  computed: {
+    label () {
+      if (this.options.customCaption) {
+        return this.options.customCaption
+      } else if (!this.options.relationship) {
+        return this.row.attributes[this.options.attribute]
+      } else {
+        const relatinships = this.row.relationships
+        if (
+          relatinships &&
+          relatinships[this.options.relationship] &&
+          relatinships[this.options.relationship].data &&
+          this.included &&
+          this.included.length > 0
+        ) {
+          const id = relatinships[this.options.relationship].data.id
+          const type = relatinships[this.options.relationship].data.type
+          if (id) {
+            const relationObject = this.included.filter(
+              included => included.type === type && included.id === id
+            )
+            if (relationObject.length === 1) {
+              return relationObject[0].attributes[this.options.attribute]
+            }
+          }
+        }
+      }
+
+      return undefined
+    },
+    link () {
+      if (!this.options.relationship) {
+        return this.row.attributes[this.options.attribute]
+      } else if (this.options.editLink) {
+        const relatinships = this.row.relationships
+        if (
+          relatinships &&
+          relatinships[this.options.relationship] &&
+          relatinships[this.options.relationship].data &&
+          this.included &&
+          this.included.length > 0
+        ) {
+          const id = relatinships[this.options.relationship].data.id
+          const route = this.$router.resolve({
+            name: this.options.editRouteName,
+            params: { id: id }
+          })
+          if (route) {
+            return route.href
+          }
+        }
+      }
+
+      return '#'
+    }
+  },
+
+  methods: {
+    async handleNavigation () {
+      if (this.options.editLink) {
+        try {
+          await this.$router.push(this.link)
+          this.$emit('navigated')
+        } catch (error) {}
+      }
     }
   }
 }
