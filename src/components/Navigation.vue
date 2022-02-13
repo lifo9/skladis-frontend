@@ -10,13 +10,37 @@
     </a>
     <div
       v-if="isOpen || type === 'desktop'"
-      class="absolute left-0 z-50 w-full min-h-screen px-0 bg-gray-900 md:z-auto md:fixed md:w-64 top-16"
+      class="absolute left-0 z-50 w-full min-h-screen px-0 bg-gray-900 md:z-auto md:fixed top-16"
+      :class="!isExpandend ? 'md:w-16' : 'md:w-64'"
     >
       <ul class="h-screen overflow-y-auto">
+        <navigation-item
+          v-if="type === 'desktop'"
+          type="list-custom"
+          class="space-x-2 text-white select-none"
+          @click="toggleExpanded"
+        >
+          <div class="flex flex-wrap items-center space-x-2">
+            <a
+              class="text-2xl text-white transition ease-in-out select-none material-icons-sharp"
+              :class="
+                !isExpandend ? 'transform rotate-90 transition ease-in-out' : ''
+              "
+              href="javascript:"
+              @click="toggleMenu()"
+            >
+              menu
+            </a>
+            <span v-if="isExpandend" class="transition ease-in-out">{{
+              $t('Menu')
+            }}</span>
+          </div>
+        </navigation-item>
         <navigation-item
           route-name="Home"
           label="Home"
           icon="home"
+          :only-icon="!isExpandend"
           v-on:navigated="toggleMenu"
         />
         <navigation-item
@@ -24,6 +48,7 @@
           route-name="WarehousesView"
           label="Warehouses"
           icon="warehouse"
+          :only-icon="!isExpandend"
           v-on:navigated="toggleMenu"
         />
         <navigation-item
@@ -31,18 +56,21 @@
           route-name="RoomsView"
           label="Rooms"
           icon="meeting_room"
+          :only-icon="!isExpandend"
           v-on:navigated="toggleMenu"
         />
         <navigation-item
           route-name="VendorsView"
           label="Vendors"
           icon="business_center"
+          :only-icon="!isExpandend"
           v-on:navigated="toggleMenu"
         />
         <navigation-item
           route-name="ContactsView"
           label="Contacts"
           icon="contacts"
+          :only-icon="!isExpandend"
           v-on:navigated="toggleMenu"
         />
         <navigation-item
@@ -50,6 +78,7 @@
           route-name="UsersView"
           label="Users"
           icon="person"
+          :only-icon="!isExpandend"
           v-on:navigated="toggleMenu"
         />
       </ul>
@@ -70,13 +99,18 @@ export default {
 
   data () {
     return {
-      isOpen: false
+      isOpen: false,
+      isExpandend: this.$store.getters.isMenuExpanded
     }
   },
 
   methods: {
     toggleMenu () {
       this.isOpen = !this.isOpen
+    },
+    toggleExpanded () {
+      this.$store.commit('setIsMenuExpanded', !this.isExpandend)
+      this.isExpandend = !this.isExpandend
     }
   }
 }

@@ -12,10 +12,12 @@ export const store = new Vuex.Store({
     signedIn: false,
     csrf: null,
     appLanguage: localStorage.getItem('appLanguage') || getStartingLocale(),
-    currentTitle: ''
+    currentTitle: '',
+    isMenuExpanded: true
   },
   getters: {
-    getAppLanguage: state => state.appLanguage
+    getAppLanguage: state => state.appLanguage,
+    isMenuExpanded: state => state.isMenuExpanded
   },
   mutations: {
     setLoggedInUser (state, { currentUser, csrf }) {
@@ -45,6 +47,9 @@ export const store = new Vuex.Store({
     },
     unsetCurrentTitle (state) {
       state.currentTitle = ''
+    },
+    setIsMenuExpanded (state, isMenuExpanded) {
+      state.isMenuExpanded = isMenuExpanded
     }
   },
   plugins: [createPersistedState()]
