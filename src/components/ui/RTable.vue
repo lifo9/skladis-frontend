@@ -43,14 +43,14 @@
           <slot name="customColsBeforeHeaders" />
           <th
             v-for="header in parsedHeaders"
-            :key="header"
+            :key="header.id"
             scope="col"
             class="cursor-pointer"
-            @click="changeOrder(header)"
+            @click="changeOrder(header.id)"
           >
             <div class="flex items-center justify-start">
-              {{ $t(header) }}
-              <order-arrow v-if="orderBy === header" :order="order" />
+              {{ header.value }}
+              <order-arrow v-if="orderBy === header.id" :order="order" />
             </div>
           </th>
           <slot name="customColsAfterHeaders" />
@@ -221,28 +221,34 @@ export default {
       return this.rows.every(row => this.selected.includes(row.id))
     },
     orderingOptions () {
-      const options = ['id'].concat(this.parsedHeaders).map(header => {
-        return {
-          id: header,
-          value: header === 'id' ? 'ID' : this.$t(header)
-        }
-      })
+      const options = [{ id: 'id', value: 'ID' }].concat(this.parsedHeaders)
 
       const customOrderingOptions = this.customOrderingOptions
-        ? this.customOrderingOptions.map(option => {
-          return { id: option.option, value: option.header }
-        })
+        ? this.customOrderingOptions
         : []
 
       return [...options, ...customOrderingOptions]
     },
     parsedHeaders () {
-      const customHeaders = this.relationshipCols
+      const relationshipHeaders = this.relationshipCols
         ? this.relationshipCols
-          .map(header => header.attributes.map(attr => attr.label))
+          .map(relationship => {
+            const tableName = relationship.table_name
+            return relationship.attributes.map(attr => {
+              let id = attr.label
+              const attrId = attr.id
+              if (tableName && attrId) {
+                id = tableName + '.' + attrId
+              } else if (attrId) {
+                id = attrId
+              }
+
+              return { id: id, value: attr.label }
+            })
+          })
           .flat()
         : []
-      return this.headers.concat(customHeaders)
+      return this.headers.concat(relationshipHeaders)
     },
     extractedRowData () {
       let extractedData = []
@@ -279,7 +285,7 @@ export default {
           }
 
           headerAttributes.forEach(attr => {
-            customAttributes[attr.label] = relIds.map(id =>
+            customAttributes[relationshipType] = relIds.map(id =>
               this.getAttributeValueFromIncluded(id, relationshipType, attr.id)
             )
           })

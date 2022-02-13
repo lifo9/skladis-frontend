@@ -24,7 +24,8 @@ export default {
         {
           relationship: 'warehouse',
           relationship_type: 'warehouse',
-          attributes: [{ id: 'name', label: this.$t('Warehouse') }]
+          table_name: 'warehouses',
+          attributes: [{ id: 'name', label: this.$t('warehouse') }]
         }
       ]
     }

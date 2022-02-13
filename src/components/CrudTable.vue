@@ -253,9 +253,15 @@ export default {
       if (this.hideAllCols) {
         return []
       } else if (!this.hiddenCols) {
-        return this.headers
+        return this.headers.map(header => {
+          return { id: header, value: this.$t(header) }
+        })
       } else {
-        return this.headers.filter(header => !this.hiddenCols.includes(header))
+        return this.headers
+          .filter(header => !this.hiddenCols.includes(header))
+          .map(header => {
+            return { id: header, value: this.$t(header) }
+          })
       }
     },
     customOrderingOptions () {
