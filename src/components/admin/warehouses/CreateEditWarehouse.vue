@@ -37,6 +37,12 @@
           :disabled="loading"
         />
         <r-input
+          v-model="zip"
+          :label="$t('zip')"
+          required="required"
+          :disabled="loading"
+        />
+        <r-input
           v-model="country"
           :label="$t('country')"
           required="required"
@@ -92,6 +98,7 @@ export default {
       street_name: '',
       street_number: '',
       city: '',
+      zip: '',
       country: '',
       coordinates: undefined,
       updated: false
@@ -138,6 +145,7 @@ export default {
           streetName: this.street_name,
           streetNumber: this.street_number,
           city: this.city,
+          zip: this.zip,
           country: this.country,
           coordinates: this.coordinates
         })
@@ -175,6 +183,7 @@ export default {
       this.street_name = ''
       this.street_number = ''
       this.city = ''
+      this.zip = ''
       this.country = ''
       this.coordinates = undefined
     },
@@ -189,6 +198,7 @@ export default {
           const address = details.data.address
           this.country = address.country ? address.country : ''
           this.city = address.city ? address.city : ''
+          this.zip = address.postcode ? address.postcode : ''
           this.street_name = address.road ? address.road : ''
           this.street_number = address.house_number ? address.house_number : ''
         }

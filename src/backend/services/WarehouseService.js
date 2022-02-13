@@ -18,6 +18,7 @@ export function updateWarehouse ({
   streetName,
   streetNumber,
   city,
+  zip,
   country,
   coordinates
 } = {}) {
@@ -26,6 +27,7 @@ export function updateWarehouse ({
     street_name: streetName,
     street_number: streetNumber,
     city: city,
+    zip: zip,
     country: country,
     coordinates: coordinates
   }
@@ -38,6 +40,7 @@ export function createWarehouse ({
   streetName,
   streetNumber,
   city,
+  zip,
   country,
   coordinates
 } = {}) {
@@ -46,6 +49,7 @@ export function createWarehouse ({
     street_name: streetName,
     street_number: streetNumber,
     city: city,
+    zip: zip,
     country: country,
     coordinates: coordinates
   }
