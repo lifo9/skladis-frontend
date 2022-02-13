@@ -39,6 +39,7 @@ export default {
         {
           relationship: 'roles',
           relationship_type: 'role',
+          table_name: 'roles',
           attributes: [{ id: 'name', label: this.$t('roles') }]
         }
       ]

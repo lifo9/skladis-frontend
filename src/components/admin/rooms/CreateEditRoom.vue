@@ -22,7 +22,7 @@
         :disabled="loading"
       />
       <r-select
-        :label="$t('Warehouse')"
+        :label="$t('warehouse')"
         :options="warehouses"
         :required="true"
         :disableDefaultOption="false"
