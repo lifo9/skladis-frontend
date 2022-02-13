@@ -81,7 +81,6 @@
                     customCol.options.orderBy &&
                     orderBy === customCol.options.orderBy
                 "
-                class="ml-2 text-3xl"
                 :order="order"
               />
             </div>
@@ -124,7 +123,6 @@
                     customCol.options.orderBy &&
                     orderBy === customCol.options.orderBy
                 "
-                class="ml-2 text-3xl"
                 :order="order"
               />
             </div>
