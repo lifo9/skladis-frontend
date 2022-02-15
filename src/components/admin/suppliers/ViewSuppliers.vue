@@ -45,6 +45,7 @@ export default {
           options: {
             attribute: 'name',
             linkAttribute: 'url',
+            newTab: true,
             sort: true,
             orderBy: 'name'
           }
