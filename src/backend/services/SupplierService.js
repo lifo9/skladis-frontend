@@ -18,6 +18,7 @@ export function updateSupplier ({
   ico,
   dic,
   url,
+  freeDeliveryFrom,
   streetName,
   streetNumber,
   city,
@@ -31,13 +32,14 @@ export function updateSupplier ({
     ico: ico,
     dic: dic,
     url: url,
+    free_delivery_from: freeDeliveryFrom,
+    contact_id: contactId,
     street_name: streetName,
     street_number: streetNumber,
     city: city,
     zip: zip,
     country: country,
-    coordinates: coordinates,
-    contact_id: contactId
+    coordinates: coordinates
   }
 
   return crud.updateRecord(id, params)
@@ -49,6 +51,7 @@ export function createSupplier ({
   ico,
   dic,
   url,
+  freeDeliveryFrom,
   streetName,
   streetNumber,
   city,
@@ -62,13 +65,14 @@ export function createSupplier ({
     ico: ico,
     dic: dic,
     url: url,
+    free_delivery_from: freeDeliveryFrom,
+    contact_id: contactId,
     street_name: streetName,
     street_number: streetNumber,
     city: city,
     zip: zip,
     country: country,
-    coordinates: coordinates,
-    contact_id: contactId
+    coordinates: coordinates
   }
 
   return crud.createRecord(params)

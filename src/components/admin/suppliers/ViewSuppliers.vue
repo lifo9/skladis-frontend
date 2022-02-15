@@ -45,7 +45,8 @@ export default {
           options: {
             attribute: 'name',
             linkAttribute: 'url',
-            sort: true
+            sort: true,
+            orderBy: 'name'
           }
         },
         {
@@ -53,7 +54,8 @@ export default {
           component: CrudText,
           options: {
             attribute: 'ico',
-            sort: true
+            sort: true,
+            orderBy: 'ico'
           }
         },
         {
@@ -61,7 +63,8 @@ export default {
           component: CrudText,
           options: {
             attribute: 'dic',
-            sort: true
+            sort: true,
+            orderBy: 'dic'
           }
         },
         {
@@ -69,7 +72,8 @@ export default {
           component: CrudText,
           options: {
             attribute: 'free_delivery_from',
-            sort: true
+            sort: true,
+            orderBy: 'free_delivery_from'
           }
         },
         {
