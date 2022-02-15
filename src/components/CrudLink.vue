@@ -56,7 +56,13 @@ export default {
               included => included.type === type && included.id === id
             )
             if (relationObject.length === 1) {
-              return relationObject[0].attributes[this.options.attribute]
+              if (Array.isArray(this.options.attribute)) {
+                return this.options.attribute
+                  .map(attribute => relationObject[0].attributes[attribute])
+                  .join(' ')
+              } else {
+                return relationObject[0].attributes[this.options.attribute]
+              }
             }
           }
         }
@@ -65,7 +71,9 @@ export default {
       return undefined
     },
     link () {
-      if (!this.options.relationship) {
+      if (this.options.linkAttribute) {
+        return this.row.attributes[this.options.linkAttribute]
+      } else if (!this.options.relationship) {
         return this.row.attributes[this.options.attribute]
       } else if (this.options.editLink) {
         const relatinships = this.row.relationships

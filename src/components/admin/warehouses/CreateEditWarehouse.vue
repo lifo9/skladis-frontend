@@ -171,7 +171,21 @@ export default {
         try {
           const warehouse = await getWarehouse(this.warehouseId)
           const data = warehouse.data.data.attributes
-          for (let [key, value] of Object.entries(data)) {
+          const address = warehouse.data.data.relationships.address
+          let addressAttributes = {}
+          if (address) {
+            const addressId = address.data.id
+            const included = warehouse.data.included.filter(
+              inc => inc.type === 'address' && inc.id === addressId
+            )
+            if (included && included.length === 1) {
+              addressAttributes = included[0].attributes
+            }
+          }
+          for (let [key, value] of Object.entries({
+            ...data,
+            ...addressAttributes
+          })) {
             this[key] = value
           }
         } catch (error) {}

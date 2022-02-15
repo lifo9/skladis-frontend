@@ -44,6 +44,20 @@
           v-on:navigated="toggleMenu"
         />
         <navigation-item
+          route-name="VendorsView"
+          label="Vendors"
+          icon="business_center"
+          :only-icon="!isExpandend"
+          v-on:navigated="toggleMenu"
+        />
+        <navigation-item
+          route-name="SuppliersView"
+          label="Suppliers"
+          icon="directions_car"
+          :only-icon="!isExpandend"
+          v-on:navigated="toggleMenu"
+        />
+        <navigation-item
           v-role="constants.roles.admin || constants.roles.manager"
           route-name="WarehousesView"
           label="Warehouses"
@@ -56,13 +70,6 @@
           route-name="RoomsView"
           label="Rooms"
           icon="meeting_room"
-          :only-icon="!isExpandend"
-          v-on:navigated="toggleMenu"
-        />
-        <navigation-item
-          route-name="VendorsView"
-          label="Vendors"
-          icon="business_center"
           :only-icon="!isExpandend"
           v-on:navigated="toggleMenu"
         />

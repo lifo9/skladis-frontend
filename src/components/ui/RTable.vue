@@ -266,8 +266,10 @@ export default {
           : row
         const relationships = row.relationships
         let customAttributes = {}
-
         for (let relationship in relationships) {
+          if (!this.relationshipCols) {
+            continue
+          }
           const relationshipCol = this.relationshipCols.filter(
             header => header.relationship === relationship
           )
@@ -285,9 +287,11 @@ export default {
           }
 
           headerAttributes.forEach(attr => {
-            customAttributes[relationshipType] = relIds.map(id =>
+            const attrValue = relIds.map(id =>
               this.getAttributeValueFromIncluded(id, relationshipType, attr.id)
             )
+            customAttributes[attr.id] =
+              attrValue.length === 1 ? attrValue[0] : attrValue
           })
         }
 

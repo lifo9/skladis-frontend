@@ -5,7 +5,8 @@
     create-route-name="WarehouseCreate"
     edit-route-name="WarehouseEdit"
     :bulk-select="true"
-    :hiddenCols="['coordinates']"
+    :hiddenCols="['coordinates', 'address_id']"
+    :relationshipCols="relationshipCols"
   />
 </template>
 
@@ -21,7 +22,21 @@ export default {
   data () {
     return {
       getEndpoint: getWarehouses,
-      deleteEndpoint: deleteWarehouse
+      deleteEndpoint: deleteWarehouse,
+      relationshipCols: [
+        {
+          relationship: 'address',
+          relationship_type: 'address',
+          table_name: 'addresses',
+          attributes: [
+            { id: 'street_name', label: this.$t('street_name') },
+            { id: 'street_number', label: this.$t('street_number') },
+            { id: 'city', label: this.$t('city') },
+            { id: 'zip', label: this.$t('zip') },
+            { id: 'country', label: this.$t('country') }
+          ]
+        }
+      ]
     }
   }
 }
