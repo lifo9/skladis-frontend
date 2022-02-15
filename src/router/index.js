@@ -39,6 +39,11 @@ import RoomsView from '../views/logged/RoomsView'
 import CreateEditRoom from '../components/admin/rooms/CreateEditRoom'
 import ViewRooms from '../components/admin/rooms/ViewRooms'
 
+// suppliers
+import SuppliersView from '../views/logged/SuppliersView'
+import CreateEditSupplier from '../components/admin/suppliers/CreateEditSupplier'
+import ViewSuppliers from '../components/admin/suppliers/ViewSuppliers'
+
 Vue.use(Router)
 
 function redirectSignedOut (to, from, next) {
@@ -186,6 +191,27 @@ export const router = new Router({
               path: 'edit/:id',
               name: 'RoomEdit',
               component: CreateEditRoom
+            }
+          ]
+        },
+        {
+          path: 'suppliers',
+          component: SuppliersView,
+          children: [
+            {
+              path: '',
+              name: 'SuppliersView',
+              component: ViewSuppliers
+            },
+            {
+              path: 'create',
+              name: 'SupplierCreate',
+              component: CreateEditSupplier
+            },
+            {
+              path: 'edit/:id',
+              name: 'SupplierEdit',
+              component: CreateEditSupplier
             }
           ]
         }
