@@ -34,12 +34,7 @@
               required="required"
               :disabled="loading"
             />
-            <r-input
-              v-model="dic"
-              :label="$t('dic')"
-              required="required"
-              :disabled="loading"
-            />
+            <r-input v-model="dic" :label="$t('dic')" :disabled="loading" />
             <r-input
               v-model="free_delivery_from"
               type="number"
