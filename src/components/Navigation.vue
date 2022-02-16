@@ -43,13 +43,13 @@
           :only-icon="!isExpandend"
           v-on:navigated="toggleMenu"
         />
-        <navigation-item
+        <!-- <navigation-item
           route-name="VendorsView"
           label="Vendors"
           icon="business_center"
           :only-icon="!isExpandend"
           v-on:navigated="toggleMenu"
-        />
+        /> -->
         <navigation-item
           route-name="SuppliersView"
           label="Suppliers"
