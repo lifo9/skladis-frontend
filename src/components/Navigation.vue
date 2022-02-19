@@ -2,7 +2,7 @@
   <div class="md:border-t">
     <a
       v-if="type === 'mobile'"
-      class="flex items-center justify-center w-8 h-full text-2xl text-center text-white select-none material-icons-sharp"
+      class="flex justify-center items-center w-8 h-full text-2xl text-center text-white select-none material-icons-sharp"
       href="javascript:"
       @click="toggleMenu()"
     >
@@ -10,10 +10,10 @@
     </a>
     <div
       v-if="isOpen || type === 'desktop'"
-      class="absolute left-0 z-50 w-full min-h-screen px-0 bg-gray-900 md:z-auto md:fixed top-16"
+      class="absolute top-16 left-0 z-50 px-0 w-full min-h-screen bg-gray-900 md:fixed md:z-auto"
       :class="!isExpandend ? 'md:w-16' : 'md:w-64'"
     >
-      <ul class="h-screen overflow-y-auto">
+      <ul class="overflow-y-auto h-screen">
         <navigation-item
           v-if="type === 'desktop'"
           type="list-custom"
@@ -23,17 +23,13 @@
           <div class="flex flex-wrap items-center space-x-2">
             <a
               class="text-2xl text-white transition ease-in-out select-none material-icons-sharp"
-              :class="
-                !isExpandend ? 'transform rotate-90 transition ease-in-out' : ''
-              "
+              :class="!isExpandend ? 'transform rotate-90 transition ease-in-out' : ''"
               href="javascript:"
               @click="toggleMenu()"
             >
               menu
             </a>
-            <span v-if="isExpandend" class="transition ease-in-out">{{
-              $t('Menu')
-            }}</span>
+            <span v-if="isExpandend" class="transition ease-in-out">{{ $t('Menu') }}</span>
           </div>
         </navigation-item>
         <navigation-item
@@ -93,9 +89,11 @@
   </div>
 </template>
 
-<script>
-import NavigationItem from './NavigationItem.vue'
-export default {
+<script lang="ts">
+import NavigationItem from '@/components/NavigationItem.vue'
+import { defineComponent } from 'vue'
+export default defineComponent({
+  inject: ['constants'],
   components: { NavigationItem },
   props: {
     type: {
@@ -104,7 +102,7 @@ export default {
     }
   },
 
-  data () {
+  data() {
     return {
       isOpen: false,
       isExpandend: this.$store.getters.isMenuExpanded
@@ -112,13 +110,13 @@ export default {
   },
 
   methods: {
-    toggleMenu () {
+    toggleMenu() {
       this.isOpen = !this.isOpen
     },
-    toggleExpanded () {
+    toggleExpanded() {
       this.$store.commit('setIsMenuExpanded', !this.isExpandend)
       this.isExpandend = !this.isExpandend
     }
   }
-}
+})
 </script>

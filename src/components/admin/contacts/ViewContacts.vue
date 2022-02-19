@@ -10,17 +10,15 @@
   />
 </template>
 
-<script>
+<script lang="ts">
 import CrudTable from '../../../components/CrudTable.vue'
-import {
-  getContacts,
-  deleteContact
-} from '../../../backend/services/ContactsService'
+import { getContacts, deleteContact } from '@/services/ContactsService'
 import AvatarImage from '../../AvatarImage.vue'
 
-export default {
+import { defineComponent } from 'vue'
+export default defineComponent({
   components: { CrudTable },
-  data () {
+  data() {
     return {
       getEndpoint: getContacts,
       deleteEndpoint: deleteContact,
@@ -35,5 +33,5 @@ export default {
       ]
     }
   }
-}
+})
 </script>

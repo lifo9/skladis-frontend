@@ -1,36 +1,30 @@
 <template>
   <div class="r-map">
     <l-map ref="rMap" :zoom="zoom" :center="center">
-      <l-tile-layer :url="url"></l-tile-layer>
-      <l-marker
-        v-if="marker"
-        :lat-lng="markerLatLng"
-        :draggable="true"
-        @update:latLng="handleMarkerUpdate"
-      ></l-marker>
-      <leaflet-geo-search :options="geosearchOptions"></leaflet-geo-search>
+      <l-tile-layer :url="url" />
+      <l-marker v-if="marker" :lat-lng="markerLatLng" :draggable="true" @update:latLng="handleMarkerUpdate" />
+      <leaflet-geo-search :options="geosearchOptions" />
     </l-map>
   </div>
 </template>
 
-<script>
-import { LMap, LTileLayer, LMarker } from 'vue2-leaflet'
+<script lang="ts">
+import { LMap, LTileLayer, LMarker } from '@vue-leaflet/vue-leaflet'
 
 import { OpenStreetMapProvider } from 'leaflet-geosearch'
 
 import 'leaflet-geosearch/dist/geosearch.css'
 import 'leaflet/dist/leaflet.css'
-import { Icon } from 'leaflet'
-import LeafletGeoSearch from './LeafletGeoSearch.vue'
+import LeafletGeoSearch from '@/components/ui/LeafletGeoSearch.vue'
 
-delete Icon.Default.prototype._getIconUrl
-Icon.Default.mergeOptions({
-  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
-  iconUrl: require('leaflet/dist/images/marker-icon.png'),
-  shadowUrl: require('leaflet/dist/images/marker-shadow.png')
-})
-
-export default {
+import { defineComponent } from 'vue'
+export default defineComponent({
+  components: {
+    LMap,
+    LTileLayer,
+    LMarker,
+    LeafletGeoSearch
+  },
   props: {
     latitude: {
       type: Number,
@@ -49,18 +43,7 @@ export default {
       default: false
     }
   },
-  components: {
-    LMap,
-    LTileLayer,
-    LMarker,
-    LeafletGeoSearch
-  },
-  mounted () {
-    this.$refs.rMap.mapObject.on('geosearch/showlocation', response => {
-      this.$emit('mapSearch', response.location)
-    })
-  },
-  data () {
+  data() {
     return {
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       geosearchOptions: {
@@ -73,12 +56,17 @@ export default {
       markerLatLng: [this.latitude, this.longitude]
     }
   },
+  mounted() {
+    this.$refs.rMap.mapObject.on('geosearch/showlocation', (response) => {
+      this.$emit('mapSearch', response.location)
+    })
+  },
   methods: {
-    handleMarkerUpdate (coordinates) {
+    handleMarkerUpdate(coordinates) {
       this.$emit('mapSearch', { x: coordinates.lng, y: coordinates.lat })
     }
   }
-}
+})
 </script>
 
 <style lang="postcss">

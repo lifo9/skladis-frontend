@@ -9,19 +9,19 @@
     :custom-actions="customActions"
     :relationship-cols="relationshipCols"
     :hiddenCols="['avatar']"
-  >
-  </crud-table>
+  ></crud-table>
 </template>
 
-<script>
+<script lang="ts">
 import CrudTable from '../../CrudTable.vue'
-import { deleteUser, getUsers } from '../../../backend/services/UsersService'
-import UserActivationToggle from './UserActivationToggle.vue'
+import { deleteUser, getUsers } from '@/services/UsersService'
+import UserActivationToggle from '@//components/admin/users/UserActivationToggle.vue'
 import AvatarImage from '../../AvatarImage.vue'
 
-export default {
+import { defineComponent } from 'vue'
+export default defineComponent({
   components: { CrudTable },
-  data () {
+  data() {
     return {
       getEndpoint: getUsers,
       deleteEndpoint: deleteUser,
@@ -45,5 +45,5 @@ export default {
       ]
     }
   }
-}
+})
 </script>

@@ -3,99 +3,57 @@
     <h1 class="mt-4 mb-8 text-4xl font-bold text-gray-900 sm:truncate">
       {{ $t('My profile') }}
     </h1>
-    <r-form
-      @submit.prevent="update"
-      :error="error"
-      class="w-full max-w-md mx-auto my-14"
-    >
-      <image-upload
-        :key="avatar"
-        :label="$t('Avatar')"
-        :disabled="loading"
-        @change="handleAvatarChange"
-      >
-        <template v-slot:image>
-          <img
-            v-if="avatar"
-            :src="avatar"
-            class="object-contain w-64 text-center max-h-48"
-          />
+    <r-form :error="error" @submit.prevent="update" class="my-14 mx-auto w-full max-w-md">
+      <image-upload :key="avatar" :label="$t('Avatar')" :disabled="loading" @change="handleAvatarChange">
+        <template #image>
+          <img v-if="avatar" :src="avatar" class="object-contain w-64 max-h-48 text-center" />
         </template>
       </image-upload>
-      <r-input
-        v-model="email"
-        type="email"
-        :label="$t('email')"
-        required="required"
-        :disabled="loading"
-      />
-      <r-input
-        v-model="first_name"
-        :label="$t('first_name')"
-        required="required"
-        :disabled="loading"
-      />
-      <r-input
-        v-model="last_name"
-        :label="$t('last_name')"
-        required="required"
-        :disabled="loading"
-      />
+      <r-input v-model="email" type="email" :label="$t('email')" required="required" :disabled="loading" />
+      <r-input v-model="first_name" :label="$t('first_name')" required="required" :disabled="loading" />
+      <r-input v-model="last_name" :label="$t('last_name')" required="required" :disabled="loading" />
       <r-input v-model="phone" :label="$t('phone')" :disabled="loading" />
 
-      <r-input
-        v-model="changePassword"
-        type="checkbox"
-        :one-line="true"
-        :label="$t('Change password')"
-      />
+      <r-input v-model="changePassword" type="checkbox" :one-line="true" :label="$t('Change password')" />
       <div v-if="changePassword">
         <r-input
           v-model="password"
           :required="changePassword"
           type="password"
           :label="$t('Password')"
-          :enablePasswordToggle="true"
+          :enable-password-toggle="true"
         />
 
         <r-input
-          class="mt-6"
           v-model="passwordConfirmation"
+          class="mt-6"
           :required="changePassword"
           type="password"
           :label="$t('Password confirmation')"
-          :enablePasswordToggle="true"
+          :enable-password-toggle="true"
         />
       </div>
 
-      <r-button
-        type="submit"
-        size="full"
-        :loading="loading"
-        :disabled="loading"
-      >
+      <r-button type="submit" size="full" :loading="loading" :disabled="loading">
         <span>
-          {{ $t('Update') | uppercase }}
+          {{ $filters.uppercase($t('Update')) }}
         </span>
       </r-button>
     </r-form>
   </div>
 </template>
 
-<script>
-import RButton from '../ui/RButton.vue'
-import RForm from '../ui/RForm.vue'
-import RInput from '../ui/RInput.vue'
-import {
-  getMyProfile,
-  updateMyProfile,
-  deleteAvatar
-} from '../../backend/services/MyProfileService'
-import ImageUpload from '../ui/ImageUpload.vue'
+<script lang="ts">
+import RButton from '@/components/ui/RButton.vue'
+import RForm from '@/components/ui/RForm.vue'
+import RInput from '@/components/ui/RInput.vue'
+import { getMyProfile, updateMyProfile, deleteAvatar } from '@/services/MyProfileService'
+import ImageUpload from '@/components/ui/ImageUpload.vue'
 
-export default {
+import { defineComponent } from 'vue'
+export default defineComponent({
   components: { RForm, RButton, RInput, ImageUpload },
-  data () {
+  data() {
     return {
       error: '',
       loading: false,
@@ -111,21 +69,21 @@ export default {
       deleteAvatar: false
     }
   },
-  mounted () {
+  mounted() {
     this.fetchData()
   },
   methods: {
-    async fetchData () {
+    async fetchData() {
       this.loading = true
       try {
-        const user = this.$store.state.currentUser
+        const user = this.$store.getters.currentUser
         for (let [key, value] of Object.entries(user)) {
           this[key] = value
         }
       } catch (error) {}
       this.loading = false
     },
-    async update () {
+    async update() {
       if (!this.validateFields()) {
         return
       }
@@ -148,9 +106,7 @@ export default {
         const me = await getMyProfile()
         const userId = me.data.data.id
         const attributes = me.data.data.attributes
-        const roles = me.data.included
-          .filter(inc => inc.type === 'role')
-          .map(role => role.attributes.name)
+        const roles = me.data.included.filter((inc) => inc.type === 'role').map((role) => role.attributes.name)
         this.$store.commit('setCurrentUser', {
           currentUser: {
             id: userId,
@@ -160,19 +116,15 @@ export default {
         })
 
         this.fetchData()
-        this.$root.$emit(
-          'alert',
-          'success',
-          this.$t('Your profile was successfully updated')
-        )
+        this.eventBus.emit('alert', 'success', this.$t('Your profile was successfully updated'))
 
         this.resetForm()
       } catch (error) {
-        this.$root.$emit('alert', 'alert', error)
+        this.eventBus.emit('alert', 'alert', error)
       }
       this.loading = false
     },
-    handleAvatarChange (file) {
+    handleAvatarChange(file) {
       if (!file) {
         this.deleteAvatar = true
       } else {
@@ -181,7 +133,7 @@ export default {
 
       this.avatarFile = file
     },
-    validateFields () {
+    validateFields() {
       this.error = ''
       if (this.changePassword && this.password !== this.passwordConfirmation) {
         this.error = this.$t('Passwords have to match')
@@ -190,11 +142,11 @@ export default {
 
       return true
     },
-    resetForm () {
+    resetForm() {
       this.changePassword = false
       this.password = ''
       this.passwordConfirmation = ''
     }
   }
-}
+})
 </script>

@@ -10,16 +10,14 @@
   />
 </template>
 
-<script>
+<script lang="ts">
 import CrudTable from '../../../components/CrudTable.vue'
-import {
-  getWarehouses,
-  deleteWarehouse
-} from '../../../backend/services/WarehouseService'
+import { getWarehouses, deleteWarehouse } from '@/services/WarehouseService'
 
-export default {
+import { defineComponent } from 'vue'
+export default defineComponent({
   components: { CrudTable },
-  data () {
+  data() {
     return {
       getEndpoint: getWarehouses,
       deleteEndpoint: deleteWarehouse,
@@ -39,5 +37,5 @@ export default {
       ]
     }
   }
-}
+})
 </script>

@@ -3,15 +3,12 @@
     <form @submit.prevent="search">
       <input
         v-model="searchQuery"
-        class="block w-full h-10 px-5 py-3 text-base text-gray-900 placeholder-gray-400 transition duration-500 ease-in-out transform border border-gray-300 rounded-md bg-gray-50 focus:outline-none focus:border-transparent focus:border-blue-600"
+        class="block py-3 px-5 w-full h-10 text-base text-gray-900 placeholder:text-gray-400 bg-gray-50 rounded-md border border-gray-300 focus:border-blue-600 focus:outline-none transition duration-500 ease-in-out"
         type="search"
         name="search"
         :placeholder="$t('Search')"
       />
-      <button
-        type="submit"
-        class="absolute right-0 mr-4 transform -translate-y-1/2 top-1/2"
-      >
+      <button type="submit" class="absolute top-1/2 right-0 mr-4 -translate-y-1/2">
         <svg
           class="w-4 h-4 text-gray-700 fill-current"
           xmlns="http://www.w3.org/2000/svg"
@@ -20,7 +17,7 @@
           x="0px"
           y="0px"
           viewBox="0 0 56.966 56.966"
-          style="enable-background:new 0 0 56.966 56.966;"
+          style="enable-background: new 0 0 56.966 56.966"
           xml:space="preserve"
           width="512px"
           height="512px"
@@ -34,19 +31,20 @@
   </div>
 </template>
 
-<script>
-import RForm from './RForm.vue'
-export default {
+<script lang="ts">
+import RForm from '@//components/ui/RForm.vue'
+import { defineComponent } from 'vue'
+export default defineComponent({
   components: { RForm },
-  data () {
+  data() {
     return {
       searchQuery: ''
     }
   },
   methods: {
-    search () {
+    search() {
       this.$emit('search', this.searchQuery)
     }
   }
-}
+})
 </script>

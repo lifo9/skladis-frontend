@@ -2,18 +2,19 @@
   <router-view />
 </template>
 
-<script>
-export default {
-  mounted () {
+<script lang="ts">
+import { defineComponent } from 'vue'
+export default defineComponent({
+  mounted() {
     this.setTitle()
   },
-  updated () {
+  updated() {
     this.setTitle()
   },
   methods: {
-    setTitle () {
+    setTitle() {
       this.$store.commit('setCurrentTitle', this.$t('Contacts'))
     }
   }
-}
+})
 </script>

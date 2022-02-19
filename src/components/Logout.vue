@@ -2,12 +2,13 @@
   <p @click="signOut">{{ $t('Logout') }}</p>
 </template>
 
-<script>
-import { signOut } from '../backend/services/UserService'
+<script lang="ts">
+import { signOut } from '@/services/UserService'
 
-export default {
+import { defineComponent } from 'vue'
+export default defineComponent({
   methods: {
-    async signOut () {
+    async signOut() {
       try {
         await signOut()
       } catch (err) {
@@ -17,5 +18,5 @@ export default {
       this.$router.replace('/sign-in')
     }
   }
-}
+})
 </script>

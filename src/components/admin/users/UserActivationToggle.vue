@@ -1,35 +1,23 @@
 <template>
-  <div class="m-1" v-if="!isCurrentlyLoggedIn">
-    <r-button
-      class="w-28"
-      v-if="!isActive"
-      variant="success"
-      size="verySmall"
-      @click="handleActivation(true)"
-      >{{ $t('Activate') }}</r-button
-    >
-    <r-button
-      class="w-28"
-      v-else
-      variant="danger"
-      size="verySmall"
-      @click="handleActivation(false)"
-      >{{ $t('Deactivate') }}</r-button
-    >
+  <div v-if="!isCurrentlyLoggedIn" class="m-1">
+    <r-button v-if="!isActive" class="w-28" variant="success" size="verySmall" @click="handleActivation(true)">
+      {{ $t('Activate') }}
+    </r-button>
+    <r-button v-else class="w-28" variant="danger" size="verySmall" @click="handleActivation(false)">
+      {{ $t('Deactivate') }}
+    </r-button>
   </div>
 </template>
 
-<script>
-import RButton from '../../ui/RButton.vue'
-import { enableScroll, disableScroll } from '../../../backend/utils/helpers'
-import ConfirmationModal from '../../ui/ConfirmationModal'
-import {
-  activateUser,
-  deactivateUser
-} from '../../../backend/services/UsersService'
-import { store } from '../../../backend/store/store'
+<script lang="ts">
+import RButton from '@/components/ui/RButton.vue'
+import { enableScroll, disableScroll } from '@/utils/helpers'
+import ConfirmationModal from '@/components/ui/ConfirmationModal.vue'
+import { activateUser, deactivateUser } from '@/services/UsersService'
+import store from '@/store'
 
-export default {
+import { defineComponent } from 'vue'
+export default defineComponent({
   components: { RButton },
   props: {
     row: {
@@ -38,15 +26,15 @@ export default {
     }
   },
   computed: {
-    isCurrentlyLoggedIn () {
-      return this.row.id === store.state.currentUser.id
+    isCurrentlyLoggedIn() {
+      return this.row.id === store.getters.currentUser.id
     },
-    isActive () {
+    isActive() {
       return this.row.attributes.active === true
     }
   },
   methods: {
-    async handleActivation (activate) {
+    async handleActivation(activate) {
       disableScroll()
       const confirmation = await this.$modal(ConfirmationModal)
 
@@ -56,16 +44,14 @@ export default {
           .then(() => {
             this.row.attributes.active = activate
 
-            this.$root.$emit(
+            this.eventBus.emit(
               'alert',
               'success',
-              activate
-                ? this.$t('User was successfully activated')
-                : this.$t('User was successfully deactivated')
+              activate ? this.$t('User was successfully activated') : this.$t('User was successfully deactivated')
             )
           })
-          .catch(error => {
-            this.$root.$emit('alert', 'alert', error)
+          .catch((error) => {
+            this.eventBus.emit('alert', 'alert', error)
           })
       }
       enableScroll()
@@ -73,5 +59,5 @@ export default {
       this.$emit('change', this.row)
     }
   }
-}
+})
 </script>

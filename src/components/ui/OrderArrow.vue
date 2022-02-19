@@ -1,14 +1,12 @@
 <template>
-  <span
-    @click="click"
-    class="cursor-pointer material-icons"
-    :class="order === 'asc' ? 'transform-rotate-180' : ''"
-    >arrow_drop_down</span
-  >
+  <span @click="click" class="cursor-pointer material-icons" :class="order === 'asc' ? 'transform-rotate-180' : ''">
+    arrow_drop_down
+  </span>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue'
+export default defineComponent({
   props: {
     order: {
       type: String,
@@ -16,11 +14,11 @@ export default {
     }
   },
   methods: {
-    click () {
+    click() {
       this.$emit('click')
     }
   }
-}
+})
 </script>
 
 <style lang="postcss">

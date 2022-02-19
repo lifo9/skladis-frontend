@@ -1,13 +1,10 @@
 <template>
   <div>
-    <router-link
-      class="flex items-center text-blue-600"
-      :to="{ name: 'ContactsView' }"
-    >
+    <router-link class="flex items-center text-blue-600" :to="{ name: 'ContactsView' }">
       <span class="material-icons">arrow_back</span>
       {{ $t('Back') }}
     </router-link>
-    <r-form @submit.prevent="create" class="w-full max-w-md mx-auto my-14">
+    <r-form @submit.prevent="create" class="my-14 mx-auto w-full max-w-md">
       <image-upload
         :key="avatar != '' ? avatar : updated.toString()"
         :label="$t('Avatar')"
@@ -15,71 +12,37 @@
         @change="handleAvatarChange"
       >
         <template v-slot:image>
-          <img
-            v-if="avatar"
-            :src="avatar"
-            class="object-contain w-64 text-center max-h-48"
-          />
+          <img v-if="avatar" :src="avatar" class="object-contain w-64 max-h-48 text-center" />
         </template>
       </image-upload>
-      <r-input
-        v-model="first_name"
-        :label="$t('first_name')"
-        required="required"
-        :disabled="loading"
-      />
-      <r-input
-        v-model="last_name"
-        :label="$t('last_name')"
-        required="required"
-        :disabled="loading"
-      />
-      <r-input
-        v-model="email"
-        type="email"
-        :label="$t('email')"
-        required="required"
-        :disabled="loading"
-      />
-      <r-input
-        v-model="phone"
-        :label="$t('phone')"
-        required="required"
-        :disabled="loading"
-      />
+      <r-input v-model="first_name" :label="$t('first_name')" required="required" :disabled="loading" />
+      <r-input v-model="last_name" :label="$t('last_name')" required="required" :disabled="loading" />
+      <r-input v-model="email" type="email" :label="$t('email')" required="required" :disabled="loading" />
+      <r-input v-model="phone" :label="$t('phone')" required="required" :disabled="loading" />
 
-      <r-button
-        type="submit"
-        size="full"
-        :loading="loading"
-        :disabled="loading"
-      >
+      <r-button type="submit" size="full" :loading="loading" :disabled="loading">
         <span v-if="contactId">
-          {{ $t('Update') | uppercase }}
+          {{ $filters.uppercase($t('Update')) }}
         </span>
         <span v-else>
-          {{ $t('Create') | uppercase }}
+          {{ $filters.uppercase($t('Create')) }}
         </span>
       </r-button>
     </r-form>
   </div>
 </template>
 
-<script>
-import RButton from '../../ui/RButton.vue'
-import RForm from '../../ui/RForm.vue'
-import RInput from '../../ui/RInput.vue'
-import {
-  getContact,
-  createContact,
-  updateContact,
-  deleteAvatar
-} from '../../../backend/services/ContactsService'
-import ImageUpload from '../../ui/ImageUpload.vue'
+<script lang="ts">
+import RButton from '@/components/ui/RButton.vue'
+import RForm from '@/components/ui/RForm.vue'
+import RInput from '@/components/ui/RInput.vue'
+import { getContact, createContact, updateContact, deleteAvatar } from '@/services/ContactsService'
+import ImageUpload from '@/components/ui/ImageUpload.vue'
 
-export default {
+import { defineComponent } from 'vue'
+export default defineComponent({
   components: { RForm, RButton, RInput, ImageUpload },
-  data () {
+  data() {
     return {
       loading: false,
       first_name: '',
@@ -92,20 +55,20 @@ export default {
       updated: false
     }
   },
-  mounted () {
+  mounted() {
     this.fetchData()
     this.setTitle()
   },
-  updated () {
+  updated() {
     this.setTitle()
   },
   computed: {
-    contactId () {
+    contactId() {
       return this.$route.params.id
     }
   },
   methods: {
-    async create () {
+    async create() {
       this.loading = true
       this.updated = false
 
@@ -123,23 +86,21 @@ export default {
           phone: this.phone,
           avatar: this.avatarFile
         })
-        this.$root.$emit(
+        this.eventBus.emit(
           'alert',
           'success',
-          this.contactId
-            ? this.$t('Contact was successfully updated')
-            : this.$t('Contact was successfully created')
+          this.contactId ? this.$t('Contact was successfully updated') : this.$t('Contact was successfully created')
         )
         if (!this.contactId) {
           this.updated = true
           this.resetForm()
         }
       } catch (error) {
-        this.$root.$emit('alert', 'alert', error)
+        this.eventBus.emit('alert', 'alert', error)
       }
       this.loading = false
     },
-    async fetchData () {
+    async fetchData() {
       this.loading = true
       if (this.contactId) {
         try {
@@ -152,7 +113,7 @@ export default {
       }
       this.loading = false
     },
-    resetForm () {
+    resetForm() {
       this.first_name = ''
       this.last_name = ''
       this.email = ''
@@ -161,7 +122,7 @@ export default {
       this.avatarFile = undefined
       this.deleteAvatar = false
     },
-    handleAvatarChange (file) {
+    handleAvatarChange(file) {
       if (!file) {
         this.deleteAvatar = true
       } else {
@@ -170,12 +131,12 @@ export default {
 
       this.avatarFile = file
     },
-    setTitle () {
+    setTitle() {
       if (this.email) {
         this.$store.commit('setCurrentTitle', this.$t('Contacts'))
         this.$store.commit('setCurrentSubtitle', this.email)
       }
     }
   }
-}
+})
 </script>

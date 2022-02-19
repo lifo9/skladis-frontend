@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="message !== null"
-    class="fixed right-0 z-50 flex max-w-sm p-2 px-4 py-3 m-4 text-xl leading-none rounded-md cursor-pointer top-16"
+    class="flex fixed top-16 right-0 z-50 p-2 py-3 px-4 m-4 max-w-sm text-xl leading-none rounded-md cursor-pointer"
     :class="{
       info: level === 'info',
       success: level === 'success',
@@ -13,22 +13,27 @@
     <span class="mr-4">
       {{ message }}
     </span>
-    <span @click="message = null" class="absolute top-0 right-0 p-2 ">
-      &times;
-    </span>
+    <span class="absolute top-0 right-0 p-2" @click="message = null">&times;</span>
   </div>
 </template>
 
-<script>
-export default {
-  data () {
+<script lang="ts">
+import { defineComponent } from 'vue'
+export default defineComponent({
+  data() {
     return {
       level: 'info',
       message: null
     }
   },
-  mounted () {
-    this.$root.$on('alert', (level, message) => {
+  watch: {
+    $route() {
+      this.level = 'info'
+      this.message = null
+    }
+  },
+  mounted() {
+    this.eventBus.on('alert', (level, message) => {
       window.scrollTo({ top: 0, behavior: 'smooth' })
       this.level = level
       this.message = message
@@ -37,14 +42,8 @@ export default {
         this.message = null
       }, 5000)
     })
-  },
-  watch: {
-    $route (to, from) {
-      this.level = 'info'
-      this.message = null
-    }
   }
-}
+})
 </script>
 
 <style lang="postcss" scoped>

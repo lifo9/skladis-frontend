@@ -10,11 +10,7 @@
       <span v-if="!onlyIcon">{{ $t(label) }}</span>
     </div>
   </li>
-  <r-button
-    v-else-if="type === 'button'"
-    @click="navigate"
-    :size="size ? size : ''"
-  >
+  <r-button v-else-if="type === 'button'" @click="navigate" :size="size ? size : ''">
     <span v-if="icon" class="material-icons">{{ icon }}</span>
     &nbsp;
     <span v-if="!onlyIcon">{{ label }}</span>
@@ -32,10 +28,11 @@
   </li>
 </template>
 
-<script>
-import RButton from './ui/RButton.vue'
+<script lang="ts">
+import RButton from '@/components/ui/RButton.vue'
 
-export default {
+import { defineComponent } from 'vue'
+export default defineComponent({
   components: { RButton },
   props: {
     type: {
@@ -67,23 +64,23 @@ export default {
       default: false
     }
   },
-  data () {
+  data() {
     return {
       isMenuExpanded: this.$store.getters.isMenuExpanded
     }
   },
   watch: {
-    '$store.state.isMenuExpanded': function () {
+    '$store.getters.isMenuExpanded': function () {
       this.isMenuExpanded = this.$store.getters.isMenuExpanded
     }
   },
   computed: {
-    isActiveRoute () {
+    isActiveRoute() {
       return this.$router.currentRoute.name === this.routeName
     }
   },
   methods: {
-    async navigate () {
+    async navigate() {
       if (this.$router.currentRoute.name !== this.routeName) {
         const route = this.$router.resolve({
           name: this.routeName,
@@ -96,7 +93,7 @@ export default {
       }
     }
   }
-}
+})
 </script>
 
 <style lang="postcss">

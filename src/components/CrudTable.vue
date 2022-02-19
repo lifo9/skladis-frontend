@@ -1,6 +1,6 @@
 <template>
   <div class="my-4">
-    <div class="flex flex-wrap items-center justify-start my-4 sm:justify-end">
+    <div class="flex flex-wrap justify-start items-center my-4 sm:justify-end">
       <search class="m-2" @search="handleSearch" />
       <r-button
         v-if="enableDefaultActions"
@@ -10,16 +10,15 @@
         :disabled="selected.length === 0"
         @click="deleteItems"
       >
-        <span class="material-icons">delete</span>&nbsp;{{
-          $t('Delete') | uppercase
-        }}&nbsp;
+        <span class="material-icons">delete</span>
+        &nbsp;{{ $filters.uppercase($t('Delete')) }}&nbsp;
         <span v-if="selected.length > 0">{{ selected.length }}</span>
       </r-button>
       <navigation-item
         v-if="enableDefaultActions"
         class="m-2"
         :route-name="createRouteName"
-        :label="$t('Create') | uppercase"
+        :label="$filters.uppercase($t('Create'))"
         icon="add"
         type="button"
         size="small"
@@ -32,147 +31,112 @@
         :loading="loading"
         :bulk-select="bulkSelect"
         :selected="selected"
-        :enableDefaultActions="enableDefaultActions"
-        :enableCustomActions="customActions ? true : false"
+        :enable-default-actions="enableDefaultActions"
+        :enable-custom-actions="customActions ? true : false"
         :order="order"
-        :orderBy="orderBy"
-        :editRouteName="editRouteName"
+        :order-by="orderBy"
+        :edit-route-name="editRouteName"
         :relationship-cols="filteredRelationshipCols"
         :included="included"
-        :hiddenCols="hiddenCols"
-        :customOrderingOptions="customOrderingOptions"
-        :hideAllCols="hideAllCols"
+        :hidden-cols="hiddenCols"
+        :custom-ordering-options="customOrderingOptions"
+        :hide-all-cols="hideAllCols"
         @addSelected="handleAddSelected"
         @removeSelected="handleRemoveSelected"
         @deleteItem="deleteItems"
         @order="changeOrder"
       >
-        <template v-slot:customActions="{ row }">
-          <div
-            v-for="(customAction, idx) in customActions"
-            :key="'customAction_' + idx"
-          >
-            <component
-              v-bind:is="customAction"
-              :row="row"
-              :included="included"
-            ></component>
+        <template #customActions="{ row }">
+          <div v-for="(customAction, idx) in customActions" :key="'customAction_' + idx">
+            <component :is="customAction" :row="row" :included="included" />
           </div>
         </template>
-        <template v-slot:customColsBeforeHeaders>
+        <template #customColsBeforeHeaders>
           <th
             v-for="(customCol, idx) in customColsBefore"
             :key="'customColBeforeHeader_' + idx"
-            :class="
-              customCol.options &&
-              customCol.options.sort &&
-              customCol.options.orderBy
-                ? 'cursor-pointer'
-                : ''
-            "
+            :class="customCol.options && customCol.options.sort && customCol.options.orderBy ? 'cursor-pointer' : ''"
             @click="customColChangeOrder(customCol)"
           >
-            <div class="flex items-center justify-start">
+            <div class="flex justify-start items-center">
               <span>{{ customCol.header }}</span>
               <order-arrow
                 v-if="
                   customCol.options &&
-                    customCol.options.sort &&
-                    customCol.options.orderBy &&
-                    orderBy === customCol.options.orderBy
+                  customCol.options.sort &&
+                  customCol.options.orderBy &&
+                  orderBy === customCol.options.orderBy
                 "
                 :order="order"
               />
             </div>
           </th>
         </template>
-        <template v-slot:customColsBefore="{ row }">
+        <template #customColsBefore="{ row }">
           <td
             v-for="(customCol, idx) in customColsBefore"
             :key="'customColBefore_' + idx"
             :data-title="customCol.header"
             :class="customCol.header.length > 0 ? 'has-title' : ''"
           >
-            <component
-              v-bind:is="customCol.component"
-              :options="customCol.options"
-              :row="row"
-              :included="included"
-            ></component>
+            <component :is="customCol.component" :options="customCol.options" :row="row" :included="included" />
           </td>
         </template>
-        <template v-slot:customColsAfterHeaders>
+        <template #customColsAfterHeaders>
           <th
             v-for="(customCol, idx) in customColsAfter"
             :key="'customColAfterHeader_' + idx"
-            :class="
-              customCol.options &&
-              customCol.options.sort &&
-              customCol.options.orderBy
-                ? 'cursor-pointer'
-                : ''
-            "
+            :class="customCol.options && customCol.options.sort && customCol.options.orderBy ? 'cursor-pointer' : ''"
             @click="customColChangeOrder(customCol)"
           >
-            <div class="flex items-center justify-start">
+            <div class="flex justify-start items-center">
               <span>{{ customCol.header }}</span>
               <order-arrow
                 v-if="
                   customCol.options &&
-                    customCol.options.sort &&
-                    customCol.options.orderBy &&
-                    orderBy === customCol.options.orderBy
+                  customCol.options.sort &&
+                  customCol.options.orderBy &&
+                  orderBy === customCol.options.orderBy
                 "
                 :order="order"
               />
             </div>
           </th>
         </template>
-        <template v-slot:customColsAfter="{ row }">
+        <template #customColsAfter="{ row }">
           <td
             v-for="(customCol, idx) in customColsAfter"
             :key="'customColAfter_' + idx"
             :data-title="customCol.header"
             :class="customCol.header.length > 0 ? 'has-title' : ''"
           >
-            <component
-              v-bind:is="customCol.component"
-              :options="customCol.options"
-              :row="row"
-              :included="included"
-            ></component>
+            <component :is="customCol.component" :options="customCol.options" :row="row" :included="included" />
           </td>
         </template>
       </r-table>
-      <pagination
-        v-if="total > 1"
-        :current="currentPage"
-        :per-page="perPage"
-        :total="total"
-        @change="changePage"
-      />
+      <pagination v-if="total > 1" :current="currentPage" :per-page="perPage" :total="total" @change="changePage" />
     </div>
     <div v-else class="my-4">
-      <p><b>0</b> {{ $t('results') }}</p>
+      <p>
+        <b>0</b>
+        {{ $t('results') }}
+      </p>
     </div>
   </div>
 </template>
 
-<script>
-import Pagination from './ui/Pagination.vue'
-import RTable from './ui/RTable.vue'
-import {
-  arrayUnique,
-  enableScroll,
-  disableScroll
-} from '../backend/utils/helpers'
-import RButton from './ui/RButton.vue'
-import ConfirmationModal from './ui/ConfirmationModal.vue'
-import NavigationItem from './NavigationItem.vue'
-import Search from './ui/Search.vue'
-import OrderArrow from './ui/OrderArrow.vue'
+<script lang="ts">
+import Pagination from '@/components/ui/Pagination.vue'
+import RTable from '@/components/ui/RTable.vue'
+import { arrayUnique, enableScroll, disableScroll } from '@/utils/helpers'
+import RButton from '@/components/ui/RButton.vue'
+import ConfirmationModal from '@/components/ui/ConfirmationModal.vue'
+import NavigationItem from '@/components/NavigationItem.vue'
+import Search from '@/components/ui/Search.vue'
+import OrderArrow from '@/components/ui/OrderArrow.vue'
 
-export default {
+import { defineComponent } from 'vue'
+export default defineComponent({
   components: {
     RTable,
     Pagination,
@@ -237,7 +201,7 @@ export default {
       default: false
     }
   },
-  data () {
+  data() {
     return {
       loading: false,
       notFound: false,
@@ -253,63 +217,57 @@ export default {
     }
   },
   computed: {
-    filteredHeaders () {
+    filteredHeaders() {
       if (this.hideAllCols) {
         return []
       } else if (!this.hiddenCols) {
-        return this.headers.map(header => {
+        return this.headers.map((header) => {
           return { id: header, value: this.$t(header) }
         })
       } else {
         return this.headers
-          .filter(header => !this.hiddenCols.includes(header))
-          .map(header => {
+          .filter((header) => !this.hiddenCols.includes(header))
+          .map((header) => {
             return { id: header, value: this.$t(header) }
           })
       }
     },
-    filteredRelationshipCols () {
+    filteredRelationshipCols() {
       if (this.hideAllCols) {
         return []
       } else if (!this.hiddenCols) {
         return this.relationshipCols
       } else {
         return this.relationshipCols
-          ? this.relationshipCols.filter(
-            col => !this.hiddenCols.includes(col.relationship)
-          )
+          ? this.relationshipCols.filter((col) => !this.hiddenCols.includes(col.relationship))
           : undefined
       }
     },
-    customOrderingOptions () {
+    customOrderingOptions() {
       const colsBefore = this.customColsBefore
         ? this.customColsBefore
-          .filter(
-            col => col.options && col.options.orderBy && col.options.sort
-          )
-          .map(col => {
-            return { id: col.options.orderBy, value: col.header }
-          })
+            .filter((col) => col.options && col.options.orderBy && col.options.sort)
+            .map((col) => {
+              return { id: col.options.orderBy, value: col.header }
+            })
         : []
 
       const colsAfter = this.customColsAfter
         ? this.customColsAfter
-          .filter(
-            col => col.options && col.options.orderBy && col.options.sort
-          )
-          .map(col => {
-            return { id: col.options.orderBy, value: col.header }
-          })
+            .filter((col) => col.options && col.options.orderBy && col.options.sort)
+            .map((col) => {
+              return { id: col.options.orderBy, value: col.header }
+            })
         : []
 
       return [...colsBefore, ...colsAfter]
     }
   },
-  mounted () {
+  mounted() {
     this.fetchData()
   },
   methods: {
-    async fetchData () {
+    async fetchData() {
       this.loading = true
       this.notFound = false
 
@@ -338,42 +296,38 @@ export default {
 
       this.loading = false
     },
-    changePage (page) {
+    changePage(page) {
       this.currentPage = page
       this.fetchData()
     },
-    handleAddSelected (selected) {
+    handleAddSelected(selected) {
       this.selected = arrayUnique(this.selected.concat(selected))
     },
-    handleRemoveSelected (selected) {
-      this.selected = this.selected.filter(s => selected.indexOf(s) === -1)
+    handleRemoveSelected(selected) {
+      this.selected = this.selected.filter((s) => selected.indexOf(s) === -1)
     },
-    handleSearch (searchQuery) {
+    handleSearch(searchQuery) {
       this.searchQuery = searchQuery
       this.fetchData()
     },
-    async deleteItems (id) {
+    async deleteItems(id) {
       disableScroll()
       const confirmation = await this.$modal(ConfirmationModal)
 
       if (confirmation) {
         const toDelete = typeof id === 'string' ? [id] : this.selected
-        Promise.all(toDelete.map(id => this.deleteEndpoint(id)))
-          .then(results => {
+        Promise.all(toDelete.map((id) => this.deleteEndpoint(id)))
+          .then((results) => {
             if (
               results.reduce((_total, value) => {
                 return value.status === 204
               })
             ) {
-              this.$root.$emit(
-                'alert',
-                'success',
-                this.$t('Items were successfully deleted')
-              )
+              this.eventBus.emit('alert', 'success', this.$t('Items were successfully deleted'))
             }
           })
-          .catch(error => {
-            this.$root.$emit('alert', 'alert', error)
+          .catch((error) => {
+            this.eventBus.emit('alert', 'alert', error)
           })
           .finally(() => {
             this.selected = []
@@ -382,23 +336,19 @@ export default {
       }
       enableScroll()
     },
-    customColChangeOrder (customCol) {
-      if (
-        customCol.options &&
-        customCol.options.sort &&
-        customCol.options.orderBy
-      ) {
+    customColChangeOrder(customCol) {
+      if (customCol.options && customCol.options.sort && customCol.options.orderBy) {
         this.changeOrder({
           orderBy: customCol.options.orderBy,
           order: this.order === 'asc' ? 'desc' : 'asc'
         })
       }
     },
-    changeOrder (order) {
+    changeOrder(order) {
       this.order = order.orderBy !== this.orderBy ? this.order : order.order
       this.orderBy = order.orderBy
       this.fetchData()
     }
   }
-}
+})
 </script>

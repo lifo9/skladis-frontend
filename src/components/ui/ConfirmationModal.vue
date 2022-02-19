@@ -1,12 +1,6 @@
 <template>
-  <modal-layout
-    :title="$t('Are you sure') + '?'"
-    class="w-min"
-    @before-close="scrolling"
-  >
-    <span class="w-full mb-4 text-center text-red-600 text-9xl material-icons"
-      >warning</span
-    >
+  <modal-layout :title="$t('Are you sure') + '?'" class="w-min" @before-close="scrolling">
+    <span class="mb-4 w-full text-9xl text-center text-red-600 material-icons">warning</span>
     <div class="flex justify-center space-x-4 align-middle">
       <r-button variant="secondary" @click="$emit('close', false)">
         {{ $t('Cancel') }}
@@ -18,22 +12,23 @@
   </modal-layout>
 </template>
 
-<script>
-import RButton from './RButton.vue'
-import { enableScroll } from '../../backend/utils/helpers'
+<script lang="ts">
+import RButton from '@/components/ui/RButton.vue'
+import { enableScroll } from '@/utils/helpers'
 
-export default {
+import { defineComponent } from 'vue'
+export default defineComponent({
   components: { RButton },
   methods: {
-    scrolling (close) {
-      const enable = new Promise(resolve => {
+    scrolling(close) {
+      const enable = new Promise((resolve) => {
         enableScroll()
         resolve(true)
       })
       enable.then(close)
     }
   }
-}
+})
 </script>
 
 <style lang="postcss">

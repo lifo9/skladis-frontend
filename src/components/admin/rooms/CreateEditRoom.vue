@@ -1,26 +1,14 @@
 <template>
   <div>
-    <router-link
-      class="flex items-center text-blue-600"
-      :to="{ name: 'RoomsView' }"
-    >
+    <router-link class="flex items-center text-blue-600" :to="{ name: 'RoomsView' }">
       <span class="material-icons">arrow_back</span>
       {{ $t('Back') }}
     </router-link>
     <p v-if="noWarehouses" class="py-4">
       {{ $t('Please, first create a warehouse') }}
     </p>
-    <r-form
-      v-else
-      @submit.prevent="create"
-      class="w-full max-w-md mx-auto my-14"
-    >
-      <r-input
-        v-model="name"
-        :label="$t('name')"
-        required="required"
-        :disabled="loading"
-      />
+    <r-form v-else @submit.prevent="create" class="my-14 mx-auto w-full max-w-md">
+      <r-input v-model="name" :label="$t('name')" required="required" :disabled="loading" />
       <r-select
         :label="$t('warehouse')"
         :options="warehouses"
@@ -31,38 +19,30 @@
         @input="setWarehouse"
       />
 
-      <r-button
-        type="submit"
-        size="full"
-        :loading="loading"
-        :disabled="loading || noWarehouses"
-      >
+      <r-button type="submit" size="full" :loading="loading" :disabled="loading || noWarehouses">
         <span v-if="roomId">
-          {{ $t('Update') | uppercase }}
+          {{ $filters.uppercase($t('Update')) }}
         </span>
         <span v-else>
-          {{ $t('Create') | uppercase }}
+          {{ $filters.uppercase($t('Create')) }}
         </span>
       </r-button>
     </r-form>
   </div>
 </template>
 
-<script>
-import RButton from '../../ui/RButton.vue'
-import RForm from '../../ui/RForm.vue'
-import RInput from '../../ui/RInput.vue'
-import {
-  getRoom,
-  createRoom,
-  updateRoom
-} from '../../../backend/services/RoomService'
-import { getWarehouses } from '../../../backend/services/WarehouseService'
-import RSelect from '../../ui/RSelect.vue'
+<script lang="ts">
+import RButton from '@/components/ui/RButton.vue'
+import RForm from '@/components/ui/RForm.vue'
+import RInput from '@/components/ui/RInput.vue'
+import { getRoom, createRoom, updateRoom } from '@/services/RoomService'
+import { getWarehouses } from '@/services/WarehouseService'
+import RSelect from '@/components/ui/RSelect.vue'
 
-export default {
+import { defineComponent } from 'vue'
+export default defineComponent({
   components: { RForm, RButton, RInput, RSelect },
-  data () {
+  data() {
     return {
       loading: false,
       name: '',
@@ -71,26 +51,26 @@ export default {
       warehouse: undefined
     }
   },
-  beforeMount () {
+  beforeMount() {
     this.fetchWarehouses()
   },
-  mounted () {
+  mounted() {
     this.fetchData()
     this.setTitle()
   },
-  updated () {
+  updated() {
     this.setTitle()
   },
   computed: {
-    roomId () {
+    roomId() {
       return this.$route.params.id
     }
   },
   methods: {
-    setWarehouse (warehouseId) {
+    setWarehouse(warehouseId) {
       this.warehouse = warehouseId
     },
-    async create () {
+    async create() {
       if (!this.validateInputs()) {
         return
       }
@@ -103,22 +83,20 @@ export default {
           name: this.name,
           warehouseId: this.warehouse
         })
-        this.$root.$emit(
+        this.eventBus.emit(
           'alert',
           'success',
-          this.roomId
-            ? this.$t('Room was successfully updated')
-            : this.$t('Room was successfully created')
+          this.roomId ? this.$t('Room was successfully updated') : this.$t('Room was successfully created')
         )
         if (!this.roomId) {
           this.resetForm()
         }
       } catch (error) {
-        this.$root.$emit('alert', 'alert', error)
+        this.eventBus.emit('alert', 'alert', error)
       }
       this.loading = false
     },
-    async fetchData () {
+    async fetchData() {
       this.loading = true
       if (this.roomId) {
         try {
@@ -131,21 +109,21 @@ export default {
           for (let [key, relationship] of Object.entries(relationships)) {
             this[key] = Array.isArray(relationship.data)
               ? relationship.data
-                .map(rel => {
-                  return rel.id
-                })
-                .flat()
+                  .map((rel) => {
+                    return rel.id
+                  })
+                  .flat()
               : relationship.data.id
           }
         } catch (error) {}
       }
       this.loading = false
     },
-    async fetchWarehouses () {
+    async fetchWarehouses() {
       this.loading = true
       try {
         const warehouses = await getWarehouses({ perPage: 100 }) // TODO:jf dynamic loading when paginated
-        this.warehouses = warehouses.data.data.map(warehouse => {
+        this.warehouses = warehouses.data.data.map((warehouse) => {
           return {
             id: warehouse.id,
             value: warehouse.attributes.name
@@ -157,24 +135,24 @@ export default {
       }
       this.loading = false
     },
-    validateInputs () {
+    validateInputs() {
       if (!this.warehouse) {
-        this.$root.$emit('alert', 'alert', this.$t('Please, select warehouse'))
+        this.eventBus.emit('alert', 'alert', this.$t('Please, select warehouse'))
         return false
       }
 
       return true
     },
-    resetForm () {
+    resetForm() {
       this.name = ''
       this.warehouse = undefined
     },
-    setTitle () {
+    setTitle() {
       if (this.name) {
         this.$store.commit('setCurrentTitle', this.$t('Room'))
         this.$store.commit('setCurrentSubtitle', this.name)
       }
     }
   }
-}
+})
 </script>

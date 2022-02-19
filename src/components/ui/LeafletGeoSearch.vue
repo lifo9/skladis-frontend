@@ -2,39 +2,40 @@
   <div></div>
 </template>
 
-<script>
+<script lang="ts">
 import { GeoSearchControl } from 'leaflet-geosearch'
-export default {
+import { defineComponent } from 'vue'
+export default defineComponent({
   props: {
     options: {
       required: true
     }
   },
   name: 'v-geosearch',
-  mounted () {
+  mounted() {
     this.add()
   },
-  beforeDestroy () {
+  beforeDestroy() {
     this.remove()
   },
   methods: {
-    deferredMountedTo (parent) {
+    deferredMountedTo(parent) {
       const searchControl = new GeoSearchControl(this.options)
       parent.addControl(searchControl)
-      searchControl.getContainer().onclick = e => {
+      searchControl.getContainer().onclick = (e) => {
         e.stopPropagation()
       }
     },
-    remove () {
+    remove() {
       if (this.markerCluster) {
         this.$parent.removeLayer(this.markerCluster)
       }
     },
-    add () {
+    add() {
       if (this.$parent._isMounted) {
         this.deferredMountedTo(this.$parent.mapObject)
       }
     }
   }
-}
+})
 </script>

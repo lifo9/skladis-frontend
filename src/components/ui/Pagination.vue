@@ -1,24 +1,22 @@
 <template>
-  <div
-    class="flex items-center justify-between px-4 py-3 bg-white border-t border-gray-200 sm:px-6"
-  >
-    <div class="flex justify-between flex-1 sm:hidden">
+  <div class="flex justify-between items-center py-3 px-4 bg-white border-t border-gray-200 sm:px-6">
+    <div class="flex flex-1 justify-between sm:hidden">
       <a
         href="javascript:"
-        class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+        class="inline-flex relative items-center py-2 px-4 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 rounded-md border border-gray-300"
         @click="prevPage"
       >
         {{ $t('Previous') }}
       </a>
       <a
         href="javascript:"
-        class="relative inline-flex items-center px-4 py-2 ml-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+        class="inline-flex relative items-center py-2 px-4 ml-3 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 rounded-md border border-gray-300"
         @click="nextPage"
       >
         {{ $t('Next') }}
       </a>
     </div>
-    <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+    <div class="hidden sm:flex sm:flex-1 sm:justify-between sm:items-center">
       <div>
         <p class="text-sm text-gray-700">
           {{ $t('Showing') }}
@@ -31,13 +29,10 @@
         </p>
       </div>
       <div>
-        <nav
-          class="relative z-0 inline-flex -space-x-px rounded-md shadow-sm"
-          aria-label="Pagination"
-        >
+        <nav class="inline-flex relative z-0 -space-x-px rounded-md shadow-sm" aria-label="Pagination">
           <a
             href="javascript:"
-            class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-md hover:bg-gray-50"
+            class="inline-flex relative items-center p-2 text-sm font-medium text-gray-500 bg-white hover:bg-gray-50 rounded-l-md border border-gray-300"
             @click="prevPage"
           >
             <span class="sr-only">{{ $t('Previous') }}</span>
@@ -57,23 +52,15 @@
           </a>
           <div v-if="totalPages < 6">
             <div v-for="page in totalPages" :key="page">
-              <pagination-number
-                :current="current"
-                :page="page"
-                @change="changePage"
-              />
-              <span></span>
+              <pagination-number :current="current" :page="page" @change="changePage" />
+              <span />
             </div>
           </div>
           <div v-else>
-            <pagination-number
-              :current="current"
-              :page="1"
-              @change="changePage"
-            />
+            <pagination-number :current="current" :page="1" @change="changePage" />
             <span
               v-if="current > 3"
-              class="relative z-10 inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 border"
+              class="inline-flex relative z-10 items-center py-2 px-4 text-sm font-medium text-gray-700 border"
             >
               ...
             </span>
@@ -83,12 +70,7 @@
               :page="current - 2"
               @change="changePage"
             />
-            <pagination-number
-              v-if="current > 2"
-              :current="current"
-              :page="current - 1"
-              @change="changePage"
-            />
+            <pagination-number v-if="current > 2" :current="current" :page="current - 1" @change="changePage" />
             <pagination-number
               v-if="current != 1 && current !== totalPages"
               :current="current"
@@ -101,27 +83,18 @@
               :page="current + 1"
               @change="changePage"
             />
-            <pagination-number
-              v-if="current === 1"
-              :current="current"
-              :page="current + 2"
-              @change="changePage"
-            />
+            <pagination-number v-if="current === 1" :current="current" :page="current + 2" @change="changePage" />
             <span
               v-if="current < totalPages - 2"
-              class="relative z-10 inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 border"
+              class="inline-flex relative z-10 items-center py-2 px-4 text-sm font-medium text-gray-700 border"
             >
               ...
             </span>
-            <pagination-number
-              :current="current"
-              :page="totalPages"
-              @change="changePage"
-            />
+            <pagination-number :current="current" :page="totalPages" @change="changePage" />
           </div>
           <a
             href="javascript:"
-            class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md hover:bg-gray-50"
+            class="inline-flex relative items-center p-2 text-sm font-medium text-gray-500 bg-white hover:bg-gray-50 rounded-r-md border border-gray-300"
             @click="nextPage"
           >
             <span class="sr-only">{{ $t('Next') }}</span>
@@ -145,9 +118,10 @@
   </div>
 </template>
 
-<script>
-import PaginationNumber from './PaginationNumber.vue'
-export default {
+<script lang="ts">
+import PaginationNumber from '@/components/ui/PaginationNumber.vue'
+import { defineComponent } from 'vue'
+export default defineComponent({
   components: { PaginationNumber },
   props: {
     current: {
@@ -164,33 +138,32 @@ export default {
     }
   },
   computed: {
-    currentRangeStart () {
+    currentRangeStart() {
       return (this.current - 1) * this.perPage + 1
     },
-    currentRangeEnd () {
+    currentRangeEnd() {
       const end = this.current * this.perPage
       return end < this.total ? end : this.total
     },
-    totalPages () {
+    totalPages() {
       return Math.ceil(this.total / this.perPage)
     },
-    middle () {
+    middle() {
       return Math.round(this.totalPages / 2)
     }
   },
   methods: {
-    changePage (page) {
+    changePage(page) {
       this.$emit('change', page)
     },
-    nextPage () {
-      const next =
-        this.current + 1 > this.totalPages ? this.totalPages : this.current + 1
+    nextPage() {
+      const next = this.current + 1 > this.totalPages ? this.totalPages : this.current + 1
       this.changePage(next)
     },
-    prevPage () {
+    prevPage() {
       const prev = this.current - 1 < 1 ? 1 : this.current - 1
       this.changePage(prev)
     }
   }
-}
+})
 </script>

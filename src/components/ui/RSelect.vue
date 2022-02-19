@@ -6,24 +6,12 @@
     </label>
     <div class="w-full form-select">
       <select
-        class="
-      w-full
-      appearance-none
-      w-full
-      pl-3 pr-7
-      py-1.5
-      text-base
-      font-normal
-      text-gray-800
-      bg-white bg-clip-padding bg-no-repeat
-      border border-solid border-gray-300
-      rounded
-      m-0"
+        class="py-1.5 pr-7 pl-3 m-0 w-full text-base font-normal text-gray-800 bg-clip-padding bg-white bg-no-repeat rounded border border-gray-300 border-solid appearance-none"
         :class="error ? 'border-red-500' : ''"
         v-bind="$attrs"
-        v-on="listeners"
+        @input="handleInputChange"
       >
-        <option v-if="!disableDefaultOption" value="" :selected="!value">
+        <option v-if="!disableDefaultOption" value="" :selected="!modelValue">
           {{ defaultOption }}
         </option>
 
@@ -31,7 +19,7 @@
           v-for="option in options"
           :key="option.id"
           :value="option.id"
-          :selected="value && option.id == value"
+          :selected="modelValue && option.id == modelValue"
         >
           {{ option.value }}
         </option>
@@ -40,8 +28,9 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue'
+export default defineComponent({
   props: {
     label: {
       type: String,
@@ -68,7 +57,7 @@ export default {
       default: true
     },
 
-    value: {
+    modelValue: {
       type: [String, Number],
       default: undefined
     },
@@ -78,23 +67,19 @@ export default {
       default: undefined
     }
   },
-
-  computed: {
-    listeners () {
-      return {
-        ...this.$listeners,
-        input: e => this.$emit('input', e.target.value)
-      }
+  methods: {
+    handleInputChange(event) {
+      this.$emit('update:modelValue', event.target.value)
     }
   }
+})
+
+export function convertToOptions(items, idKey, labelKey) {
+  return items.map((item) => ({ id: item[idKey], value: item[labelKey] }))
 }
 
-export function convertToOptions (items, idKey, labelKey) {
-  return items.map(item => ({ id: item[idKey], value: item[labelKey] }))
-}
-
-export function optionsFromValues (values, dictionary) {
-  return values.map(value => ({
+export function optionsFromValues(values, dictionary) {
+  return values.map((value) => ({
     id: value,
     value: dictionary ? dictionary[value] : value
   }))

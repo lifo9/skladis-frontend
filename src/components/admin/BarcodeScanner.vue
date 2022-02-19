@@ -1,48 +1,49 @@
 <template>
-  <div class="w-full max-w-sm p-2">
+  <div class="p-2 w-full max-w-sm">
     <div class="modal" :class="!scanning ? 'hidden' : 'flex justify-center'">
       <div id="interactive" class="viewport scanner"></div>
       <r-button variant="danger" class="z-50 w-full" @click="finishScanning">
-        <span class="mr-2 material-icons">cancel</span
-        >{{ $t('Cancel') | uppercase }}
+        <span class="mr-2 material-icons">cancel</span>
+        {{ $filters.uppercase($t('Cancel')) }}
       </r-button>
       <span class="grid-x"></span>
     </div>
     <div>
-      <div class="flex flex-wrap px-1 py-2 overflow-hidden">
-        <div class="w-1/4 overflow-hidden">
+      <div class="flex overflow-hidden flex-wrap py-2 px-1">
+        <div class="overflow-hidden w-1/4">
           <b>{{ $t('Format') }}:</b>
         </div>
 
-        <div class="w-3/4 overflow-hidden">
+        <div class="overflow-hidden w-3/4">
           {{ format }}
         </div>
 
-        <div class="w-1/4 overflow-hidden">
+        <div class="overflow-hidden w-1/4">
           <b>{{ $t('Code') }}:</b>
         </div>
 
-        <div class="w-3/4 overflow-hidden">
+        <div class="overflow-hidden w-3/4">
           {{ code }}
         </div>
       </div>
       <r-button class="w-full" @click="initializeScanner">
-        <span class="mr-2 material-icons">document_scanner</span
-        >{{ $t('Scan') | uppercase }}
+        <span class="mr-2 material-icons">document_scanner</span>
+        {{ $filters.uppercase($t('Scan')) }}
       </r-button>
     </div>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 // TODO - Refactor !
 import Quagga from 'quagga'
-import RButton from '../ui/RButton.vue'
+import RButton from '@/components/ui/RButton.vue'
 
-export default {
+import { defineComponent } from 'vue'
+export default defineComponent({
   components: { RButton },
 
-  data () {
+  data() {
     return {
       scanning: false,
       format: undefined,
@@ -51,7 +52,7 @@ export default {
   },
 
   methods: {
-    initializeScanner () {
+    initializeScanner() {
       Quagga.init(
         {
           inputStream: {
@@ -86,7 +87,7 @@ export default {
       this.code = undefined
       document.body.classList.add('modal-open')
     },
-    finishScanning (result) {
+    finishScanning(result) {
       if (result.codeResult) {
         this.format = result.codeResult.format
         this.code = result.codeResult.code
@@ -101,7 +102,7 @@ export default {
       Quagga.stop()
     }
   }
-}
+})
 </script>
 
 <style lang="postcss">

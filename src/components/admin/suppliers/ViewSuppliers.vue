@@ -11,18 +11,16 @@
   />
 </template>
 
-<script>
+<script lang="ts">
 import CrudTable from '../../../components/CrudTable.vue'
-import {
-  getSuppliers,
-  deleteSupplier
-} from '../../../backend/services/SupplierService'
+import { getSuppliers, deleteSupplier } from '@/services/SupplierService'
 import CrudLink from '../../CrudLink.vue'
 import CrudText from '../../CrudText.vue'
 
-export default {
+import { defineComponent } from 'vue'
+export default defineComponent({
   components: { CrudTable },
-  data () {
+  data() {
     return {
       getEndpoint: getSuppliers,
       deleteEndpoint: deleteSupplier,
@@ -130,5 +128,5 @@ export default {
       ]
     }
   }
-}
+})
 </script>

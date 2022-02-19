@@ -4,9 +4,10 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import BarcodeScanner from '../../components/admin/BarcodeScanner.vue'
-export default {
+import { defineComponent } from 'vue'
+export default defineComponent({
   components: { BarcodeScanner }
-}
+})
 </script>

@@ -1,30 +1,31 @@
 <template>
-  <div class="flex items-center justify-center">
+  <div class="flex justify-center items-center">
     <r-select
       class="w-full"
       :label="$t('Language')"
       :options="langs"
-      :disableDefaultOption="true"
-      :value="this.$i18n.locale"
+      :disable-default-option="true"
+      :value="$i18n.locale"
       @input="switchLanguage"
     />
   </div>
 </template>
 
-<script>
-import RSelect, { optionsFromValues } from './ui/RSelect.vue'
-export default {
+<script lang="ts">
+import RSelect, { optionsFromValues } from '@/components/ui/RSelect.vue'
+import { defineComponent } from 'vue'
+export default defineComponent({
   components: { RSelect },
-  data () {
+  data() {
     return {
       langs: optionsFromValues(Object.keys(this.$i18n.messages))
     }
   },
   methods: {
-    switchLanguage (language) {
+    switchLanguage(language) {
       this.$store.commit('setAppLanguage', language)
       this.$emit('input', language)
     }
   }
-}
+})
 </script>

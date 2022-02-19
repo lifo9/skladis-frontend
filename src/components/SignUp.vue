@@ -5,11 +5,7 @@
       <span class="material-icons">arrow_back</span>
       <router-link to="/sign-in">{{ $t('Sign In') }}</router-link>
     </p>
-    <r-form
-      @submit.prevent="signUp"
-      :error="error"
-      class="w-full max-w-md mx-auto my-14"
-    >
+    <r-form @submit.prevent="signUp" :error="error" class="my-14 mx-auto w-full max-w-md">
       <r-input
         v-model="email"
         required="required"
@@ -33,38 +29,23 @@
         :placeholder="$t('Password')"
         :enablePasswordToggle="true"
       />
-      <r-input
-        v-model="firstName"
-        required="required"
-        :label="$t('First name')"
-        :placeholder="$t('First name')"
-      />
-      <r-input
-        v-model="lastName"
-        required="required"
-        :label="$t('Last name')"
-        :placeholder="$t('Last name')"
-      />
-      <r-button
-        type="submit"
-        size="full"
-        :loading="loading"
-        :disabled="loading"
-        >{{ $t('Sign Up') }}</r-button
-      >
+      <r-input v-model="firstName" required="required" :label="$t('First name')" :placeholder="$t('First name')" />
+      <r-input v-model="lastName" required="required" :label="$t('Last name')" :placeholder="$t('Last name')" />
+      <r-button type="submit" size="full" :loading="loading" :disabled="loading">{{ $t('Sign Up') }}</r-button>
     </r-form>
   </div>
 </template>
 
-<script>
-import { signUp } from '../backend/services/UserService'
-import RButton from './ui/RButton.vue'
-import RForm from './ui/RForm.vue'
-import RInput from './ui/RInput.vue'
+<script lang="ts">
+import { signUp } from '@/services/UserService'
+import RButton from '@/components/ui/RButton.vue'
+import RForm from '@/components/ui/RForm.vue'
+import RInput from '@/components/ui/RInput.vue'
 
-export default {
+import { defineComponent } from 'vue'
+export default defineComponent({
   components: { RButton, RInput, RForm },
-  data () {
+  data() {
     return {
       loading: false,
       email: '',
@@ -76,11 +57,11 @@ export default {
       error: ''
     }
   },
-  created () {
+  created() {
     this.checkSignedIn()
   },
   methods: {
-    async signUp () {
+    async signUp() {
       this.loading = true
 
       try {
@@ -101,22 +82,15 @@ export default {
 
       this.loading = false
     },
-    signUpSuccess () {
-      this.email = this.password = this.passwordConfirmation = this.firstName = this.lastName =
-        ''
+    signUpSuccess() {
+      this.email = this.password = this.passwordConfirmation = this.firstName = this.lastName = ''
 
-      this.$root.$emit(
-        'alert',
-        'success',
-        this.$t('Registration successful message')
-      )
+      this.eventBus.emit('alert', 'success', this.$t('Registration successful message'))
     },
-    signUpFailed (error) {
-      this.error =
-        (error.response && error.response.data && error.response.data.error) ||
-        ''
+    signUpFailed(error) {
+      this.error = (error.response && error.response.data && error.response.data.error) || ''
     },
-    validateFields () {
+    validateFields() {
       this.error = ''
       if (this.password !== this.passwordConfirmation) {
         this.error = this.$t('Passwords have to match')
@@ -125,11 +99,11 @@ export default {
 
       return true
     },
-    checkSignedIn () {
-      if (this.$store.state.signedIn) {
+    checkSignedIn() {
+      if (this.$store.getters.signedIn) {
         this.$router.replace('/')
       }
     }
   }
-}
+})
 </script>

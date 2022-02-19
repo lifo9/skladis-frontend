@@ -8,18 +8,18 @@
     :relationship-cols="relationshipCols"
     :hiddenCols="['warehouse']"
     :custom-cols-after="customCols"
-  >
-  </crud-table>
+  ></crud-table>
 </template>
 
-<script>
+<script lang="ts">
 import CrudTable from '../../CrudTable.vue'
-import { deleteRoom, getRooms } from '../../../backend/services/RoomService'
+import { deleteRoom, getRooms } from '@/services/RoomService'
 import CrudLink from '../../CrudLink.vue'
 
-export default {
+import { defineComponent } from 'vue'
+export default defineComponent({
   components: { CrudTable },
-  data () {
+  data() {
     return {
       getEndpoint: getRooms,
       deleteEndpoint: deleteRoom,
@@ -47,5 +47,5 @@ export default {
       ]
     }
   }
-}
+})
 </script>
