@@ -1,5 +1,5 @@
 <template>
-  <div class="text-center min-w-max">
+  <div class="text-center w-max">
     <img
       v-if="row.attributes[options.attribute]"
       class="inline object-cover w-12 h-12 rounded-full"
@@ -18,6 +18,10 @@ export default {
     row: {
       type: Object,
       required: true
+    },
+    included: {
+      type: Array,
+      default: undefined
     }
   }
 }

@@ -362,7 +362,7 @@ export default {
 
 <style lang="postcss" scoped>
 table {
-  @apply min-w-full;
+  @apply w-full;
 }
 thead {
   @apply text-white bg-gray-800;

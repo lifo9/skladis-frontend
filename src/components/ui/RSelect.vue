@@ -7,7 +7,7 @@
     <div class="w-full form-select">
       <select
         class="
-      min-w-full
+      w-full
       appearance-none
       w-full
       pl-3 pr-7
