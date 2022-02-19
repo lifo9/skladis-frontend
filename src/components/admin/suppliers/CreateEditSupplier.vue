@@ -295,11 +295,9 @@ export default {
       this.contact_id = contactId
     },
     setTitle () {
-      if (this.email) {
-        this.$store.commit(
-          'setCurrentTitle',
-          this.$t('Suppliers') + ' - ' + this.name
-        )
+      if (this.name) {
+        this.$store.commit('setCurrentTitle', this.$t('Suppliers'))
+        this.$store.commit('setCurrentSubtitle', this.name)
       }
     }
   }

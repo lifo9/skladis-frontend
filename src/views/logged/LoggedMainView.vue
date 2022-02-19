@@ -15,9 +15,16 @@
       >
         <h1
           v-if="$store.state.currentTitle"
-          class="mt-4 mb-8 text-4xl font-bold text-gray-900 sm:truncate"
+          class="mt-4 text-3xl font-bold text-gray-900 md:text-4xl"
+          :class="$store.state.currentSubtitle ? 'mb-2' : 'mb-8'"
         >
           {{ $store.state.currentTitle }}
+        </h1>
+        <h1
+          v-if="$store.state.currentSubtitle"
+          class="mb-8 text-xl font-bold text-gray-700 md:text-2xl"
+        >
+          {{ $store.state.currentSubtitle }}
         </h1>
         <router-view />
       </div>

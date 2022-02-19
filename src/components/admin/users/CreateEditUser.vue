@@ -306,10 +306,8 @@ export default {
     },
     setTitle () {
       if (this.email) {
-        this.$store.commit(
-          'setCurrentTitle',
-          this.$t('Users') + ' - ' + this.email
-        )
+        this.$store.commit('setCurrentTitle', this.$t('Users'))
+        this.$store.commit('setCurrentSubtitle', this.email)
       }
     }
   }

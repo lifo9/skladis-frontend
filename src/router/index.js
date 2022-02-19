@@ -247,6 +247,7 @@ router.beforeEach((to, from, next) => {
   const requiredRole = to.meta.role
 
   store.commit('unsetCurrentTitle')
+  store.commit('unsetCurrentSubtitle')
 
   if (requiredRole && !isCurrentUserInRole(requiredRole)) {
     next('/')

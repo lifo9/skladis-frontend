@@ -171,10 +171,8 @@ export default {
     },
     setTitle () {
       if (this.name) {
-        this.$store.commit(
-          'setCurrentTitle',
-          this.$t('Room') + ' - ' + this.name
-        )
+        this.$store.commit('setCurrentTitle', this.$t('Room'))
+        this.$store.commit('setCurrentSubtitle', this.name)
       }
     }
   }

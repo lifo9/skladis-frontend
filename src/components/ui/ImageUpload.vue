@@ -21,7 +21,7 @@
         "
       >
         <label
-          class="flex flex-col cursor-pointer"
+          class="flex flex-col w-64 cursor-pointer"
           :class="
             !hasImageInSlot && !(deleteImage && image)
               ? 'w-full border-4 border-gray-300 border-dashed hover:bg-gray-50 rounded-sm'
@@ -30,7 +30,7 @@
         >
           <slot v-if="!image && !deleteImage" name="image" />
           <img
-            class="object-contain w-64 max-h-48"
+            class="object-contain max-h-48"
             v-if="hasImageInSlot || image"
             :src="image"
           />

@@ -13,6 +13,7 @@ export const store = new Vuex.Store({
     csrf: null,
     appLanguage: localStorage.getItem('appLanguage') || getStartingLocale(),
     currentTitle: '',
+    currentSubtitle: '',
     isMenuExpanded: true
   },
   getters: {
@@ -45,8 +46,14 @@ export const store = new Vuex.Store({
     setCurrentTitle (state, title) {
       state.currentTitle = title
     },
+    setCurrentSubtitle (state, subtitle) {
+      state.currentSubtitle = subtitle
+    },
     unsetCurrentTitle (state) {
       state.currentTitle = ''
+    },
+    unsetCurrentSubtitle (state) {
+      state.currentSubtitle = ''
     },
     setIsMenuExpanded (state, isMenuExpanded) {
       state.isMenuExpanded = isMenuExpanded
