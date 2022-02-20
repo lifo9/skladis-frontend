@@ -46,15 +46,6 @@
           </span>
         </r-button>
       </r-form>
-      <r-map
-        :key="coordinates ? coordinates.toString() : 'coordinates'"
-        class="self-stretch my-4 mx-auto w-full h-96 xl:my-16 xl:w-1/3 xl:h-auto"
-        :longitude="longitude"
-        :latitude="latitude"
-        :zoom="zoom"
-        :marker="marker"
-        @mapSearch="handleMapSearch"
-      />
     </div>
   </div>
 </template>
@@ -63,7 +54,6 @@
 import RButton from '@/components/ui/RButton.vue'
 import RForm from '@/components/ui/RForm.vue'
 import RInput from '@/components/ui/RInput.vue'
-import RMap from '@/components/ui/RMap.vue'
 
 import { reverseGeoCode } from '@/services/MapService'
 import { createSupplier, getSupplier, updateSupplier } from '@/services/SupplierService'
@@ -74,7 +64,7 @@ import { defineComponent } from 'vue'
 import { useMainStore } from '@/stores/mainStore'
 import { mapStores } from 'pinia'
 export default defineComponent({
-  components: { RMap, RForm, RInput, RButton, RSelect },
+  components: { RForm, RInput, RButton, RSelect },
   data() {
     return {
       loading: false,

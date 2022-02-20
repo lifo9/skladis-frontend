@@ -311,30 +311,35 @@ export default defineComponent({
       this.fetchData()
     },
     async deleteItems(id) {
-      disableScroll()
-      const confirmation = await this.$modal(ConfirmationModal)
-
-      if (confirmation) {
-        const toDelete = typeof id === 'string' ? [id] : this.selected
-        Promise.all(toDelete.map((id) => this.deleteEndpoint(id)))
-          .then((results) => {
-            if (
-              results.reduce((_total, value) => {
-                return value.status === 204
+      this.$vfm.show({
+        component: 'ConfirmationModal',
+        on: {
+          'confirm': (close) => {
+            const toDelete = typeof id === 'string' ? [id] : this.selected
+            Promise.all(toDelete.map((id) => this.deleteEndpoint(id)))
+              .then((results) => {
+                if (
+                  results.reduce((_total, value) => {
+                    return value.status === 204
+                  })
+                ) {
+                  this.eventBus.emit('alert', { level: 'success', message: this.$t('Items were successfully deleted') })
+                }
               })
-            ) {
-              this.eventBus.emit('alert', { level: 'success', message: this.$t('Items were successfully deleted') })
-            }
-          })
-          .catch((error) => {
-            this.eventBus.emit('alert', { level: 'alert', message: error })
-          })
-          .finally(() => {
-            this.selected = []
-            this.fetchData()
-          })
-      }
-      enableScroll()
+              .catch((error) => {
+                this.eventBus.emit('alert', { level: 'alert', message: error })
+              })
+              .finally(() => {
+                this.selected = []
+                this.fetchData()
+              })
+            close()
+          },
+          cancel(close) {
+            close()
+          }
+        }
+      })
     },
     customColChangeOrder(customCol) {
       if (customCol.options && customCol.options.sort && customCol.options.orderBy) {
