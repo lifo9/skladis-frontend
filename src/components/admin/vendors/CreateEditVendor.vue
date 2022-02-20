@@ -11,8 +11,8 @@
         :disabled="loading"
         @change="handleLogoChange"
       >
-        <template v-slot:image>
-          <img v-if="logo" :src="logo" class="object-contain w-64 max-h-48 text-center" />
+        <template v-if="logo" v-slot:image>
+          <img :src="logo" class="object-contain w-64 max-h-48 text-center" />
         </template>
       </image-upload>
       <r-input v-model="name" :label="$t('name')" required="required" :disabled="loading" />

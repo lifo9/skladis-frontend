@@ -5,8 +5,8 @@
     </h1>
     <r-form :error="error" @submit.prevent="update" class="my-14 mx-auto w-full max-w-md">
       <image-upload :key="avatar" :label="$t('Avatar')" :disabled="loading" @change="handleAvatarChange">
-        <template #image>
-          <img v-if="avatar" :src="avatar" class="object-contain w-64 max-h-48 text-center" />
+        <template v-if="avatar" v-slot:image>
+          <img :src="avatar" class="object-contain w-64 max-h-48 text-center" />
         </template>
       </image-upload>
       <r-input v-model="email" type="email" :label="$t('email')" required="required" :disabled="loading" />
