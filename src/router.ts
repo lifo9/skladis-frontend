@@ -2,7 +2,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 
 import { useMainStore } from '@/stores/mainStore'
 import { CONSTANTS } from '@/plugins/constants'
-import { isCurrentUserInRole } from '@/utils/directives/role'
+import { isCurrentUserInRoles } from '@/utils/directives/role'
 
 // main views
 import LoggedMainView from '@/views/logged/LoggedMainView.vue'
@@ -104,7 +104,7 @@ const routes: Array<RouteRecordRaw> = [
             path: '',
             name: 'UsersView',
             meta: {
-              role: CONSTANTS.roles.admin
+              roles: [CONSTANTS.roles.admin]
             },
             component: ViewUsers
           },
@@ -112,7 +112,7 @@ const routes: Array<RouteRecordRaw> = [
             path: 'create',
             name: 'UserCreate',
             meta: {
-              role: CONSTANTS.roles.admin
+              roles: [CONSTANTS.roles.admin]
             },
             component: CreateEditUser
           },
@@ -120,7 +120,7 @@ const routes: Array<RouteRecordRaw> = [
             path: 'edit/:id',
             name: 'UserEdit',
             meta: {
-              role: CONSTANTS.roles.admin
+              roles: [CONSTANTS.roles.admin]
             },
             component: CreateEditUser
           }
@@ -249,12 +249,12 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const store = useMainStore()
-  const requiredRole = to.meta.role
+  const requiredRoles = to.meta.roles
 
   store.unsetCurrentTitle()
   store.unsetCurrentSubtitle()
 
-  if (requiredRole && !isCurrentUserInRole(requiredRole)) {
+  if (requiredRoles && !isCurrentUserInRoles(requiredRoles)) {
     next('/')
   }
   next()

@@ -47,6 +47,7 @@
           v-on:navigated="toggleMenu"
         /> -->
         <navigation-item
+          v-role="[constants.roles.admin, constants.roles.manager]"
           route-name="SuppliersView"
           label="Suppliers"
           icon="directions_car"
@@ -54,7 +55,7 @@
           v-on:navigated="toggleMenu"
         />
         <navigation-item
-          v-role="constants.roles.admin || constants.roles.manager"
+          v-role="[constants.roles.admin, constants.roles.manager]"
           route-name="WarehousesView"
           label="Warehouses"
           icon="warehouse"
@@ -62,7 +63,7 @@
           v-on:navigated="toggleMenu"
         />
         <navigation-item
-          v-role="constants.roles.admin || constants.roles.manager"
+          v-role="[constants.roles.admin, constants.roles.manager]"
           route-name="RoomsView"
           label="Rooms"
           icon="meeting_room"
