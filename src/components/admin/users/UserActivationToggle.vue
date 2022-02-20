@@ -11,13 +11,11 @@
 
 <script lang="ts">
 import RButton from '@/components/ui/RButton.vue'
-import { enableScroll, disableScroll } from '@/utils/helpers'
-import ConfirmationModal from '@/components/ui/ConfirmationModal.vue'
 import { activateUser, deactivateUser } from '@/services/UsersService'
-
 import { defineComponent } from 'vue'
 import { useMainStore } from '@/stores/mainStore'
 import { mapStores } from 'pinia'
+
 export default defineComponent({
   emits: ['change'],
   components: { RButton },
@@ -25,6 +23,10 @@ export default defineComponent({
     row: {
       type: Object,
       required: true
+    },
+    included: {
+      type: Array,
+      default: undefined
     }
   },
   computed: {
@@ -38,29 +40,32 @@ export default defineComponent({
   },
   methods: {
     handleActivation(activate) {
-      disableScroll()
-      // const confirmation = await this.$modal(ConfirmationModal)
-
-      // if (confirmation) {
-      const endpoint = activate ? activateUser : deactivateUser
-      endpoint(this.row.id)
-        .then(() => {
-          this.row.attributes.active = activate
-
-          this.eventBus.emit('alert', {
-            level: 'success',
-            message: activate
-              ? this.$t('User was successfully activated')
-              : this.$t('User was successfully deactivated')
-          })
-        })
-        .catch((error) => {
-          this.eventBus.emit('alert', { level: 'alert', message: error })
-        })
-      // }
-      enableScroll()
-
-      this.$emit('change', this.row)
+      this.$vfm.show({
+        component: 'ConfirmationModal',
+        on: {
+          'confirm': (close) => {
+            const endpoint = activate ? activateUser : deactivateUser
+            endpoint(this.row.id)
+              .then(() => {
+                this.row.attributes.active = activate
+                this.eventBus.emit('alert', {
+                  level: 'success',
+                  message: activate
+                    ? this.$t('User was successfully activated')
+                    : this.$t('User was successfully deactivated')
+                })
+              })
+              .catch((error) => {
+                this.eventBus.emit('alert', { level: 'alert', message: error })
+              })
+            this.$emit('change', this.row)
+            close()
+          },
+          cancel(close) {
+            close()
+          }
+        }
+      })
     }
   }
 })

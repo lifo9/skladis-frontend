@@ -1,7 +1,7 @@
 <template>
   <component
     :is="type"
-    class="inline-flex justify-center items-center font-medium leading-6 active:bg-blue-700 rounded-md border border-transparent transition duration-150 ease-in-out"
+    class="inline-flex justify-center items-center font-medium leading-6 rounded-md border border-transparent transition duration-150 ease-in-out"
     :class="btnClass"
     :loading="loading"
     :disabled="disabled"
@@ -14,8 +14,8 @@
 </template>
 
 <script lang="ts">
-const sizes = ['verySmall', 'small', 'normal', 'full']
-const variants = ['primary', 'secondary', 'danger', 'success']
+const sizes = ['verySmall', 'small', 'normal', 'full', 'min']
+const variants = ['primary', 'secondary', 'danger', 'success', 'plain']
 
 import Spinner from '@/components/ui/Spinner.vue'
 import { defineComponent } from 'vue'
@@ -56,11 +56,15 @@ export default defineComponent({
         'px-4 py-2 max-w-md text-base': this.size === 'small',
         'px-6 py-3 max-w-md text-base': this.size === 'normal',
         'px-6 py-3 w-full text-base': this.size === 'full',
+        'p-0 text-base': this.size === 'min',
 
-        'text-white bg-blue-600 hover:bg-blue-500 focus:border-blue-700': this.variant === 'primary',
-        'text-white bg-green-600 hover:bg-green-500 focus:border-green-700': this.variant === 'success',
-        'text-white bg-gray-600 hover:bg-gray-500 focus:border-gray-700': this.variant === 'secondary',
-        'text-white bg-red-600 hover:bg-red-500 focus:border-red-700': this.variant === 'danger'
+        'text-white bg-blue-600 hover:bg-blue-500 focus:border-blue-700 active:bg-blue-400': this.variant === 'primary',
+        'text-white bg-green-600 hover:bg-green-500 focus:border-green-700 active:bg-green-400':
+          this.variant === 'success',
+        'text-white bg-gray-600 hover:bg-gray-500 focus:border-gray-700 active:bg-gray-400':
+          this.variant === 'secondary',
+        'text-white bg-red-600 hover:bg-red-500 focus:border-red-700 active:bg-red-500': this.variant === 'danger',
+        'bg-transparent hover:bg-transparent active:bg-transparent': this.variant === 'plain'
       }
     }
   }
