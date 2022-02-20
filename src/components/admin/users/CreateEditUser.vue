@@ -196,17 +196,16 @@ export default defineComponent({
           })
         }
 
-        this.eventBus.emit(
-          'alert',
-          'success',
-          this.userId ? this.$t('User was successfully updated') : this.$t('User was successfully created')
-        )
+        this.eventBus.emit('alert', {
+          level: 'success',
+          message: this.userId ? this.$t('User was successfully updated') : this.$t('User was successfully created')
+        })
         if (!this.userId) {
           this.updated = true
         }
         this.resetForm()
       } catch (error) {
-        this.eventBus.emit('alert', 'alert', error)
+        this.eventBus.emit('alert', { level: 'alert', message: error })
       }
       this.loading = false
     },

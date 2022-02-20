@@ -15,6 +15,7 @@
         :checked="type === 'checkbox' && modelValue === true"
         :disabled="disabled"
         v-bind="$attrs"
+        @input="handleInputChange"
         @change="handleInputChange"
       />
       <span

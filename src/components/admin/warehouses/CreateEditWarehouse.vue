@@ -104,19 +104,18 @@ export default defineComponent({
           country: this.country,
           coordinates: this.coordinates
         })
-        this.eventBus.emit(
-          'alert',
-          'success',
-          this.warehouseId
+        this.eventBus.emit('alert', {
+          level: 'success',
+          message: this.warehouseId
             ? this.$t('Warehouse was successfully updated')
             : this.$t('Warehouse was successfully created')
-        )
+        })
         if (!this.warehouseId) {
           this.updated = true
           this.resetForm()
         }
       } catch (error) {
-        this.eventBus.emit('alert', 'alert', error)
+        this.eventBus.emit('alert', { level: 'alert', message: error })
       }
       this.loading = false
     },

@@ -47,14 +47,15 @@ export default defineComponent({
         .then(() => {
           this.row.attributes.active = activate
 
-          this.eventBus.emit(
-            'alert',
-            'success',
-            activate ? this.$t('User was successfully activated') : this.$t('User was successfully deactivated')
-          )
+          this.eventBus.emit('alert', {
+            level: 'success',
+            message: activate
+              ? this.$t('User was successfully activated')
+              : this.$t('User was successfully deactivated')
+          })
         })
         .catch((error) => {
-          this.eventBus.emit('alert', 'alert', error)
+          this.eventBus.emit('alert', { level: 'alert', message: error })
         })
       // }
       enableScroll()

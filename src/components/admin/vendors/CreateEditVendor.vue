@@ -83,17 +83,18 @@ export default defineComponent({
           url: this.url,
           logo: this.logoFile
         })
-        this.eventBus.emit(
-          'alert',
-          'success',
-          this.vendorId ? this.$t('Vendor was successfully updated') : this.$t('Vendor was successfully created')
-        )
+        this.eventBus.emit('alert', {
+          level: 'success',
+          message: this.vendorId
+            ? this.$t('Vendor was successfully updated')
+            : this.$t('Vendor was successfully created')
+        })
         if (!this.vendorId) {
           this.updated = true
           this.resetForm()
         }
       } catch (error) {
-        this.eventBus.emit('alert', 'alert', error)
+        this.eventBus.emit('alert', { level: 'alert', message: error })
       }
       this.loading = false
     },

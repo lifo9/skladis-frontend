@@ -86,16 +86,15 @@ export default defineComponent({
           name: this.name,
           warehouseId: this.warehouse
         })
-        this.eventBus.emit(
-          'alert',
-          'success',
-          this.roomId ? this.$t('Room was successfully updated') : this.$t('Room was successfully created')
-        )
+        this.eventBus.emit('alert', {
+          level: 'success',
+          message: this.roomId ? this.$t('Room was successfully updated') : this.$t('Room was successfully created')
+        })
         if (!this.roomId) {
           this.resetForm()
         }
       } catch (error) {
-        this.eventBus.emit('alert', 'alert', error)
+        this.eventBus.emit('alert', { level: 'alert', message: error })
       }
       this.loading = false
     },
@@ -140,7 +139,7 @@ export default defineComponent({
     },
     validateInputs() {
       if (!this.warehouse) {
-        this.eventBus.emit('alert', 'alert', this.$t('Please, select warehouse'))
+        this.eventBus.emit('alert', { level: 'alert', message: this.$t('Please, select warehouse') })
         return false
       }
 

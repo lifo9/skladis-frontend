@@ -33,7 +33,7 @@ export default defineComponent({
     }
   },
   mounted() {
-    this.eventBus.on('alert', (level, message) => {
+    this.eventBus.on('alert', ({ level, message }) => {
       window.scrollTo({ top: 0, behavior: 'smooth' })
       this.level = level
       this.message = message

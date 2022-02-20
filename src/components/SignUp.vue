@@ -90,7 +90,7 @@ export default defineComponent({
     signUpSuccess() {
       this.email = this.password = this.passwordConfirmation = this.firstName = this.lastName = ''
 
-      this.eventBus.emit('alert', 'success', this.$t('Registration successful message'))
+      this.eventBus.emit('alert', { level: 'success', message: this.$t('Registration successful message') })
     },
     signUpFailed(error) {
       this.error = (error.response && error.response.data && error.response.data.error) || ''

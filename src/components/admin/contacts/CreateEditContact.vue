@@ -89,17 +89,18 @@ export default defineComponent({
           phone: this.phone,
           avatar: this.avatarFile
         })
-        this.eventBus.emit(
-          'alert',
-          'success',
-          this.contactId ? this.$t('Contact was successfully updated') : this.$t('Contact was successfully created')
-        )
+        this.eventBus.emit('alert', {
+          level: 'success',
+          message: this.contactId
+            ? this.$t('Contact was successfully updated')
+            : this.$t('Contact was successfully created')
+        })
         if (!this.contactId) {
           this.updated = true
           this.resetForm()
         }
       } catch (error) {
-        this.eventBus.emit('alert', 'alert', error)
+        this.eventBus.emit('alert', { level: 'alert', message: error })
       }
       this.loading = false
     },

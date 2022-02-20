@@ -144,17 +144,18 @@ export default defineComponent({
           country: this.country,
           coordinates: this.coordinates
         })
-        this.eventBus.emit(
-          'alert',
-          'success',
-          this.supplierId ? this.$t('Supplier was successfully updated') : this.$t('Supplier was successfully created')
-        )
+        this.eventBus.emit('alert', {
+          level: 'success',
+          message: this.supplierId
+            ? this.$t('Supplier was successfully updated')
+            : this.$t('Supplier was successfully created')
+        })
         if (!this.supplierId) {
           this.updated = true
           this.resetForm()
         }
       } catch (error) {
-        this.eventBus.emit('alert', 'alert', error)
+        this.eventBus.emit('alert', { level: 'alert', message: error })
       }
       this.loading = false
     },

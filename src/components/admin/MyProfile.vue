@@ -119,11 +119,11 @@ export default defineComponent({
         })
 
         this.fetchData()
-        this.eventBus.emit('alert', 'success', this.$t('Your profile was successfully updated'))
+        this.eventBus.emit('alert', { level: 'success', message: this.$t('Your profile was successfully updated') })
 
         this.resetForm()
       } catch (error) {
-        this.eventBus.emit('alert', 'alert', error)
+        this.eventBus.emit('alert', { level: 'alert', message: error })
       }
       this.loading = false
     },

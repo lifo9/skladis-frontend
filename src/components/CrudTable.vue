@@ -323,11 +323,11 @@ export default defineComponent({
                 return value.status === 204
               })
             ) {
-              this.eventBus.emit('alert', 'success', this.$t('Items were successfully deleted'))
+              this.eventBus.emit('alert', { level: 'success', message: this.$t('Items were successfully deleted') })
             }
           })
           .catch((error) => {
-            this.eventBus.emit('alert', 'alert', error)
+            this.eventBus.emit('alert', { level: 'alert', message: error })
           })
           .finally(() => {
             this.selected = []
