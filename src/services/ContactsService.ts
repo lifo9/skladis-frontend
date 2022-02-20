@@ -33,8 +33,7 @@ export function createContact({ firstName, lastName, email, phone, avatar } = {}
     first_name: firstName,
     last_name: lastName,
     email: email,
-    phone: phone,
-    avatar: avatar
+    phone: phone
   }
 
   if (avatar) {

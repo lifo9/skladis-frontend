@@ -13,7 +13,7 @@ export const useMainStore = defineStore({
     signedIn: StorageService.load(STORE_ID, 'signedIn') || false,
     csrf: StorageService.load(STORE_ID, 'csrf') || undefined,
     appLanguage: StorageService.load(STORE_ID, 'appLanguage') || getStartingLocale(),
-    isMenuExpanded: StorageService.load(STORE_ID, 'isMenuExpanded') || true,
+    isMenuExpanded: StorageService.load(STORE_ID, 'isMenuExpanded'),
     currentTitle: '',
     currentSubtitle: ''
   }),
