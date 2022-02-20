@@ -8,7 +8,7 @@
     :size="size"
     :href="to"
   >
-    <spinner v-if="loading" class="mr-3 ml-1" />
+    <spinner v-if="loading" class="mr-3 ml-1 w-4 h-4 text-white" />
     <slot />
   </component>
 </template>

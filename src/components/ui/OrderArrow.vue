@@ -7,6 +7,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 export default defineComponent({
+  emits: ['click'],
   props: {
     order: {
       type: String,

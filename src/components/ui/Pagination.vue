@@ -122,6 +122,7 @@
 import PaginationNumber from '@/components/ui/PaginationNumber.vue'
 import { defineComponent } from 'vue'
 export default defineComponent({
+  emits: ['change'],
   components: { PaginationNumber },
   props: {
     current: {

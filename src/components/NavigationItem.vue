@@ -30,6 +30,7 @@ import { mapState } from 'pinia'
 
 import { defineComponent } from 'vue'
 export default defineComponent({
+  emits: ['navigated'],
   components: { RButton },
   props: {
     type: {

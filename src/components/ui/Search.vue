@@ -35,6 +35,7 @@
 import RForm from '@//components/ui/RForm.vue'
 import { defineComponent } from 'vue'
 export default defineComponent({
+  emits: ['search'],
   components: { RForm },
   data() {
     return {

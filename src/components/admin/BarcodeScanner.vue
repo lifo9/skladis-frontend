@@ -41,6 +41,7 @@ import RButton from '@/components/ui/RButton.vue'
 
 import { defineComponent } from 'vue'
 export default defineComponent({
+  emits: ['input'],
   components: { RButton },
 
   data() {

@@ -18,6 +18,7 @@ import { enableScroll } from '@/utils/helpers'
 
 import { defineComponent } from 'vue'
 export default defineComponent({
+  emits: ['close'],
   components: { RButton },
   methods: {
     scrolling(close) {

@@ -19,6 +19,7 @@ import { defineComponent } from 'vue'
 import { useMainStore } from '@/stores/mainStore'
 import { mapStores } from 'pinia'
 export default defineComponent({
+  emits: ['change'],
   components: { RButton },
   props: {
     row: {

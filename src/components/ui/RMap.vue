@@ -19,6 +19,7 @@ import LeafletGeoSearch from '@/components/ui/LeafletGeoSearch.vue'
 
 import { defineComponent } from 'vue'
 export default defineComponent({
+  emits: ['mapSearch'],
   components: {
     LMap,
     LTileLayer,

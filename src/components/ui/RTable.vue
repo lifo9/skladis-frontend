@@ -119,6 +119,7 @@ import Spinner from '@/components/ui/Spinner.vue'
 
 import { defineComponent } from 'vue'
 export default defineComponent({
+  emits: ['addSelected', 'removeSelected', 'deleteItem', 'order'],
   components: {
     Spinner,
     RInput,
