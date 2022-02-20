@@ -3,6 +3,8 @@
 </template>
 
 <script lang="ts">
+import { useMainStore } from '@/stores/mainStore'
+import { mapStores } from 'pinia'
 import { defineComponent } from 'vue'
 export default defineComponent({
   mounted() {
@@ -11,9 +13,12 @@ export default defineComponent({
   updated() {
     this.setTitle()
   },
+  computed: {
+    ...mapStores(useMainStore)
+  },
   methods: {
     setTitle() {
-      this.$store.commit('setCurrentTitle', this.$t('Users'))
+      this.mainStore.setCurrentTitle(this.$t('Users'))
     }
   }
 })

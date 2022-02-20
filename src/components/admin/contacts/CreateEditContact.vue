@@ -40,6 +40,8 @@ import { getContact, createContact, updateContact, deleteAvatar } from '@/servic
 import ImageUpload from '@/components/ui/ImageUpload.vue'
 
 import { defineComponent } from 'vue'
+import { useMainStore } from '@/stores/mainStore'
+import { mapStores } from 'pinia'
 export default defineComponent({
   components: { RForm, RButton, RInput, ImageUpload },
   data() {
@@ -55,9 +57,9 @@ export default defineComponent({
       updated: false
     }
   },
-  mounted() {
-    this.fetchData()
-    this.setTitle()
+  async mounted() {
+    await this.fetchData()
+    await this.setTitle()
   },
   updated() {
     this.setTitle()
@@ -65,7 +67,8 @@ export default defineComponent({
   computed: {
     contactId() {
       return this.$route.params.id
-    }
+    },
+    ...mapStores(useMainStore)
   },
   methods: {
     async create() {
@@ -133,8 +136,8 @@ export default defineComponent({
     },
     setTitle() {
       if (this.email) {
-        this.$store.commit('setCurrentTitle', this.$t('Contacts'))
-        this.$store.commit('setCurrentSubtitle', this.email)
+        this.mainStore.setCurrentTitle(this.$t('Contacts'))
+        this.mainStore.setCurrentSubtitle(this.email)
       }
     }
   }

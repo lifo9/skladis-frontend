@@ -43,6 +43,8 @@ import RForm from '@/components/ui/RForm.vue'
 import RInput from '@/components/ui/RInput.vue'
 
 import { defineComponent } from 'vue'
+import { useMainStore } from '@/stores/mainStore'
+import { mapStores } from 'pinia'
 export default defineComponent({
   components: { RButton, RInput, RForm },
   data() {
@@ -56,6 +58,9 @@ export default defineComponent({
       registrationKey: this.$route.params.registration_key,
       error: ''
     }
+  },
+  computed: {
+    ...mapStores(useMainStore)
   },
   created() {
     this.checkSignedIn()
@@ -100,7 +105,7 @@ export default defineComponent({
       return true
     },
     checkSignedIn() {
-      if (this.$store.getters.signedIn) {
+      if (this.mainStore.signedIn) {
         this.$router.replace('/')
       }
     }

@@ -43,6 +43,8 @@ import RMap from '@/components/ui/RMap.vue'
 
 import { reverseGeoCode } from '@/services/MapService'
 import { createWarehouse, getWarehouse, updateWarehouse } from '@/services/WarehouseService'
+import { useMainStore } from '@/stores/mainStore'
+import { mapStores } from 'pinia'
 
 import { defineComponent } from 'vue'
 export default defineComponent({
@@ -60,9 +62,9 @@ export default defineComponent({
       updated: false
     }
   },
-  mounted() {
-    this.fetchData()
-    this.setTitle()
+  async mounted() {
+    await this.fetchData()
+    await this.setTitle()
   },
   updated() {
     this.setTitle()
@@ -82,7 +84,8 @@ export default defineComponent({
     },
     warehouseId() {
       return this.$route.params.id
-    }
+    },
+    ...mapStores(useMainStore)
   },
   methods: {
     async create() {
@@ -169,8 +172,8 @@ export default defineComponent({
     },
     setTitle() {
       if (this.email) {
-        this.$store.commit('setCurrentTitle', this.$t('Warehouses'))
-        this.$store.commit('setCurrentSubtitle', this.name)
+        this.mainStore.setCurrentTitle(this.$t('Warehouses'))
+        this.mainStore.setCurrentSubtitle(this.name)
       }
     }
   }

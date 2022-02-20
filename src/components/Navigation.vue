@@ -11,7 +11,7 @@
     <div
       v-if="isOpen || type === 'desktop'"
       class="absolute top-16 left-0 z-50 px-0 w-full min-h-screen bg-gray-900 md:fixed md:z-auto"
-      :class="!isExpandend ? 'md:w-16' : 'md:w-64'"
+      :class="!mainStore.isMenuExpanded ? 'md:w-16' : 'md:w-64'"
     >
       <ul class="overflow-y-auto h-screen">
         <navigation-item
@@ -23,34 +23,34 @@
           <div class="flex flex-wrap items-center space-x-2">
             <a
               class="text-2xl text-white transition ease-in-out select-none material-icons-sharp"
-              :class="!isExpandend ? 'transform rotate-90 transition ease-in-out' : ''"
+              :class="!mainStore.isMenuExpanded ? 'transform rotate-90 transition ease-in-out' : ''"
               href="javascript:"
               @click="toggleMenu()"
             >
               menu
             </a>
-            <span v-if="isExpandend" class="transition ease-in-out">{{ $t('Menu') }}</span>
+            <span v-if="mainStore.isMenuExpanded" class="transition ease-in-out">{{ $t('Menu') }}</span>
           </div>
         </navigation-item>
         <navigation-item
           route-name="Home"
           label="Home"
           icon="home"
-          :only-icon="!isExpandend"
+          :only-icon="!mainStore.isMenuExpanded"
           v-on:navigated="toggleMenu"
         />
         <!-- <navigation-item
           route-name="VendorsView"
           label="Vendors"
           icon="business_center"
-          :only-icon="!isExpandend"
+          :only-icon="!mainStore.isMenuExpanded"
           v-on:navigated="toggleMenu"
         /> -->
         <navigation-item
           route-name="SuppliersView"
           label="Suppliers"
           icon="directions_car"
-          :only-icon="!isExpandend"
+          :only-icon="!mainStore.isMenuExpanded"
           v-on:navigated="toggleMenu"
         />
         <navigation-item
@@ -58,7 +58,7 @@
           route-name="WarehousesView"
           label="Warehouses"
           icon="warehouse"
-          :only-icon="!isExpandend"
+          :only-icon="!mainStore.isMenuExpanded"
           v-on:navigated="toggleMenu"
         />
         <navigation-item
@@ -66,14 +66,14 @@
           route-name="RoomsView"
           label="Rooms"
           icon="meeting_room"
-          :only-icon="!isExpandend"
+          :only-icon="!mainStore.isMenuExpanded"
           v-on:navigated="toggleMenu"
         />
         <navigation-item
           route-name="ContactsView"
           label="Contacts"
           icon="contacts"
-          :only-icon="!isExpandend"
+          :only-icon="!mainStore.isMenuExpanded"
           v-on:navigated="toggleMenu"
         />
         <navigation-item
@@ -81,7 +81,7 @@
           route-name="UsersView"
           label="Users"
           icon="person"
-          :only-icon="!isExpandend"
+          :only-icon="!mainStore.isMenuExpanded"
           v-on:navigated="toggleMenu"
         />
       </ul>
@@ -91,6 +91,8 @@
 
 <script lang="ts">
 import NavigationItem from '@/components/NavigationItem.vue'
+import { useMainStore } from '@/stores/mainStore'
+import { mapStores } from 'pinia'
 import { defineComponent } from 'vue'
 export default defineComponent({
   inject: ['constants'],
@@ -101,11 +103,12 @@ export default defineComponent({
       default: 'mobile'
     }
   },
-
+  computed: {
+    ...mapStores(useMainStore)
+  },
   data() {
     return {
-      isOpen: false,
-      isExpandend: this.$store.getters.isMenuExpanded
+      isOpen: false
     }
   },
 
@@ -114,8 +117,7 @@ export default defineComponent({
       this.isOpen = !this.isOpen
     },
     toggleExpanded() {
-      this.$store.commit('setIsMenuExpanded', !this.isExpandend)
-      this.isExpandend = !this.isExpandend
+      this.mainStore.setIsMenuExpanded(!this.mainStore.isMenuExpanded)
     }
   }
 })

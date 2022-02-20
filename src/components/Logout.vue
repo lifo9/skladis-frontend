@@ -4,9 +4,15 @@
 
 <script lang="ts">
 import { signOut } from '@/services/UserService'
+import { useMainStore } from '@/stores/mainStore'
+import { mapStores } from 'pinia'
 
 import { defineComponent } from 'vue'
+
 export default defineComponent({
+  computed: {
+    ...mapStores(useMainStore)
+  },
   methods: {
     async signOut() {
       try {
@@ -14,7 +20,7 @@ export default defineComponent({
       } catch (err) {
         // failed request after failed refresh token request automatically signs out
       }
-      this.$store.commit('unsetCurrentUser')
+      this.mainStore.unsetCurrentUser()
       this.$router.replace('/sign-in')
     }
   }

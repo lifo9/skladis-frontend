@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 
-import store from '@/store'
+import { useMainStore } from '@/stores/mainStore'
 import { CONSTANTS } from '@/plugins/constants'
 import { isCurrentUserInRole } from '@/utils/directives/role'
 
@@ -45,14 +45,18 @@ import CreateEditSupplier from '@/components/admin/suppliers/CreateEditSupplier.
 import ViewSuppliers from '@/components/admin/suppliers/ViewSuppliers.vue'
 
 function redirectSignedOut(to, from, next) {
-  if (!store.getters.signedIn) {
+  const store = useMainStore()
+
+  if (!store.signedIn) {
     next('/sign-in')
   }
   next()
 }
 
 function redirectSignedIn(to, from, next) {
-  if (store.getters.signedIn) {
+  const store = useMainStore()
+
+  if (store.signedIn) {
     next('/')
   }
   next()
@@ -244,10 +248,11 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  const store = useMainStore()
   const requiredRole = to.meta.role
 
-  store.commit('unsetCurrentTitle')
-  store.commit('unsetCurrentSubtitle')
+  store.unsetCurrentTitle()
+  store.unsetCurrentSubtitle()
 
   if (requiredRole && !isCurrentUserInRole(requiredRole)) {
     next('/')

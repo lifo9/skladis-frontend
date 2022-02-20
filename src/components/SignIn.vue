@@ -2,14 +2,14 @@
   <r-form :error="error" @submit.prevent="signIn" class="my-14 mx-auto w-full max-w-md">
     <r-input
       v-model="email"
-      required="required"
+      :required="true"
       type="email"
       :label="$t('Email address')"
       placeholder="email@example.com"
     />
     <r-input
       v-model="password"
-      required="required"
+      :required="true"
       type="password"
       :label="$t('Password')"
       :placeholder="$t('Password')"
@@ -29,6 +29,8 @@ import RForm from '@/components/ui/RForm.vue'
 import RInput from '@/components/ui/RInput.vue'
 
 import { defineComponent } from 'vue'
+import { useMainStore } from '@/stores/mainStore'
+import { mapStores } from 'pinia'
 export default defineComponent({
   components: { RButton, RInput, RForm },
   data() {
@@ -38,6 +40,9 @@ export default defineComponent({
       password: '',
       error: ''
     }
+  },
+  computed: {
+    ...mapStores(useMainStore)
   },
   created() {
     this.checkSignedIn()
@@ -67,14 +72,14 @@ export default defineComponent({
         const attributes = me.data.data.attributes
         const roles = me.data.included.filter((inc) => inc.type === 'role').map((role) => role.attributes.name)
 
-        this.$store.commit('setLoggedInUser', {
-          currentUser: {
+        this.mainStore.setLoggedInUser(
+          {
             id: userId,
             ...attributes,
             roles: roles
           },
-          csrf: response.data.csrf
-        })
+          response.data.csrf
+        )
         this.error = ''
         this.$router.replace('/')
       } catch (error) {
@@ -83,10 +88,10 @@ export default defineComponent({
     },
     signinFailed(error) {
       this.error = (error.response && error.response.data && error.response.data.error) || ''
-      this.$store.commit('unsetCurrentUser')
+      this.mainStore.unsetCurrentUser()
     },
     checkSignedIn() {
-      if (this.$store.getters.signedIn) {
+      if (this.mainStore.signedIn) {
         this.$router.replace('/')
       }
     }

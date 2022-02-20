@@ -78,7 +78,7 @@ export function convertToOptions(items, idKey, labelKey) {
   return items.map((item) => ({ id: item[idKey], value: item[labelKey] }))
 }
 
-export function optionsFromValues(values, dictionary) {
+export function optionsFromValues(values, dictionary = undefined) {
   return values.map((value) => ({
     id: value,
     value: dictionary ? dictionary[value] : value

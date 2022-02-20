@@ -1,5 +1,5 @@
 import axios from 'axios'
-import store from '@/store'
+import { useMainStore } from '@/stores/mainStore'
 import { getVueLocale } from '@/services/LanguageService'
 import { SIGN_IN_URL } from '@/services/UserService'
 import { getMyProfile } from '@/services/MyProfileService'
@@ -48,15 +48,17 @@ securedAxiosInstance.interceptors.request.use((config) => {
   if (method !== 'OPTIONS' && method !== 'GET') {
     config.headers = {
       ...config.headers,
-      'X-CSRF-TOKEN': store.getters.csrf
+      'X-CSRF-TOKEN': store.csrf
     }
   }
   return config
 })
 
 securedAxiosInstance.interceptors.response.use(null, async (error) => {
+  const store = useMainStore()
+
   if (
-    store.getters.signedIn &&
+    store.signedIn &&
     error.response &&
     error.response.config &&
     !error.config._retry &&
@@ -64,7 +66,7 @@ securedAxiosInstance.interceptors.response.use(null, async (error) => {
   ) {
     const originalRequest = error.config
     const signOut = originalRequest.method.toUpperCase() === 'DELETE' && originalRequest.url === SIGN_IN_URL
-    const refreshToken = store.getters.csrf
+    const refreshToken = store.csrf
 
     if (isRefreshing) {
       try {
@@ -93,14 +95,14 @@ securedAxiosInstance.interceptors.response.use(null, async (error) => {
               const attributes = me.data.data.attributes
               const roles = me.data.included.filter((inc) => inc.type === 'role').map((role) => role.attributes.name)
 
-              store.commit('setLoggedInUser', {
-                currentUser: {
+              store.setLoggedInUser(
+                {
                   id: userId,
                   ...attributes,
                   roles: roles
                 },
-                csrf: csrf
-              })
+                csrf
+              )
             })
           }
           processQueue(null, csrf)
@@ -108,7 +110,7 @@ securedAxiosInstance.interceptors.response.use(null, async (error) => {
           resolve(axios(originalRequest))
         })
         .catch((err) => {
-          store.commit('unsetCurrentUser')
+          store.unsetCurrentUser()
           // redirect to signin in case refresh request fails
           location.replace('/')
           processQueue(err, null)

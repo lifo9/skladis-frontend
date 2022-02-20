@@ -18,18 +18,15 @@
   <p v-else-if="type === 'plain'" @click="navigate" :size="size ? size : ''">
     <span v-if="!onlyIcon">{{ label }}</span>
   </p>
-  <li
-    v-else-if="type === 'list-custom'"
-    class="navigation-menu-item"
-    :class="{ isMenuExpanded: 'justify-center' }"
-    @click="$emit('click')"
-  >
+  <li v-else-if="type === 'list-custom'" class="navigation-menu-item" :class="{ isMenuExpanded: 'justify-center' }">
     <slot />
   </li>
 </template>
 
 <script lang="ts">
 import RButton from '@/components/ui/RButton.vue'
+import { useMainStore } from '@/stores/mainStore'
+import { mapState } from 'pinia'
 
 import { defineComponent } from 'vue'
 export default defineComponent({
@@ -64,20 +61,11 @@ export default defineComponent({
       default: false
     }
   },
-  data() {
-    return {
-      isMenuExpanded: this.$store.getters.isMenuExpanded
-    }
-  },
-  watch: {
-    '$store.getters.isMenuExpanded': function () {
-      this.isMenuExpanded = this.$store.getters.isMenuExpanded
-    }
-  },
   computed: {
     isActiveRoute() {
       return this.$router.currentRoute.name === this.routeName
-    }
+    },
+    ...mapState(useMainStore, ['isMenuExpanded'])
   },
   methods: {
     async navigate() {

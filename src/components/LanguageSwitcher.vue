@@ -13,18 +13,25 @@
 
 <script lang="ts">
 import RSelect, { optionsFromValues } from '@/components/ui/RSelect.vue'
+import { useMainStore } from '@/stores/mainStore'
+import { mapStores } from 'pinia'
 import { defineComponent } from 'vue'
+
 export default defineComponent({
   components: { RSelect },
   data() {
     return {
-      langs: optionsFromValues(Object.keys(this.$i18n.messages))
+      langs: optionsFromValues(this.$i18n.availableLocales)
     }
   },
+  computed: {
+    ...mapStores(useMainStore)
+  },
   methods: {
-    switchLanguage(language) {
-      this.$store.commit('setAppLanguage', language)
-      this.$emit('input', language)
+    switchLanguage(event) {
+      const language = event.target.value
+
+      this.mainStore.setAppLanguage(language)
     }
   }
 })

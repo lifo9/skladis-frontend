@@ -40,6 +40,8 @@ import { getWarehouses } from '@/services/WarehouseService'
 import RSelect from '@/components/ui/RSelect.vue'
 
 import { defineComponent } from 'vue'
+import { useMainStore } from '@/stores/mainStore'
+import { mapStores } from 'pinia'
 export default defineComponent({
   components: { RForm, RButton, RInput, RSelect },
   data() {
@@ -54,9 +56,9 @@ export default defineComponent({
   beforeMount() {
     this.fetchWarehouses()
   },
-  mounted() {
-    this.fetchData()
-    this.setTitle()
+  async mounted() {
+    await this.fetchData()
+    await this.setTitle()
   },
   updated() {
     this.setTitle()
@@ -64,7 +66,8 @@ export default defineComponent({
   computed: {
     roomId() {
       return this.$route.params.id
-    }
+    },
+    ...mapStores(useMainStore)
   },
   methods: {
     setWarehouse(warehouseId) {
@@ -149,8 +152,8 @@ export default defineComponent({
     },
     setTitle() {
       if (this.name) {
-        this.$store.commit('setCurrentTitle', this.$t('Room'))
-        this.$store.commit('setCurrentSubtitle', this.name)
+        this.mainStore.setCurrentTitle(this.$t('Room'))
+        this.mainStore.setCurrentSubtitle(this.name)
       }
     }
   }

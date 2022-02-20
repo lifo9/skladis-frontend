@@ -71,6 +71,8 @@ import { getContacts } from '@/services/ContactsService'
 import RSelect from '@/components/ui/RSelect.vue'
 
 import { defineComponent } from 'vue'
+import { useMainStore } from '@/stores/mainStore'
+import { mapStores } from 'pinia'
 export default defineComponent({
   components: { RMap, RForm, RInput, RButton, RSelect },
   data() {
@@ -95,9 +97,9 @@ export default defineComponent({
   beforeMount() {
     this.fetchContacts()
   },
-  mounted() {
-    this.fetchData()
-    this.setTitle()
+  async mounted() {
+    await this.fetchData()
+    await this.setTitle()
   },
   updated() {
     this.setTitle()
@@ -117,7 +119,8 @@ export default defineComponent({
     },
     supplierId() {
       return this.$route.params.id
-    }
+    },
+    ...mapStores(useMainStore)
   },
   methods: {
     async create() {
@@ -228,8 +231,8 @@ export default defineComponent({
     },
     setTitle() {
       if (this.name) {
-        this.$store.commit('setCurrentTitle', this.$t('Suppliers'))
-        this.$store.commit('setCurrentSubtitle', this.name)
+        this.mainStore.setCurrentTitle(this.$t('Suppliers'))
+        this.mainStore.setCurrentSubtitle(this.name)
       }
     }
   }

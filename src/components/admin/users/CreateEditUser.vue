@@ -85,6 +85,8 @@ import Multiselect from 'vue-multiselect'
 import ImageUpload from '@/components/ui/ImageUpload.vue'
 
 import { defineComponent } from 'vue'
+import { useMainStore } from '@/stores/mainStore'
+import { mapStores } from 'pinia'
 export default defineComponent({
   components: { RForm, RButton, RInput, Multiselect, ImageUpload },
   data() {
@@ -110,11 +112,12 @@ export default defineComponent({
   computed: {
     userId() {
       return this.$route.params.id
-    }
+    },
+    ...mapStores(useMainStore)
   },
-  mounted() {
-    this.fetchData()
-    this.setTitle()
+  async mounted() {
+    await this.fetchData()
+    await this.setTitle()
   },
   updated() {
     this.setTitle()
@@ -181,17 +184,15 @@ export default defineComponent({
           avatar: this.avatarFile
         })
 
-        if (this.userId === this.$store.getters.currentUser.id) {
+        if (this.userId === this.mainStore.currentUser.id) {
           const userId = newUser.data.data.id
           const attributes = newUser.data.data.attributes
           const roles = newUser.data.included.filter((inc) => inc.type === 'role').map((role) => role.attributes.name)
 
-          this.$store.commit('setCurrentUser', {
-            currentUser: {
-              id: userId,
-              ...attributes,
-              roles: roles
-            }
+          this.mainStore.setCurrentUser({
+            id: userId,
+            ...attributes,
+            roles: roles
           })
         }
 
@@ -249,8 +250,8 @@ export default defineComponent({
     },
     setTitle() {
       if (this.email) {
-        this.$store.commit('setCurrentTitle', this.$t('Users'))
-        this.$store.commit('setCurrentSubtitle', this.email)
+        this.mainStore.setCurrentTitle(this.$t('Users'))
+        this.mainStore.setCurrentSubtitle(this.email)
       }
     }
   }

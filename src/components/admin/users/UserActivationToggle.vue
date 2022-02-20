@@ -14,9 +14,10 @@ import RButton from '@/components/ui/RButton.vue'
 import { enableScroll, disableScroll } from '@/utils/helpers'
 import ConfirmationModal from '@/components/ui/ConfirmationModal.vue'
 import { activateUser, deactivateUser } from '@/services/UsersService'
-import store from '@/store'
 
 import { defineComponent } from 'vue'
+import { useMainStore } from '@/stores/mainStore'
+import { mapStores } from 'pinia'
 export default defineComponent({
   components: { RButton },
   props: {
@@ -27,11 +28,12 @@ export default defineComponent({
   },
   computed: {
     isCurrentlyLoggedIn() {
-      return this.row.id === store.getters.currentUser.id
+      return this.row.id === this.mainStore.currentUser.id
     },
     isActive() {
       return this.row.attributes.active === true
-    }
+    },
+    ...mapStores(useMainStore)
   },
   methods: {
     async handleActivation(activate) {

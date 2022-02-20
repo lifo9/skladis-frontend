@@ -27,14 +27,14 @@
     "leaflet-geosearch": "^3.6.0",
     "material-icons": "^1.10.7",
     "mitt": "^3.0.0",
+    "pinia": "^2.0.11",
     "quagga": "^0.12.1",
     "remove": "^0.1.5",
     "vue": "^3.2.25",
     "vue-axios": "^3.4.1",
     "vue-i18n": "9",
     "vue-multiselect": "^3.0.0-alpha.2",
-    "vue-router": "4",
-    "vuex": "^4.0.2"
+    "vue-router": "4"
   },
   "devDependencies": {
     "@types/node": "^17.0.18",

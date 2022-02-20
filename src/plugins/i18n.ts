@@ -1,5 +1,5 @@
 /* eslint-disable prefer-const */
-import { createI18n } from 'vue-i18n'
+import { createI18n } from 'vue-i18n/index'
 import StorageService from '@/services/StorageService'
 import { getStartingLocale } from '@/services/LanguageService'
 
@@ -22,7 +22,7 @@ const messages = loadMessages()
 const i18n = createI18n({
   fallbackWarn: false,
   missingWarn: false,
-  locale: StorageService.load('appLanguage') || getStartingLocale(),
+  locale: StorageService.load('main', 'appLanguage') || getStartingLocale(),
   fallbackLocale: 'en',
   messages
 })

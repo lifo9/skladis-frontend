@@ -1,4 +1,4 @@
-import store from '@/store'
+import { useMainStore } from '@/stores/mainStore'
 
 function checkRole(el, binding, vnode, old) {
   const role = binding.value
@@ -9,7 +9,9 @@ function checkRole(el, binding, vnode, old) {
 }
 
 export function isCurrentUserInRole(role) {
-  const currentUserRoles = store.getters.currentUser.roles
+  const store = useMainStore()
+
+  const currentUserRoles = store.currentUser.roles
 
   if (currentUserRoles && currentUserRoles.includes(role)) {
     return true

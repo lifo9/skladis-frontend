@@ -51,6 +51,8 @@ import { getMyProfile, updateMyProfile, deleteAvatar } from '@/services/MyProfil
 import ImageUpload from '@/components/ui/ImageUpload.vue'
 
 import { defineComponent } from 'vue'
+import { useMainStore } from '@/stores/mainStore'
+import { mapStores } from 'pinia'
 export default defineComponent({
   components: { RForm, RButton, RInput, ImageUpload },
   data() {
@@ -69,6 +71,9 @@ export default defineComponent({
       deleteAvatar: false
     }
   },
+  computed: {
+    ...mapStores(useMainStore)
+  },
   mounted() {
     this.fetchData()
   },
@@ -76,7 +81,7 @@ export default defineComponent({
     async fetchData() {
       this.loading = true
       try {
-        const user = this.$store.getters.currentUser
+        const user = this.mainStore.currentUser
         for (let [key, value] of Object.entries(user)) {
           this[key] = value
         }
@@ -107,12 +112,10 @@ export default defineComponent({
         const userId = me.data.data.id
         const attributes = me.data.data.attributes
         const roles = me.data.included.filter((inc) => inc.type === 'role').map((role) => role.attributes.name)
-        this.$store.commit('setCurrentUser', {
-          currentUser: {
-            id: userId,
-            ...attributes,
-            roles: roles
-          }
+        this.mainStore.setCurrentUser({
+          id: userId,
+          ...attributes,
+          roles: roles
         })
 
         this.fetchData()

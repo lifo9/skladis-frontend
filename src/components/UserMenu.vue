@@ -13,19 +13,19 @@
         :class="[menuHidden ? 'hidden' : '']"
       >
         <ul class="user-menu">
-          <li v-if="$store.getters.signedIn" class="not-hoverable">
-            <p>{{ $store.getters.currentUser.email }}</p>
+          <li v-if="mainStore.signedIn" class="not-hoverable">
+            <p>{{ mainStore.currentUser.email }}</p>
           </li>
-          <li v-if="$store.getters.signedIn" @click="hideMenu">
+          <li v-if="mainStore.signedIn" @click="hideMenu">
             <navigation-item class="text-left" type="plain" route-name="MyProfile" :label="$t('My profile')" />
           </li>
           <li class="not-hoverable">
             <p><language-switcher @input="hideMenu" /></p>
           </li>
-          <li v-if="!$store.getters.signedIn" @click="navigate('SignIn')">
+          <li v-if="!mainStore.signedIn" @click="navigate('SignIn')">
             <p>{{ $t('Sign In') }}</p>
           </li>
-          <li v-if="$store.getters.signedIn" @click="hideMenu">
+          <li v-if="mainStore.signedIn" @click="hideMenu">
             <logout />
           </li>
         </ul>
@@ -38,6 +38,8 @@
 import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
 import Logout from '@/components/Logout.vue'
 import NavigationItem from '@/components/NavigationItem.vue'
+import { useMainStore } from '@/stores/mainStore'
+import { mapStores } from 'pinia'
 import { defineComponent } from 'vue'
 export default defineComponent({
   components: { Logout, LanguageSwitcher, NavigationItem },
@@ -45,6 +47,9 @@ export default defineComponent({
     return {
       menuHidden: true
     }
+  },
+  computed: {
+    ...mapStores(useMainStore)
   },
   methods: {
     navigate(routeName) {

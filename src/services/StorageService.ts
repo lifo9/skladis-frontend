@@ -1,18 +1,40 @@
 export default {
-  persist(key: string, value: any) {
-    localStorage?.setItem(key, JSON.stringify(value))
+  persist(storeId: string, key: string, value: any) {
+    const storeKey = `${storeId}-store`
+    const storeContent = loadStoreContent(storeKey)
+    const storedObject = { [key]: value }
+
+    localStorage?.setItem(storeKey, JSON.stringify({ ...storeContent, ...storedObject }))
   },
 
-  load(key: string, defaultValue = undefined): any {
-    const value = localStorage?.getItem(key)
-    if (value) {
-      return JSON.parse(value)
+  load(storeId: string, key: string, defaultValue = undefined): any {
+    const storeKey = `${storeId}-store`
+    const storeContent = loadStoreContent(storeKey)
+
+    if (storeContent[key]) {
+      return storeContent[key]
     } else {
       defaultValue
     }
   },
 
-  remove(key: string) {
-    localStorage?.removeItem(key)
+  remove(storeId: string, key: string) {
+    const storeKey = `${storeId}-store`
+    const storeContent = loadStoreContent(storeKey)
+
+    if (storeContent[key]) {
+      delete storeContent[key]
+      localStorage?.setItem(storeKey, JSON.stringify({ ...storeContent }))
+    }
   }
+}
+
+function loadStoreContent(storeKey: string): object {
+  const content = localStorage?.getItem(storeKey)
+
+  if (content) {
+    return JSON.parse(content)
+  }
+
+  return {}
 }

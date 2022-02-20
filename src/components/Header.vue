@@ -1,8 +1,8 @@
 <template>
   <div class="sticky top-0 z-40 h-16 text-white bg-gray-800 shadow-md">
-    <header class="flex" :class="!this.$store.getters.signedIn ? 'container mx-auto' : ''">
+    <header class="flex" :class="!mainStore.signedIn ? 'container mx-auto' : ''">
       <navigation
-        v-if="this.$store.getters.signedIn"
+        v-if="mainStore.signedIn"
         type="mobile"
         class="flex order-1 justify-start items-center px-4 mr-auto md:hidden md:order-2"
       />
@@ -18,8 +18,14 @@
 import Navigation from '@/components/Navigation.vue'
 import Logo from '@/components/ui/Logo.vue'
 import UserMenu from '@/components/UserMenu.vue'
+import { useMainStore } from '@/stores/mainStore'
+import { mapStores } from 'pinia'
 import { defineComponent } from 'vue'
+
 export default defineComponent({
-  components: { Logo, UserMenu, Navigation }
+  components: { Logo, UserMenu, Navigation },
+  computed: {
+    ...mapStores(useMainStore)
+  }
 })
 </script>
