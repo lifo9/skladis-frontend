@@ -16,8 +16,9 @@ import { getVendors, deleteVendor } from '@/services/VendorService'
 import AvatarImage from '../../AvatarImage.vue'
 import CrudLink from '../../CrudLink.vue'
 import CrudText from '../../CrudText.vue'
-
+import { shallowRef } from 'vue'
 import { defineComponent } from 'vue'
+
 export default defineComponent({
   components: { CrudTable },
   data() {
@@ -27,14 +28,14 @@ export default defineComponent({
       customCols: [
         {
           header: '',
-          component: AvatarImage,
+          component: shallowRef(AvatarImage),
           options: {
             attribute: 'logo'
           }
         },
         {
           header: this.$t('name'),
-          component: CrudText,
+          component: shallowRef(CrudText),
           options: {
             attribute: 'name',
             sort: true
@@ -42,7 +43,7 @@ export default defineComponent({
         },
         {
           header: this.$t('url'),
-          component: CrudLink,
+          component: shallowRef(CrudLink),
           options: {
             attribute: 'url',
             newTab: true,

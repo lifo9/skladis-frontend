@@ -15,7 +15,6 @@
         :checked="type === 'checkbox' && modelValue === true"
         :disabled="disabled"
         v-bind="$attrs"
-        @input="handleInputChange"
         @change="handleInputChange"
       />
       <span
@@ -82,12 +81,7 @@ export default defineComponent({
   },
   methods: {
     handleInputChange(event) {
-      if (event.type === 'input') {
-        this.$emit('update:modelValue', this.type === 'checkbox' ? event.target.checked : event.target.value)
-      }
-      if (event.type === 'change') {
-        this.$emit('update:modelValue', this.type === 'checkbox' ? event.target.checked : event.target.value)
-      }
+      this.$emit('update:modelValue', this.type === 'checkbox' ? event.target.checked : event.target.value)
     }
   }
 })

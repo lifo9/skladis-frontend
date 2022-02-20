@@ -17,19 +17,20 @@ import CrudTable from '../../CrudTable.vue'
 import { deleteUser, getUsers } from '@/services/UsersService'
 import UserActivationToggle from '@//components/admin/users/UserActivationToggle.vue'
 import AvatarImage from '../../AvatarImage.vue'
-
+import { markRaw, shallowRef } from 'vue'
 import { defineComponent } from 'vue'
+
 export default defineComponent({
   components: { CrudTable },
   data() {
     return {
       getEndpoint: getUsers,
       deleteEndpoint: deleteUser,
-      customActions: [UserActivationToggle],
+      customActions: [markRaw(UserActivationToggle)],
       customCols: [
         {
           header: '',
-          component: AvatarImage,
+          component: shallowRef(AvatarImage),
           options: {
             attribute: 'avatar'
           }

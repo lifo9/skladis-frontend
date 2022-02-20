@@ -15,8 +15,9 @@
 import CrudTable from '../../CrudTable.vue'
 import { deleteRoom, getRooms } from '@/services/RoomService'
 import CrudLink from '../../CrudLink.vue'
-
+import { shallowRef } from 'vue'
 import { defineComponent } from 'vue'
+
 export default defineComponent({
   components: { CrudTable },
   data() {
@@ -34,7 +35,7 @@ export default defineComponent({
       customCols: [
         {
           header: this.$t('warehouse'),
-          component: CrudLink,
+          component: shallowRef(CrudLink),
           options: {
             relationship: 'warehouse',
             attribute: 'name',

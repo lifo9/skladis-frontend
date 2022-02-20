@@ -22,7 +22,7 @@
             <r-input
               class="flex flex-wrap justify-start items-center ml-auto w-6 sm:justify-center sm:ml-0"
               type="checkbox"
-              :value="isSelectedAll"
+              :model-value="isSelectedAll"
               @change="selectAll"
             />
           </th>
@@ -59,7 +59,11 @@
             :data-title="$t('Select')"
             class="flex flex-wrap justify-end items-center sm:table-cell has-title"
           >
-            <r-input type="checkbox" :value="isSelected(row.id)" @change="select(row.id, $event)" />
+            <r-input
+              type="checkbox"
+              :model-value="isSelected(row.id)"
+              @change="select(row.id, $event.target.checked)"
+            />
           </td>
           <td v-if="row.id" :data-title="$t('ID')" class="has-title">
             {{ row.id }}
@@ -286,7 +290,8 @@ export default defineComponent({
         this.$emit('removeSelected', rowId)
       }
     },
-    selectAll(checked) {
+    selectAll(event) {
+      const checked = event.target.checked
       const rowIds = this.rows.map((row) => row.id)
 
       if (checked) {
@@ -330,7 +335,7 @@ export default defineComponent({
 })
 </script>
 
-<style lang="postcss" scoped>
+<style lang="postcss">
 table {
   @apply w-full;
 }

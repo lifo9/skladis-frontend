@@ -16,8 +16,9 @@ import CrudTable from '../../../components/CrudTable.vue'
 import { getSuppliers, deleteSupplier } from '@/services/SupplierService'
 import CrudLink from '../../CrudLink.vue'
 import CrudText from '../../CrudText.vue'
-
+import { shallowRef } from 'vue'
 import { defineComponent } from 'vue'
+
 export default defineComponent({
   components: { CrudTable },
   data() {
@@ -39,7 +40,7 @@ export default defineComponent({
       customCols: [
         {
           header: this.$t('name'),
-          component: CrudLink,
+          component: shallowRef(CrudLink),
           options: {
             attribute: 'name',
             linkAttribute: 'url',
@@ -50,7 +51,7 @@ export default defineComponent({
         },
         {
           header: this.$t('ico'),
-          component: CrudText,
+          component: shallowRef(CrudText),
           options: {
             attribute: 'ico',
             sort: true,
@@ -59,7 +60,7 @@ export default defineComponent({
         },
         {
           header: this.$t('dic'),
-          component: CrudText,
+          component: shallowRef(CrudText),
           options: {
             attribute: 'dic',
             sort: true,
@@ -68,7 +69,7 @@ export default defineComponent({
         },
         {
           header: this.$t('free_delivery_from'),
-          component: CrudText,
+          component: shallowRef(CrudText),
           options: {
             attribute: 'free_delivery_from',
             sort: true,
@@ -77,7 +78,7 @@ export default defineComponent({
         },
         {
           header: this.$t('contact'),
-          component: CrudLink,
+          component: shallowRef(CrudLink),
           options: {
             relationship: 'contact',
             attribute: ['first_name', 'last_name'],
@@ -87,7 +88,7 @@ export default defineComponent({
         },
         {
           header: this.$t('street_name'),
-          component: CrudText,
+          component: shallowRef(CrudText),
           options: {
             relationship: 'address',
             attribute: 'street_name',
@@ -97,7 +98,7 @@ export default defineComponent({
         },
         {
           header: this.$t('street_number'),
-          component: CrudText,
+          component: shallowRef(CrudText),
           options: {
             relationship: 'address',
             attribute: 'street_number',
@@ -107,7 +108,7 @@ export default defineComponent({
         },
         {
           header: this.$t('city'),
-          component: CrudText,
+          component: shallowRef(CrudText),
           options: {
             relationship: 'address',
             attribute: 'city',
@@ -117,7 +118,7 @@ export default defineComponent({
         },
         {
           header: this.$t('country'),
-          component: CrudText,
+          component: shallowRef(CrudText),
           options: {
             relationship: 'address',
             attribute: 'country',

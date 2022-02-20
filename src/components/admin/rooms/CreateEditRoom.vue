@@ -15,7 +15,7 @@
         :required="true"
         :disableDefaultOption="false"
         :defaultOption="$t('Please, select warehouse')"
-        :value="this.warehouse"
+        :value="warehouse"
         @input="setWarehouse"
       />
 

@@ -37,26 +37,26 @@ export default defineComponent({
     ...mapStores(useMainStore)
   },
   methods: {
-    async handleActivation(activate) {
+    handleActivation(activate) {
       disableScroll()
-      const confirmation = await this.$modal(ConfirmationModal)
+      // const confirmation = await this.$modal(ConfirmationModal)
 
-      if (confirmation) {
-        const endpoint = activate ? activateUser : deactivateUser
-        endpoint(this.row.id)
-          .then(() => {
-            this.row.attributes.active = activate
+      // if (confirmation) {
+      const endpoint = activate ? activateUser : deactivateUser
+      endpoint(this.row.id)
+        .then(() => {
+          this.row.attributes.active = activate
 
-            this.eventBus.emit(
-              'alert',
-              'success',
-              activate ? this.$t('User was successfully activated') : this.$t('User was successfully deactivated')
-            )
-          })
-          .catch((error) => {
-            this.eventBus.emit('alert', 'alert', error)
-          })
-      }
+          this.eventBus.emit(
+            'alert',
+            'success',
+            activate ? this.$t('User was successfully activated') : this.$t('User was successfully deactivated')
+          )
+        })
+        .catch((error) => {
+          this.eventBus.emit('alert', 'alert', error)
+        })
+      // }
       enableScroll()
 
       this.$emit('change', this.row)

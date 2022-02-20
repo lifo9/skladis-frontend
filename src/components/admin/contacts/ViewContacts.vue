@@ -14,6 +14,7 @@
 import CrudTable from '../../../components/CrudTable.vue'
 import { getContacts, deleteContact } from '@/services/ContactsService'
 import AvatarImage from '../../AvatarImage.vue'
+import { shallowRef } from 'vue'
 
 import { defineComponent } from 'vue'
 export default defineComponent({
@@ -25,7 +26,7 @@ export default defineComponent({
       customCols: [
         {
           header: '',
-          component: AvatarImage,
+          component: shallowRef(AvatarImage),
           options: {
             attribute: 'avatar'
           }
