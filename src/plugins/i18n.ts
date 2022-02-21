@@ -1,5 +1,5 @@
 /* eslint-disable prefer-const */
-import { createI18n } from 'vue-i18n/index'
+import { createI18n } from 'vue-i18n'
 
 import { getStartingLocale } from '@/services/LanguageService'
 import StorageService from '@/services/StorageService'
