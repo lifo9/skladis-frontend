@@ -40,7 +40,7 @@
             class="w-0 h-0 opacity-0"
             accept=".jpg,.jpeg,.png"
             :value="value"
-            :required="required"
+            ::required="true"
             :disabled="disabled"
             @change="handleFileChange"
           />

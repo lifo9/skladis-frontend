@@ -6,12 +6,12 @@
     </router-link>
     <div class="flex flex-wrap">
       <r-form class="my-14 mx-auto w-full max-w-md xl:w-1/2" @submit.prevent="create">
-        <r-input v-model="name" :label="$t('name')" required="required" :disabled="loading" />
-        <r-input v-model="street_name" :label="$t('street_name')" required="required" :disabled="loading" />
-        <r-input v-model="street_number" :label="$t('street_number')" required="required" :disabled="loading" />
-        <r-input v-model="city" :label="$t('city')" required="required" :disabled="loading" />
-        <r-input v-model="zip" :label="$t('zip')" required="required" :disabled="loading" />
-        <r-input v-model="country" :label="$t('country')" required="required" :disabled="loading" />
+        <r-input v-model="name" :label="$t('name')" :required="true" :disabled="loading" />
+        <r-input v-model="street_name" :label="$t('street_name')" :required="true" :disabled="loading" />
+        <r-input v-model="street_number" :label="$t('street_number')" :required="true" :disabled="loading" />
+        <r-input v-model="city" :label="$t('city')" :required="true" :disabled="loading" />
+        <r-input v-model="zip" :label="$t('zip')" :required="true" :disabled="loading" />
+        <r-input v-model="country" :label="$t('country')" :required="true" :disabled="loading" />
 
         <r-button type="submit" size="full" :loading="loading" :disabled="loading">
           <span v-if="warehouseId">

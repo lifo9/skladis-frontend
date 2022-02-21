@@ -15,10 +15,10 @@
           <img :src="avatar" class="object-contain w-64 max-h-48 text-center" />
         </template>
       </image-upload>
-      <r-input v-model="first_name" :label="$t('first_name')" required="required" :disabled="loading" />
-      <r-input v-model="last_name" :label="$t('last_name')" required="required" :disabled="loading" />
-      <r-input v-model="email" type="email" :label="$t('email')" required="required" :disabled="loading" />
-      <r-input v-model="phone" :label="$t('phone')" required="required" :disabled="loading" />
+      <r-input v-model="first_name" :label="$t('first_name')" :required="true" :disabled="loading" />
+      <r-input v-model="last_name" :label="$t('last_name')" :required="true" :disabled="loading" />
+      <r-input v-model="email" type="email" :label="$t('email')" :required="true" :disabled="loading" />
+      <r-input v-model="phone" :label="$t('phone')" :required="true" :disabled="loading" />
 
       <r-button type="submit" size="full" :loading="loading" :disabled="loading">
         <span v-if="contactId">

@@ -8,14 +8,14 @@
     <r-form :error="error" class="my-14 mx-auto w-full max-w-md" @submit.prevent="signUp">
       <r-input
         v-model="email"
-        required="required"
+        :required="true"
         type="email"
         :label="$t('Email address')"
         placeholder="email@example.com"
       />
       <r-input
         v-model="password"
-        required="required"
+        :required="true"
         type="password"
         :label="$t('Password')"
         :placeholder="$t('Password')"
@@ -23,14 +23,14 @@
       />
       <r-input
         v-model="passwordConfirmation"
-        required="required"
+        :required="true"
         type="password"
         :label="$t('Password confirmation')"
         :placeholder="$t('Password')"
         :enable-password-toggle="true"
       />
-      <r-input v-model="firstName" required="required" :label="$t('First name')" :placeholder="$t('First name')" />
-      <r-input v-model="lastName" required="required" :label="$t('Last name')" :placeholder="$t('Last name')" />
+      <r-input v-model="firstName" :required="true" :label="$t('First name')" :placeholder="$t('First name')" />
+      <r-input v-model="lastName" :required="true" :label="$t('Last name')" :placeholder="$t('Last name')" />
       <r-button type="submit" size="full" :loading="loading" :disabled="loading">{{ $t('Sign Up') }}</r-button>
     </r-form>
   </div>

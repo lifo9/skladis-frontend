@@ -15,9 +15,9 @@
           <img :src="avatar" class="object-contain w-64 max-h-48 text-center" />
         </template>
       </image-upload>
-      <r-input v-model="email" type="email" :label="$t('email')" required="required" :disabled="loading" />
-      <r-input v-model="first_name" :label="$t('first_name')" required="required" :disabled="loading" />
-      <r-input v-model="last_name" :label="$t('last_name')" required="required" :disabled="loading" />
+      <r-input v-model="email" type="email" :label="$t('email')" :required="true" :disabled="loading" />
+      <r-input v-model="first_name" :label="$t('first_name')" :required="true" :disabled="loading" />
+      <r-input v-model="last_name" :label="$t('last_name')" :required="true" :disabled="loading" />
       <r-input v-model="phone" :label="$t('phone')" :disabled="loading" />
 
       <r-input v-if="userId" v-model="changePassword" type="checkbox" :one-line="true" :label="$t('Change password')" />

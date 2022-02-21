@@ -8,9 +8,9 @@
       <r-form class="my-14 mx-auto w-full max-w-xl xl:w-2/3" @submit.prevent="create">
         <div class="flex flex-wrap justify-center items-stretch space-y-6 xl:flex-nowrap xl:space-y-0 xl:space-x-4">
           <div class="space-y-6 w-full xl:space-y-2 xl:w-1/2">
-            <r-input v-model="name" :label="$t('name')" required="required" :disabled="loading" />
-            <r-input v-model="url" :label="$t('url')" required="required" :disabled="loading" />
-            <r-input v-model="ico" :label="$t('ico')" required="required" :disabled="loading" />
+            <r-input v-model="name" :label="$t('name')" :required="true" :disabled="loading" />
+            <r-input v-model="url" :label="$t('url')" :required="true" :disabled="loading" />
+            <r-input v-model="ico" :label="$t('ico')" :required="true" :disabled="loading" />
             <r-input v-model="dic" :label="$t('dic')" :disabled="loading" />
             <r-input
               v-model="free_delivery_from"
@@ -30,11 +30,11 @@
             />
           </div>
           <div class="space-y-6 w-full xl:space-y-2 xl:w-1/2">
-            <r-input v-model="street_name" :label="$t('street_name')" required="required" :disabled="loading" />
-            <r-input v-model="street_number" :label="$t('street_number')" required="required" :disabled="loading" />
-            <r-input v-model="city" :label="$t('city')" required="required" :disabled="loading" />
-            <r-input v-model="zip" :label="$t('zip')" required="required" :disabled="loading" />
-            <r-input v-model="country" :label="$t('country')" required="required" :disabled="loading" />
+            <r-input v-model="street_name" :label="$t('street_name')" :required="true" :disabled="loading" />
+            <r-input v-model="street_number" :label="$t('street_number')" :required="true" :disabled="loading" />
+            <r-input v-model="city" :label="$t('city')" :required="true" :disabled="loading" />
+            <r-input v-model="zip" :label="$t('zip')" :required="true" :disabled="loading" />
+            <r-input v-model="country" :label="$t('country')" :required="true" :disabled="loading" />
           </div>
         </div>
         <r-button type="submit" size="full" :loading="loading" :disabled="loading">

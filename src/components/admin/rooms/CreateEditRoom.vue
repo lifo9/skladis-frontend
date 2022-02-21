@@ -8,7 +8,7 @@
       {{ $t('Please, first create a warehouse') }}
     </p>
     <r-form v-else class="my-14 mx-auto w-full max-w-md" @submit.prevent="create">
-      <r-input v-model="name" :label="$t('name')" required="required" :disabled="loading" />
+      <r-input v-model="name" :label="$t('name')" :required="true" :disabled="loading" />
       <r-select
         v-model="warehouse"
         :label="$t('warehouse')"

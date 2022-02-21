@@ -15,8 +15,8 @@
           <img :src="logo" class="object-contain w-64 max-h-48 text-center" />
         </template>
       </image-upload>
-      <r-input v-model="name" :label="$t('name')" required="required" :disabled="loading" />
-      <r-input v-model="url" :label="$t('url')" required="required" :disabled="loading" />
+      <r-input v-model="name" :label="$t('name')" :required="true" :disabled="loading" />
+      <r-input v-model="url" :label="$t('url')" :required="true" :disabled="loading" />
 
       <r-button type="submit" size="full" :loading="loading" :disabled="loading">
         <span v-if="vendorId">
