@@ -1,7 +1,6 @@
 import StorageService from '@/services/StorageService'
 import { acceptHMRUpdate, defineStore } from 'pinia'
-import { getStartingLocale } from '@/services/LanguageService'
-import { i18n } from '@/plugins/i18n'
+import { getStartingLocale, setLocale } from '@/services/LanguageService'
 
 const STORE_ID = 'main'
 
@@ -49,12 +48,10 @@ export const useMainStore = defineStore({
       this.csrf = csrf
     },
     setAppLanguage(language) {
-      i18n.locale = language
+      setLocale(language)
 
       StorageService.persist(STORE_ID, 'appLanguage', language)
       this.appLanguage = language
-
-      location.reload() // TODO jf: ugly hack - investigate how to load new language without page reload
     },
     setCurrentTitle(title) {
       this.currentTitle = title

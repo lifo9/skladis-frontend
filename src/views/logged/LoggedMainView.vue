@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :key="mainStore.appLanguage">
     <alert />
     <my-header />
     <main>

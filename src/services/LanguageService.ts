@@ -25,6 +25,10 @@ export function getVueLocale() {
   return i18n.locale
 }
 
+export function setLocale(locale) {
+  i18n.global.locale = locale
+}
+
 function getBrowserLocale() {
   const navigatorLocale = navigator.languages !== undefined ? navigator.languages[0] : navigator.language
 
