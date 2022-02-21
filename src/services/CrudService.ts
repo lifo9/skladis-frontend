@@ -1,13 +1,17 @@
 import { securedAxiosInstance } from '@/services/ApiService'
 
 class CrudService {
+  API_PATH: string
+  TYPE: string
   constructor(API_PATH, TYPE) {
     this.API_PATH = API_PATH
     this.TYPE = TYPE
   }
 
-  getRecords({ page, perPage, searchQuery, order, orderBy } = {}) {
-    const params = {}
+  getRecords({ page, perPage, searchQuery, order, orderBy }: any = {}) {
+    // eslint-disable-next-line prefer-const
+    let params = {} as { page; per_page; search; order; order_by }
+
     if (page) {
       params.page = page
     }

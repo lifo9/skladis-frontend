@@ -1,3 +1,5 @@
+export type constants = typeof CONSTANTS
+
 export const CONSTANTS = {
   roles: {
     admin: 'admin',

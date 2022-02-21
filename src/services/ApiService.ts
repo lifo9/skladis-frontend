@@ -5,7 +5,7 @@ import { getMyProfile } from '@/services/MyProfileService'
 import { SIGN_IN_URL } from '@/services/UserService'
 import { useMainStore } from '@/stores/mainStore'
 
-const API_URL = import.meta.env.VITE_API_BASE_URL
+const API_URL = import.meta.env.VITE_API_BASE_URL as string
 const appLocale = getVueLocale()
 // HELPERS
 

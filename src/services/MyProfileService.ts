@@ -9,7 +9,7 @@ export async function getMyProfile() {
   return securedAxiosInstance.get(API_PATH)
 }
 
-export function updateMyProfile({ firstName, lastName, email, phone, password, avatar } = {}) {
+export function updateMyProfile({ firstName, lastName, email, phone, password, avatar }: any = {}) {
   let params = {
     first_name: firstName,
     last_name: lastName,

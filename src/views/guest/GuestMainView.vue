@@ -1,6 +1,6 @@
 <template>
   <div>
-    <alert />
+    <main-alert />
     <my-header />
     <main class="container px-4 mx-auto max-w-6xl md:px-12">
       <sign-in v-if="isSignIn" />
@@ -18,14 +18,14 @@ import MyFooter from '@/components/MyFooter.vue'
 import MyHeader from '@/components/MyHeader.vue'
 import SignIn from '@/components/SignIn.vue'
 import SignUp from '@/components/SignUp.vue'
-import Alert from '@/components/ui/MainAlert.vue'
+import MainAlert from '@/components/ui/MainAlert.vue'
 export default defineComponent({
   components: {
     SignIn,
     SignUp,
     MyFooter,
     MyHeader,
-    Alert
+    MainAlert
   },
   computed: {
     isSignIn() {

@@ -46,7 +46,7 @@ export default defineComponent({
     },
     label: {
       type: String,
-      default: undefined
+      default: ''
     },
     icon: {
       type: String,
@@ -64,13 +64,13 @@ export default defineComponent({
   emits: ['navigated'],
   computed: {
     isActiveRoute() {
-      return this.$router.currentRoute.name === this.routeName
+      return this.$router.currentRoute.value.name === this.routeName
     },
     ...mapState(useMainStore, ['isMenuExpanded'])
   },
   methods: {
     async navigate() {
-      if (this.$router.currentRoute.name !== this.routeName) {
+      if (this.$router.currentRoute.value.name !== this.routeName) {
         const route = this.$router.resolve({
           name: this.routeName,
           params: this.params

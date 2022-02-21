@@ -191,8 +191,8 @@ export default defineComponent({
       this.url = ''
       this.ico = ''
       this.dic = ''
-      this.free_delivery_from = ''
-      this.contact_id = ''
+      this.free_delivery_from = undefined
+      this.contact_id = undefined
       this.street_name = ''
       this.street_number = ''
       this.city = ''

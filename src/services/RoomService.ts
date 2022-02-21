@@ -12,7 +12,7 @@ export function getRooms(params) {
   return crud.getRecords(params)
 }
 
-export function updateRoom({ id, name, warehouseId } = {}) {
+export function updateRoom({ id, name, warehouseId }: any = {}) {
   const params = {
     name: name,
     warehouse_id: warehouseId
@@ -21,7 +21,7 @@ export function updateRoom({ id, name, warehouseId } = {}) {
   return crud.updateRecord(id, params)
 }
 
-export function createRoom({ name, warehouseId } = {}) {
+export function createRoom({ name, warehouseId }: any = {}) {
   const params = {
     name: name,
     warehouse_id: warehouseId

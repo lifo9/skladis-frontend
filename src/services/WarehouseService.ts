@@ -12,7 +12,7 @@ export function getWarehouses(params) {
   return crud.getRecords(params)
 }
 
-export function updateWarehouse({ id, name, streetName, streetNumber, city, zip, country, coordinates } = {}) {
+export function updateWarehouse({ id, name, streetName, streetNumber, city, zip, country, coordinates }: any = {}) {
   const params = {
     name: name,
     street_name: streetName,
@@ -26,7 +26,7 @@ export function updateWarehouse({ id, name, streetName, streetNumber, city, zip,
   return crud.updateRecord(id, params)
 }
 
-export function createWarehouse({ name, streetName, streetNumber, city, zip, country, coordinates } = {}) {
+export function createWarehouse({ name, streetName, streetNumber, city, zip, country, coordinates }: any = {}) {
   const params = {
     name: name,
     street_name: streetName,

@@ -7,7 +7,7 @@ export default {
     localStorage?.setItem(storeKey, JSON.stringify({ ...storeContent, ...storedObject }))
   },
 
-  load(storeId: string, key: string, defaultValue = undefined): any {
+  load(storeId: string, key: string, defaultValue: any = undefined): any {
     const storeKey = `${storeId}-store`
     const storeContent = loadStoreContent(storeKey)
 

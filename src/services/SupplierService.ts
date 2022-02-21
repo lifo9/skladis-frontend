@@ -26,7 +26,7 @@ export function updateSupplier({
   country,
   coordinates,
   contactId
-} = {}) {
+}: any = {}) {
   const params = {
     name: name,
     ico: ico,
@@ -58,7 +58,7 @@ export function createSupplier({
   country,
   coordinates,
   contactId
-} = {}) {
+}: any = {}) {
   const params = {
     name: name,
     ico: ico,

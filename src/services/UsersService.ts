@@ -13,7 +13,7 @@ export function getUsers(params) {
   return crud.getRecords(params)
 }
 
-export function updateUser({ id, firstName, lastName, email, phone, active, roles, password, avatar } = {}) {
+export function updateUser({ id, firstName, lastName, email, phone, active, roles, password, avatar }: any = {}) {
   let params = {
     first_name: firstName,
     last_name: lastName,
@@ -34,7 +34,7 @@ export function updateUser({ id, firstName, lastName, email, phone, active, role
   return crud.updateRecord(id, params, true)
 }
 
-export function createUser({ firstName, lastName, email, phone, active, roles, password, avatar } = {}) {
+export function createUser({ firstName, lastName, email, phone, active, roles, password, avatar }: any = {}) {
   let params = {
     first_name: firstName,
     last_name: lastName,

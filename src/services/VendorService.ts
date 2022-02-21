@@ -13,7 +13,7 @@ export function getVendors(params) {
   return crud.getRecords(params)
 }
 
-export function updateVendor({ id, name, url, logo } = {}) {
+export function updateVendor({ id, name, url, logo }: any = {}) {
   let params = {
     name: name,
     url: url
@@ -26,7 +26,7 @@ export function updateVendor({ id, name, url, logo } = {}) {
   return crud.updateRecord(id, params, true)
 }
 
-export function createVendor({ name, url, logo } = {}) {
+export function createVendor({ name, url, logo }: any = {}) {
   let params = {
     name: name,
     url: url

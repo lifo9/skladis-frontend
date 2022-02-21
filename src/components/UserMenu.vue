@@ -26,7 +26,7 @@
             <p>{{ $t('Sign In') }}</p>
           </li>
           <li v-if="mainStore.signedIn" @click="hideMenu">
-            <logout />
+            <user-logout />
           </li>
         </ul>
       </div>
@@ -40,10 +40,10 @@ import { defineComponent } from 'vue'
 
 import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
 import NavigationItem from '@/components/NavigationItem.vue'
-import Logout from '@/components/UserLogout.vue'
+import UserLogout from '@/components/UserLogout.vue'
 import { useMainStore } from '@/stores/mainStore'
 export default defineComponent({
-  components: { Logout, LanguageSwitcher, NavigationItem },
+  components: { LanguageSwitcher, NavigationItem, UserLogout },
   data() {
     return {
       menuHidden: true
@@ -54,7 +54,7 @@ export default defineComponent({
   },
   methods: {
     navigate(routeName) {
-      if (this.$router.currentRoute.name !== routeName) {
+      if (this.$router.currentRoute.value.name !== routeName) {
         const route = this.$router.resolve({ name: routeName })
         this.$router.push(route.href)
       }

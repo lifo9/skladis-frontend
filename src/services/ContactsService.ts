@@ -13,7 +13,7 @@ export function getContacts(params) {
   return crud.getRecords(params)
 }
 
-export function updateContact({ id, firstName, lastName, email, phone, avatar } = {}) {
+export function updateContact({ id, firstName, lastName, email, phone, avatar }: any = {}) {
   let params = {
     first_name: firstName,
     last_name: lastName,
@@ -28,7 +28,7 @@ export function updateContact({ id, firstName, lastName, email, phone, avatar } 
   return crud.updateRecord(id, params, true)
 }
 
-export function createContact({ firstName, lastName, email, phone, avatar } = {}) {
+export function createContact({ firstName, lastName, email, phone, avatar }: any = {}) {
   let params = {
     first_name: firstName,
     last_name: lastName,
