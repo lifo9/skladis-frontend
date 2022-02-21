@@ -11,7 +11,7 @@
         :class="[{ 'border-red-500': error, 'w-auto': oneLine, 'w-full': !oneLine }]"
         :type="type === 'password' && showPassword ? 'text' : type"
         :value="modelValue"
-        :required="true"
+        :required="required"
         :checked="type === 'checkbox' && modelValue === true"
         :disabled="disabled"
         v-bind="$attrs"
