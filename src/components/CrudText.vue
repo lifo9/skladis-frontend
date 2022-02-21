@@ -4,8 +4,9 @@
   </span>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue'
+export default defineComponent({
   props: {
     options: {
       type: Object,
@@ -22,7 +23,7 @@ export default {
   },
 
   computed: {
-    label () {
+    label() {
       if (this.options.customCaption) {
         return this.options.customCaption
       } else if (!this.options.relationship) {
@@ -39,14 +40,10 @@ export default {
           const id = relatinships[this.options.relationship].data.id
           const type = relatinships[this.options.relationship].data.type
           if (id) {
-            const relationObject = this.included.filter(
-              included => included.type === type && included.id === id
-            )
+            const relationObject = this.included.filter((included) => included.type === type && included.id === id)
             if (relationObject.length === 1) {
               if (Array.isArray(this.options.attribute)) {
-                return this.options.attribute
-                  .map(attribute => relationObject[0].attributes[attribute])
-                  .join(' ')
+                return this.options.attribute.map((attribute) => relationObject[0].attributes[attribute]).join(' ')
               } else {
                 return relationObject[0].attributes[this.options.attribute]
               }
@@ -58,5 +55,5 @@ export default {
       return undefined
     }
   }
-}
+})
 </script>

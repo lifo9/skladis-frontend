@@ -5,21 +5,20 @@
     create-route-name="WarehouseCreate"
     edit-route-name="WarehouseEdit"
     :bulk-select="true"
-    :hiddenCols="['coordinates', 'address_id']"
-    :relationshipCols="relationshipCols"
+    :hidden-cols="['coordinates', 'address_id']"
+    :relationship-cols="relationshipCols"
   />
 </template>
 
-<script>
-import CrudTable from '../../../components/CrudTable.vue'
-import {
-  getWarehouses,
-  deleteWarehouse
-} from '../../../backend/services/WarehouseService'
+<script lang="ts">
+import { defineComponent } from 'vue'
 
-export default {
+import { deleteWarehouse, getWarehouses } from '@/services/WarehouseService'
+
+import CrudTable from '../../../components/CrudTable.vue'
+export default defineComponent({
   components: { CrudTable },
-  data () {
+  data() {
     return {
       getEndpoint: getWarehouses,
       deleteEndpoint: deleteWarehouse,
@@ -39,5 +38,5 @@ export default {
       ]
     }
   }
-}
+})
 </script>

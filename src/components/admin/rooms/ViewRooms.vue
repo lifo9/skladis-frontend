@@ -6,20 +6,23 @@
     edit-route-name="RoomEdit"
     :bulk-select="true"
     :relationship-cols="relationshipCols"
-    :hiddenCols="['warehouse']"
+    :hidden-cols="['warehouse']"
     :custom-cols-after="customCols"
-  >
-  </crud-table>
+  ></crud-table>
 </template>
 
-<script>
-import CrudTable from '../../CrudTable.vue'
-import { deleteRoom, getRooms } from '../../../backend/services/RoomService'
-import CrudLink from '../../CrudLink.vue'
+<script lang="ts">
+import { shallowRef } from 'vue'
+import { defineComponent } from 'vue'
 
-export default {
+import { deleteRoom, getRooms } from '@/services/RoomService'
+
+import CrudLink from '../../CrudLink.vue'
+import CrudTable from '../../CrudTable.vue'
+
+export default defineComponent({
   components: { CrudTable },
-  data () {
+  data() {
     return {
       getEndpoint: getRooms,
       deleteEndpoint: deleteRoom,
@@ -34,7 +37,7 @@ export default {
       customCols: [
         {
           header: this.$t('warehouse'),
-          component: CrudLink,
+          component: shallowRef(CrudLink),
           options: {
             relationship: 'warehouse',
             attribute: 'name',
@@ -47,5 +50,5 @@ export default {
       ]
     }
   }
-}
+})
 </script>

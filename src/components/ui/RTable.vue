@@ -4,38 +4,30 @@
       <thead>
         <tr>
           <th class="ordering">
-            <div class="flex items-center justify-between w-full">
+            <div class="flex flex-wrap justify-between items-center w-full">
               {{ $t('Order') }}
-              <div class="flex flex-wrap items-center justify-end">
+              <div class="flex flex-wrap justify-end items-center">
                 <r-select
                   :options="orderingOptions"
-                  :disableDefaultOption="true"
+                  :disable-default-option="true"
                   :value="orderBy"
-                  @input="changeOrder"
+                  @input="changeOrder(($event.target as HTMLSelectElement).value)"
                 />
-                <order-arrow
-                  class="ml-2 text-3xl"
-                  :order="order"
-                  @click="changeOrder(orderBy)"
-                />
+                <order-arrow class="ml-2 text-3xl" :order="order" @click="changeOrder(orderBy)" />
               </div>
             </div>
           </th>
           <th v-if="bulkSelect" scope="col" class="sm:w-16 bulk-select">
             <span class="sm:hidden">{{ $t('Select All') }} &nbsp;</span>
             <r-input
-              class="flex flex-wrap items-center justify-start w-6 ml-auto sm:justify-center sm:ml-0"
+              class="flex flex-wrap justify-start items-center ml-auto w-6 sm:justify-center sm:ml-0"
               type="checkbox"
+              :model-value="isSelectedAll"
               @change="selectAll"
-              :value="isSelectedAll"
             />
           </th>
-          <th
-            v-if="rows.length > 0 && rows[0].id"
-            @click="changeOrder('id')"
-            class="cursor-pointer"
-          >
-            <div class="flex items-center justify-start">
+          <th v-if="rows.length > 0 && rows[0].id" class="cursor-pointer" @click="changeOrder('id')">
+            <div class="flex justify-start items-center">
               <span>ID</span>
               <order-arrow v-if="orderBy === 'id'" :order="order" />
             </div>
@@ -48,7 +40,7 @@
             class="cursor-pointer"
             @click="changeOrder(header.id)"
           >
-            <div class="flex items-center justify-start">
+            <div class="flex justify-start items-center">
               {{ header.value }}
               <order-arrow v-if="orderBy === header.id" :order="order" />
             </div>
@@ -65,50 +57,42 @@
           <td
             v-if="bulkSelect"
             :data-title="$t('Select')"
-            class="flex flex-wrap items-center justify-end sm:table-cell has-title"
+            class="flex flex-wrap justify-end items-center sm:table-cell has-title"
           >
             <r-input
               type="checkbox"
-              :value="isSelected(row.id)"
-              @change="select(row.id, $event)"
+              :model-value="isSelected(row.id)"
+              @change="select(row.id, $event.target.checked)"
             />
           </td>
           <td v-if="row.id" :data-title="$t('ID')" class="has-title">
             {{ row.id }}
           </td>
           <slot :row="getUnfilteredRowById(row.id)" name="customColsBefore" />
-          <td
-            v-for="(col, idx2) in extractedRowData[idx1]"
-            :key="idx2"
-            :data-title="$t(idx2)"
-            class="has-title"
-          >
+          <td v-for="(col, idx2) in extractedRowData[idx1]" :key="idx2" :data-title="$t(idx2)" class="has-title">
             <span
               v-if="typeof col === 'boolean'"
               class="font-bold material-icons"
               :class="col ? 'text-green-600' : 'text-red-600'"
-              >{{ col ? 'check' : 'close' }}</span
             >
-            <span v-else>{{ col | arrayToString }}</span>
+              {{ col ? 'check' : 'close' }}
+            </span>
+            <span v-else>{{ $filters.arrayToString(col) }}</span>
           </td>
           <slot :row="getUnfilteredRowById(row.id)" name="customColsAfter" />
-          <td
-            v-if="enableDefaultActions || enableCustomActions"
-            :data-title="$t('Actions')"
-            class="actions"
-          >
-            <div class="flex flex-wrap items-center justify-start w-max">
+          <td v-if="enableDefaultActions || enableCustomActions" :data-title="$t('Actions')" class="actions">
+            <div class="flex flex-wrap justify-start items-center w-max">
               <slot :row="getUnfilteredRowById(row.id)" name="customActions" />
               <navigation-item
                 v-if="enableDefaultActions"
-                :routeName="editRouteName"
+                :route-name="editRouteName"
                 :params="{ id: row.id }"
                 class="m-1"
                 type="button"
                 size="verySmall"
                 icon="edit"
                 label=""
-              ></navigation-item>
+              />
               <r-button
                 v-if="enableDefaultActions"
                 variant="danger"
@@ -124,27 +108,29 @@
       </tbody>
     </table>
   </div>
-  <div v-else class="flex flex-wrap items-center justify-center my-4">
-    <spinner class="w-16 h-16 my-4 text-gray-800" />
+  <div v-else class="flex flex-wrap justify-center items-center my-4">
+    <r-spinner class="my-4 w-16 h-16 text-gray-800" />
   </div>
 </template>
 
-<script>
-import NavigationItem from '../NavigationItem.vue'
-import OrderArrow from './OrderArrow.vue'
-import RButton from './RButton.vue'
-import RInput from './RInput.vue'
-import RSelect from './RSelect.vue'
-import Spinner from './Spinner.vue'
+<script lang="ts">
+import { defineComponent } from 'vue'
 
-export default {
+import OrderArrow from '@/components/ui/OrderArrow.vue'
+import RButton from '@/components/ui/RButton.vue'
+import RInput from '@/components/ui/RInput.vue'
+import RSelect from '@/components/ui/RSelect.vue'
+import RSpinner from '@/components/ui/RSpinner.vue'
+
+import NavigationItem from '../NavigationItem.vue'
+export default defineComponent({
   components: {
-    Spinner,
     RInput,
     RButton,
     NavigationItem,
     OrderArrow,
-    RSelect
+    RSelect,
+    RSpinner
   },
   props: {
     loading: {
@@ -208,61 +194,54 @@ export default {
       default: undefined
     }
   },
-  data () {
+  emits: ['addSelected', 'removeSelected', 'deleteItem', 'order'],
+  data() {
     return {
       currentlySelected: []
     }
   },
-  updated () {
-    this.currentlySelected = this.selected
-  },
   computed: {
-    isSelectedAll () {
-      return this.rows.every(row => this.selected.includes(row.id))
+    isSelectedAll() {
+      return this.rows.every((row) => this.selected.includes(row.id))
     },
-    orderingOptions () {
+    orderingOptions() {
       const options = [{ id: 'id', value: 'ID' }].concat(this.parsedHeaders)
 
-      const customOrderingOptions = this.customOrderingOptions
-        ? this.customOrderingOptions
-        : []
+      const customOrderingOptions = this.customOrderingOptions ? this.customOrderingOptions : []
 
       return [...options, ...customOrderingOptions]
     },
-    parsedHeaders () {
+    parsedHeaders() {
       const relationshipHeaders = this.relationshipCols
         ? this.relationshipCols
-          .map(relationship => {
-            const tableName = relationship.table_name
-            return relationship.attributes.map(attr => {
-              let id = attr.label
-              const attrId = attr.id
-              if (tableName && attrId) {
-                id = tableName + '.' + attrId
-              } else if (attrId) {
-                id = attrId
-              }
+            .map((relationship) => {
+              const tableName = relationship.table_name
+              return relationship.attributes.map((attr) => {
+                let id = attr.label
+                const attrId = attr.id
+                if (tableName && attrId) {
+                  id = tableName + '.' + attrId
+                } else if (attrId) {
+                  id = attrId
+                }
 
-              return { id: id, value: attr.label }
+                return { id: id, value: attr.label }
+              })
             })
-          })
-          .flat()
+            .flat()
         : []
       return this.headers.concat(relationshipHeaders)
     },
-    extractedRowData () {
+    extractedRowData() {
       let extractedData = []
 
-      this.rows.forEach(row => {
+      this.rows.forEach((row) => {
         const attributes = row.attributes
           ? Object.fromEntries(
-            this.hideAllCols
-              ? []
-              : Object.entries(row.attributes).filter(
-                ([key]) =>
-                  !this.hiddenCols || !this.hiddenCols.includes(key)
-              )
-          )
+              this.hideAllCols
+                ? []
+                : Object.entries(row.attributes).filter(([key]) => !this.hiddenCols || !this.hiddenCols.includes(key))
+            )
           : row
         const relationships = row.relationships
         let customAttributes = {}
@@ -270,9 +249,7 @@ export default {
           if (!this.relationshipCols) {
             continue
           }
-          const relationshipCol = this.relationshipCols.filter(
-            header => header.relationship === relationship
-          )
+          const relationshipCol = this.relationshipCols.filter((header) => header.relationship === relationship)
           if (relationshipCol.length !== 1) {
             continue
           }
@@ -281,17 +258,14 @@ export default {
           const relationshipType = relationshipCol[0].relationship_type
           let relIds = []
           if (Array.isArray(relationships[relationship].data)) {
-            relIds = relationships[relationship].data.map(rel => rel.id)
+            relIds = relationships[relationship].data.map((rel) => rel.id)
           } else {
             relIds = [relationships[relationship].data.id]
           }
 
-          headerAttributes.forEach(attr => {
-            const attrValue = relIds.map(id =>
-              this.getAttributeValueFromIncluded(id, relationshipType, attr.id)
-            )
-            customAttributes[attr.id] =
-              attrValue.length === 1 ? attrValue[0] : attrValue
+          headerAttributes.forEach((attr) => {
+            const attrValue = relIds.map((id) => this.getAttributeValueFromIncluded(id, relationshipType, attr.id))
+            customAttributes[attr.id] = attrValue.length === 1 ? attrValue[0] : attrValue
           })
         }
 
@@ -301,8 +275,11 @@ export default {
       return extractedData
     }
   },
+  updated() {
+    this.currentlySelected = this.selected
+  },
   methods: {
-    select (rowId, checked) {
+    select(rowId, checked) {
       if (checked) {
         this.currentlySelected.push(rowId)
         this.$emit('addSelected', this.currentlySelected)
@@ -314,8 +291,9 @@ export default {
         this.$emit('removeSelected', rowId)
       }
     },
-    selectAll (checked) {
-      const rowIds = this.rows.map(row => row.id)
+    selectAll(event) {
+      const checked = event.target.checked
+      const rowIds = this.rows.map((row) => row.id)
 
       if (checked) {
         this.currentlySelected = rowIds
@@ -325,29 +303,27 @@ export default {
         this.$emit('removeSelected', rowIds)
       }
     },
-    deleteItem (rowId) {
+    deleteItem(rowId) {
       this.$emit('deleteItem', rowId)
     },
-    changeOrder (orderBy) {
+    changeOrder(orderBy) {
       this.$emit('order', {
         orderBy: orderBy,
         order: this.order === 'asc' ? 'desc' : 'asc'
       })
     },
-    isSelected (rowId) {
+    isSelected(rowId) {
       return this.currentlySelected.includes(rowId)
     },
-    getAttributeValueFromIncluded (id, type, attribute) {
-      const attr = this.included.filter(
-        inc => inc.type === type && inc.id === id
-      )
+    getAttributeValueFromIncluded(id, type, attribute) {
+      const attr = this.included.filter((inc) => inc.type === type && inc.id === id)
 
       if (attr.length === 1) {
         return attr[0].attributes[attribute]
       }
     },
-    getUnfilteredRowById (id) {
-      const rows = this.rows.filter(row => {
+    getUnfilteredRowById(id) {
+      const rows = this.rows.filter((row) => {
         return row.attributes && row.id === id
       })
 
@@ -357,10 +333,10 @@ export default {
       return {}
     }
   }
-}
+})
 </script>
 
-<style lang="postcss" scoped>
+<style lang="postcss">
 table {
   @apply w-full;
 }

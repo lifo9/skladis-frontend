@@ -1,41 +1,35 @@
 <template>
   <li
     v-if="type === 'list'"
-    @click="navigate"
     class="navigation-menu-item"
     :class="{ isActiveRoute: 'active', isMenuExpanded: 'justify-center' }"
+    @click="navigate"
   >
     <div class="flex flex-wrap space-x-2">
       <span v-if="icon" class="material-icons">{{ icon }}</span>
       <span v-if="!onlyIcon">{{ $t(label) }}</span>
     </div>
   </li>
-  <r-button
-    v-else-if="type === 'button'"
-    @click="navigate"
-    :size="size ? size : ''"
-  >
+  <r-button v-else-if="type === 'button'" :size="size ? size : ''" @click="navigate">
     <span v-if="icon" class="material-icons">{{ icon }}</span>
     &nbsp;
     <span v-if="!onlyIcon">{{ label }}</span>
   </r-button>
-  <p v-else-if="type === 'plain'" @click="navigate" :size="size ? size : ''">
+  <p v-else-if="type === 'plain'" :size="size ? size : ''" @click="navigate">
     <span v-if="!onlyIcon">{{ label }}</span>
   </p>
-  <li
-    v-else-if="type === 'list-custom'"
-    class="navigation-menu-item"
-    :class="{ isMenuExpanded: 'justify-center' }"
-    @click="$emit('click')"
-  >
+  <li v-else-if="type === 'list-custom'" class="navigation-menu-item" :class="{ isMenuExpanded: 'justify-center' }">
     <slot />
   </li>
 </template>
 
-<script>
-import RButton from './ui/RButton.vue'
+<script lang="ts">
+import { mapState } from 'pinia'
+import { defineComponent } from 'vue'
 
-export default {
+import RButton from '@/components/ui/RButton.vue'
+import { useMainStore } from '@/stores/mainStore'
+export default defineComponent({
   components: { RButton },
   props: {
     type: {
@@ -52,7 +46,7 @@ export default {
     },
     label: {
       type: String,
-      default: undefined
+      default: ''
     },
     icon: {
       type: String,
@@ -67,24 +61,16 @@ export default {
       default: false
     }
   },
-  data () {
-    return {
-      isMenuExpanded: this.$store.getters.isMenuExpanded
-    }
-  },
-  watch: {
-    '$store.state.isMenuExpanded': function () {
-      this.isMenuExpanded = this.$store.getters.isMenuExpanded
-    }
-  },
+  emits: ['navigated'],
   computed: {
-    isActiveRoute () {
-      return this.$router.currentRoute.name === this.routeName
-    }
+    isActiveRoute() {
+      return this.$router.currentRoute.value.name === this.routeName
+    },
+    ...mapState(useMainStore, ['isMenuExpanded'])
   },
   methods: {
-    async navigate () {
-      if (this.$router.currentRoute.name !== this.routeName) {
+    async navigate() {
+      if (this.$router.currentRoute.value.name !== this.routeName) {
         const route = this.$router.resolve({
           name: this.routeName,
           params: this.params
@@ -96,7 +82,7 @@ export default {
       }
     }
   }
-}
+})
 </script>
 
 <style lang="postcss">

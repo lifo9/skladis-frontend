@@ -8,28 +8,31 @@
     :custom-cols-before="customCols"
     :custom-actions="customActions"
     :relationship-cols="relationshipCols"
-    :hiddenCols="['avatar']"
-  >
-  </crud-table>
+    :hidden-cols="['avatar']"
+  ></crud-table>
 </template>
 
-<script>
-import CrudTable from '../../CrudTable.vue'
-import { deleteUser, getUsers } from '../../../backend/services/UsersService'
-import UserActivationToggle from './UserActivationToggle.vue'
-import AvatarImage from '../../AvatarImage.vue'
+<script lang="ts">
+import { markRaw, shallowRef } from 'vue'
+import { defineComponent } from 'vue'
 
-export default {
+import UserActivationToggle from '@//components/admin/users/UserActivationToggle.vue'
+import { deleteUser, getUsers } from '@/services/UsersService'
+
+import AvatarImage from '../../AvatarImage.vue'
+import CrudTable from '../../CrudTable.vue'
+
+export default defineComponent({
   components: { CrudTable },
-  data () {
+  data() {
     return {
       getEndpoint: getUsers,
       deleteEndpoint: deleteUser,
-      customActions: [UserActivationToggle],
+      customActions: [markRaw(UserActivationToggle)],
       customCols: [
         {
           header: '',
-          component: AvatarImage,
+          component: shallowRef(AvatarImage),
           options: {
             attribute: 'avatar'
           }
@@ -45,5 +48,5 @@ export default {
       ]
     }
   }
-}
+})
 </script>

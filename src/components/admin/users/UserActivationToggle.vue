@@ -1,77 +1,74 @@
 <template>
-  <div class="m-1" v-if="!isCurrentlyLoggedIn">
-    <r-button
-      class="w-28"
-      v-if="!isActive"
-      variant="success"
-      size="verySmall"
-      @click="handleActivation(true)"
-      >{{ $t('Activate') }}</r-button
-    >
-    <r-button
-      class="w-28"
-      v-else
-      variant="danger"
-      size="verySmall"
-      @click="handleActivation(false)"
-      >{{ $t('Deactivate') }}</r-button
-    >
+  <div v-if="!isCurrentlyLoggedIn" class="m-1">
+    <r-button v-if="!isActive" class="w-28" variant="success" size="verySmall" @click="handleActivation(true)">
+      {{ $t('Activate') }}
+    </r-button>
+    <r-button v-else class="w-28" variant="danger" size="verySmall" @click="handleActivation(false)">
+      {{ $t('Deactivate') }}
+    </r-button>
   </div>
 </template>
 
-<script>
-import RButton from '../../ui/RButton.vue'
-import { enableScroll, disableScroll } from '../../../backend/utils/helpers'
-import ConfirmationModal from '../../ui/ConfirmationModal'
-import {
-  activateUser,
-  deactivateUser
-} from '../../../backend/services/UsersService'
-import { store } from '../../../backend/store/store'
+<script lang="ts">
+import { mapStores } from 'pinia'
+import { defineComponent } from 'vue'
 
-export default {
+import RButton from '@/components/ui/RButton.vue'
+import { activateUser, deactivateUser } from '@/services/UsersService'
+import { useMainStore } from '@/stores/mainStore'
+
+export default defineComponent({
   components: { RButton },
   props: {
     row: {
       type: Object,
       required: true
+    },
+    included: {
+      type: Array,
+      default: undefined
     }
   },
+  emits: ['change'],
   computed: {
-    isCurrentlyLoggedIn () {
-      return this.row.id === store.state.currentUser.id
+    isCurrentlyLoggedIn() {
+      return this.row.id === this.mainStore.currentUser.id
     },
-    isActive () {
+    isActive() {
       return this.row.attributes.active === true
-    }
+    },
+    ...mapStores(useMainStore)
   },
   methods: {
-    async handleActivation (activate) {
-      disableScroll()
-      const confirmation = await this.$modal(ConfirmationModal)
-
-      if (confirmation) {
-        const endpoint = activate ? activateUser : deactivateUser
-        endpoint(this.row.id)
-          .then(() => {
-            this.row.attributes.active = activate
-
-            this.$root.$emit(
-              'alert',
-              'success',
-              activate
-                ? this.$t('User was successfully activated')
-                : this.$t('User was successfully deactivated')
-            )
-          })
-          .catch(error => {
-            this.$root.$emit('alert', 'alert', error)
-          })
-      }
-      enableScroll()
-
-      this.$emit('change', this.row)
+    handleActivation(activate) {
+      this.$vfm.show({
+        component: 'ConfirmationModal',
+        on: {
+          'confirm': (close) => {
+            const endpoint = activate ? activateUser : deactivateUser
+            endpoint(this.row.id)
+              .then(() => {
+                // eslint-disable-next-line vue/no-mutating-props
+                this.row.attributes.active = activate
+                this.eventBus.emit('alert', {
+                  level: 'success',
+                  message: activate
+                    ? this.$t('User was successfully activated')
+                    : this.$t('User was successfully deactivated')
+                })
+              })
+              .catch((error) => {
+                this.eventBus.emit('alert', { level: 'alert', message: error })
+              })
+            this.$emit('change', this.row)
+            close()
+          },
+          cancel(close) {
+            close()
+          }
+        }
+      })
     }
   }
-}
+})
 </script>

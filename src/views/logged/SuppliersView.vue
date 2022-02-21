@@ -2,18 +2,25 @@
   <router-view />
 </template>
 
-<script>
-export default {
-  mounted () {
+<script lang="ts">
+import { mapStores } from 'pinia'
+import { defineComponent } from 'vue'
+
+import { useMainStore } from '@/stores/mainStore'
+export default defineComponent({
+  computed: {
+    ...mapStores(useMainStore)
+  },
+  mounted() {
     this.setTitle()
   },
-  updated () {
+  updated() {
     this.setTitle()
   },
   methods: {
-    setTitle () {
-      this.$store.commit('setCurrentTitle', this.$t('Suppliers'))
+    setTitle() {
+      this.mainStore.setCurrentTitle(this.$t('Suppliers'))
     }
   }
-}
+})
 </script>

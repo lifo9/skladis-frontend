@@ -1,44 +1,39 @@
 <template>
-  <r-form
-    @submit.prevent="signIn"
-    :error="error"
-    class="w-full max-w-md mx-auto my-14"
-  >
+  <r-form :error="error" class="my-14 mx-auto w-full max-w-md" @submit.prevent="signIn">
     <r-input
       v-model="email"
-      required="required"
+      :required="true"
       type="email"
       :label="$t('Email address')"
       placeholder="email@example.com"
     />
     <r-input
       v-model="password"
-      required="required"
+      :required="true"
       type="password"
       :label="$t('Password')"
       :placeholder="$t('Password')"
-      :enablePasswordToggle="true"
+      :enable-password-toggle="true"
     />
-    <r-button
-      type="submit"
-      size="full"
-      :loading="loading"
-      :disabled="loading"
-      >{{ $t('Sign In') }}</r-button
-    >
+    <r-button type="submit" size="full" :loading="loading" :disabled="loading">
+      {{ $t('Sign In') }}
+    </r-button>
   </r-form>
 </template>
 
-<script>
-import { signIn } from '../backend/services/UserService'
-import { getMyProfile } from '../backend/services/MyProfileService'
-import RButton from './ui/RButton.vue'
-import RForm from './ui/RForm.vue'
-import RInput from './ui/RInput.vue'
+<script lang="ts">
+import { mapStores } from 'pinia'
+import { defineComponent } from 'vue'
 
-export default {
+import RButton from '@/components/ui/RButton.vue'
+import RForm from '@/components/ui/RForm.vue'
+import RInput from '@/components/ui/RInput.vue'
+import { getMyProfile } from '@/services/MyProfileService'
+import { signIn } from '@/services/UserService'
+import { useMainStore } from '@/stores/mainStore'
+export default defineComponent({
   components: { RButton, RInput, RForm },
-  data () {
+  data() {
     return {
       loading: false,
       email: '',
@@ -46,14 +41,17 @@ export default {
       error: ''
     }
   },
-  created () {
+  computed: {
+    ...mapStores(useMainStore)
+  },
+  created() {
     this.checkSignedIn()
   },
-  updated () {
+  updated() {
     this.checkSignedIn()
   },
   methods: {
-    async signIn () {
+    async signIn() {
       this.loading = true
       try {
         const response = await signIn(this.email, this.password)
@@ -63,7 +61,7 @@ export default {
       }
       this.loading = false
     },
-    async signInSuccessful (response) {
+    async signInSuccessful(response) {
       if (!response.data.csrf) {
         this.signinFailed(response)
         return
@@ -72,35 +70,31 @@ export default {
         const me = await getMyProfile()
         const userId = me.data.data.id
         const attributes = me.data.data.attributes
-        const roles = me.data.included
-          .filter(inc => inc.type === 'role')
-          .map(role => role.attributes.name)
+        const roles = me.data.included.filter((inc) => inc.type === 'role').map((role) => role.attributes.name)
 
-        this.$store.commit('setLoggedInUser', {
-          currentUser: {
+        this.mainStore.setLoggedInUser(
+          {
             id: userId,
             ...attributes,
             roles: roles
           },
-          csrf: response.data.csrf
-        })
+          response.data.csrf
+        )
         this.error = ''
         this.$router.replace('/')
       } catch (error) {
         this.signinFailed(error)
       }
     },
-    signinFailed (error) {
-      this.error =
-        (error.response && error.response.data && error.response.data.error) ||
-        ''
-      this.$store.commit('unsetCurrentUser')
+    signinFailed(error) {
+      this.error = (error.response && error.response.data && error.response.data.error) || ''
+      this.mainStore.unsetCurrentUser()
     },
-    checkSignedIn () {
-      if (this.$store.state.signedIn) {
+    checkSignedIn() {
+      if (this.mainStore.signedIn) {
         this.$router.replace('/')
       }
     }
   }
-}
+})
 </script>

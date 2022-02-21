@@ -1,36 +1,36 @@
 <template>
   <component
     :is="type"
-    v-on="$listeners"
-    class="inline-flex items-center justify-center font-medium leading-6 transition duration-150 ease-in-out border border-transparent rounded-md active:bg-blue-700"
+    class="inline-flex justify-center items-center font-medium leading-6 rounded-md border border-transparent transition duration-150 ease-in-out"
     :class="btnClass"
     :loading="loading"
     :disabled="disabled"
     :size="size"
     :href="to"
   >
-    <spinner v-if="loading" class="ml-1 mr-3" />
+    <r-spinner v-if="loading" class="mr-3 ml-1 w-4 h-4 text-white" />
     <slot />
   </component>
 </template>
 
-<script>
-import Vue from 'vue'
-import Spinner from './Spinner.vue'
+<script lang="ts">
+const sizes = ['verySmall', 'small', 'normal', 'full', 'min']
+const variants = ['primary', 'secondary', 'danger', 'success', 'plain']
 
-const sizes = ['verySmall', 'small', 'normal', 'full']
-const variants = ['primary', 'secondary', 'danger', 'success']
+import { defineComponent } from 'vue'
 
-export default Vue.extend({
-  components: { Spinner },
+import RSpinner from '@/components/ui/RSpinner.vue'
+
+export default defineComponent({
+  components: { RSpinner },
   props: {
     size: {
       default: 'normal',
-      validator: value => sizes.includes(value)
+      validator: (value) => sizes.includes(value)
     },
     variant: {
       default: 'primary',
-      validator: value => variants.includes(value)
+      validator: (value) => variants.includes(value)
     },
     loading: {
       type: Boolean,
@@ -41,32 +41,33 @@ export default Vue.extend({
       default: false
     },
     to: {
-      type: String
+      type: String,
+      default: undefined
     }
   },
   computed: {
-    type () {
+    type() {
       if (this.to) {
         return 'a'
       }
       return 'button'
     },
-    btnClass () {
+    btnClass() {
       return {
         'cursor-not-allowed': this.disabled === true,
         'px-2 py-1 max-w-sm text-sm': this.size === 'verySmall',
         'px-4 py-2 max-w-md text-base': this.size === 'small',
         'px-6 py-3 max-w-md text-base': this.size === 'normal',
         'px-6 py-3 w-full text-base': this.size === 'full',
+        'p-0 text-base': this.size === 'min',
 
-        'text-white bg-blue-600 hover:bg-blue-500 focus:border-blue-700':
-          this.variant === 'primary',
-        'text-white bg-green-600 hover:bg-green-500 focus:border-green-700':
+        'text-white bg-blue-600 hover:bg-blue-500 focus:border-blue-700 active:bg-blue-400': this.variant === 'primary',
+        'text-white bg-green-600 hover:bg-green-500 focus:border-green-700 active:bg-green-400':
           this.variant === 'success',
-        'text-white bg-gray-600 hover:bg-gray-500 focus:border-gray-700':
+        'text-white bg-gray-600 hover:bg-gray-500 focus:border-gray-700 active:bg-gray-400':
           this.variant === 'secondary',
-        'text-white bg-red-600 hover:bg-red-500 focus:border-red-700':
-          this.variant === 'danger'
+        'text-white bg-red-600 hover:bg-red-500 focus:border-red-700 active:bg-red-500': this.variant === 'danger',
+        'bg-transparent hover:bg-transparent active:bg-transparent': this.variant === 'plain'
       }
     }
   }

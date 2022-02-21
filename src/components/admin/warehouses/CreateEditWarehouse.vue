@@ -1,97 +1,44 @@
 <template>
   <div>
-    <router-link
-      class="flex items-center text-blue-600"
-      :to="{ name: 'WarehousesView' }"
-    >
+    <router-link class="flex items-center text-blue-600" :to="{ name: 'WarehousesView' }">
       <span class="material-icons">arrow_back</span>
       {{ $t('Back') }}
     </router-link>
     <div class="flex flex-wrap">
-      <r-form
-        @submit.prevent="create"
-        class="w-full max-w-md mx-auto xl:w-1/2 my-14"
-      >
-        <r-input
-          v-model="name"
-          :label="$t('name')"
-          required="required"
-          :disabled="loading"
-        />
-        <r-input
-          v-model="street_name"
-          :label="$t('street_name')"
-          required="required"
-          :disabled="loading"
-        />
-        <r-input
-          v-model="street_number"
-          :label="$t('street_number')"
-          required="required"
-          :disabled="loading"
-        />
-        <r-input
-          v-model="city"
-          :label="$t('city')"
-          required="required"
-          :disabled="loading"
-        />
-        <r-input
-          v-model="zip"
-          :label="$t('zip')"
-          required="required"
-          :disabled="loading"
-        />
-        <r-input
-          v-model="country"
-          :label="$t('country')"
-          required="required"
-          :disabled="loading"
-        />
+      <r-form class="my-14 mx-auto w-full max-w-md xl:w-1/2" @submit.prevent="create">
+        <r-input v-model="name" :label="$t('name')" :required="true" :disabled="loading" />
+        <r-input v-model="street_name" :label="$t('street_name')" :required="true" :disabled="loading" />
+        <r-input v-model="street_number" :label="$t('street_number')" :required="true" :disabled="loading" />
+        <r-input v-model="city" :label="$t('city')" :required="true" :disabled="loading" />
+        <r-input v-model="zip" :label="$t('zip')" :required="true" :disabled="loading" />
+        <r-input v-model="country" :label="$t('country')" :required="true" :disabled="loading" />
 
-        <r-button
-          type="submit"
-          size="full"
-          :loading="loading"
-          :disabled="loading"
-        >
+        <r-button type="submit" size="full" :loading="loading" :disabled="loading">
           <span v-if="warehouseId">
-            {{ $t('Update') | uppercase }}
+            {{ $filters.uppercase($t('Update')) }}
           </span>
           <span v-else>
-            {{ $t('Create') | uppercase }}
+            {{ $filters.uppercase($t('Create')) }}
           </span>
         </r-button>
       </r-form>
-      <r-map
-        :key="coordinates ? coordinates.toString() : 'coordinates'"
-        class="self-stretch w-full mx-auto my-4 xl:my-16 xl:w-1/2 h-96 xl:h-auto"
-        :longitude="longitude"
-        :latitude="latitude"
-        :zoom="zoom"
-        :marker="marker"
-        @mapSearch="handleMapSearch"
-      />
     </div>
   </div>
 </template>
 
-<script>
-import RButton from '../../ui/RButton.vue'
-import RForm from '../../ui/RForm.vue'
-import RInput from '../../ui/RInput.vue'
-import RMap from '../../ui/RMap.vue'
+<script lang="ts">
+import { mapStores } from 'pinia'
+import { defineComponent } from 'vue'
 
-import { reverseGeoCode } from '../../../backend/services/MapService'
-import {
-  createWarehouse,
-  getWarehouse,
-  updateWarehouse
-} from '../../../backend/services/WarehouseService'
-
-export default {
-  components: { RMap, RForm, RInput, RButton },
-  data () {
+import RButton from '@/components/ui/RButton.vue'
+import RForm from '@/components/ui/RForm.vue'
+import RInput from '@/components/ui/RInput.vue'
+import { reverseGeoCode } from '@/services/MapService'
+import { createWarehouse, getWarehouse, updateWarehouse } from '@/services/WarehouseService'
+import { useMainStore } from '@/stores/mainStore'
+export default defineComponent({
+  components: { RForm, RInput, RButton },
+  data() {
     return {
       loading: false,
       name: '',
@@ -104,36 +51,33 @@ export default {
       updated: false
     }
   },
-  mounted () {
-    this.fetchData()
-    this.setTitle()
-  },
-  updated () {
-    this.setTitle()
-  },
   computed: {
-    longitude () {
-      return this.coordinates && this.coordinates.length === 2
-        ? this.coordinates[0]
-        : 18.5786596
+    longitude() {
+      return this.coordinates && this.coordinates.length === 2 ? this.coordinates[0] : 18.5786596
     },
-    latitude () {
-      return this.coordinates && this.coordinates.length === 2
-        ? this.coordinates[1]
-        : 48.6688592
+    latitude() {
+      return this.coordinates && this.coordinates.length === 2 ? this.coordinates[1] : 48.6688592
     },
-    zoom () {
+    zoom() {
       return this.coordinates && this.coordinates.length === 2 ? 16 : 3
     },
-    marker () {
+    marker() {
       return this.coordinates && this.coordinates.length === 2
     },
-    warehouseId () {
+    warehouseId() {
       return this.$route.params.id
-    }
+    },
+    ...mapStores(useMainStore)
+  },
+  async mounted() {
+    await this.fetchData()
+    await this.setTitle()
+  },
+  updated() {
+    this.setTitle()
   },
   methods: {
-    async create () {
+    async create() {
       this.loading = true
       this.updated = false
 
@@ -149,23 +93,22 @@ export default {
           country: this.country,
           coordinates: this.coordinates
         })
-        this.$root.$emit(
-          'alert',
-          'success',
-          this.warehouseId
+        this.eventBus.emit('alert', {
+          level: 'success',
+          message: this.warehouseId
             ? this.$t('Warehouse was successfully updated')
             : this.$t('Warehouse was successfully created')
-        )
+        })
         if (!this.warehouseId) {
           this.updated = true
           this.resetForm()
         }
       } catch (error) {
-        this.$root.$emit('alert', 'alert', error)
+        this.eventBus.emit('alert', { level: 'alert', message: error })
       }
       this.loading = false
     },
-    async fetchData () {
+    async fetchData() {
       this.loading = true
       if (this.warehouseId) {
         try {
@@ -175,9 +118,7 @@ export default {
           let addressAttributes = {}
           if (address) {
             const addressId = address.data.id
-            const included = warehouse.data.included.filter(
-              inc => inc.type === 'address' && inc.id === addressId
-            )
+            const included = warehouse.data.included.filter((inc) => inc.type === 'address' && inc.id === addressId)
             if (included && included.length === 1) {
               addressAttributes = included[0].attributes
             }
@@ -192,7 +133,7 @@ export default {
       }
       this.loading = false
     },
-    resetForm () {
+    resetForm() {
       this.name = ''
       this.street_name = ''
       this.street_number = ''
@@ -201,13 +142,10 @@ export default {
       this.country = ''
       this.coordinates = undefined
     },
-    async handleMapSearch (coordinates) {
+    async handleMapSearch(coordinates) {
       this.coordinates = [coordinates.x, coordinates.y]
       try {
-        const details = await reverseGeoCode(
-          this.coordinates[0],
-          this.coordinates[1]
-        )
+        const details = await reverseGeoCode(this.coordinates[0], this.coordinates[1])
         if (details.data && details.data.address) {
           const address = details.data.address
           this.country = address.country ? address.country : ''
@@ -220,12 +158,12 @@ export default {
         // do nothing
       }
     },
-    setTitle () {
+    setTitle() {
       if (this.email) {
-        this.$store.commit('setCurrentTitle', this.$t('Warehouses'))
-        this.$store.commit('setCurrentSubtitle', this.name)
+        this.mainStore.setCurrentTitle(this.$t('Warehouses'))
+        this.mainStore.setCurrentSubtitle(this.name)
       }
     }
   }
-}
+})
 </script>

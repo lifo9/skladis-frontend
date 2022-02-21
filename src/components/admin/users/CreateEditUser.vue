@@ -1,87 +1,49 @@
 <template>
   <div>
-    <router-link
-      class="flex items-center text-blue-600"
-      :to="{ name: 'UsersView' }"
-    >
+    <router-link class="flex items-center text-blue-600" :to="{ name: 'UsersView' }">
       <span class="material-icons">arrow_back</span>
       {{ $t('Back') }}
     </router-link>
-    <r-form
-      @submit.prevent="create"
-      :error="error"
-      class="w-full max-w-md mx-auto my-14"
-    >
+    <r-form :error="error" class="my-14 mx-auto w-full max-w-md" @submit.prevent="create">
       <image-upload
         :key="avatar != '' ? avatar : updated.toString()"
         :label="$t('Avatar')"
         :disabled="loading"
         @change="handleAvatarChange"
       >
-        <template v-slot:image>
-          <img
-            v-if="avatar"
-            :src="avatar"
-            class="object-contain w-64 text-center max-h-48"
-          />
+        <template v-if="avatar" #image>
+          <img :src="avatar" class="object-contain w-64 max-h-48 text-center" />
         </template>
       </image-upload>
-      <r-input
-        v-model="email"
-        type="email"
-        :label="$t('email')"
-        required="required"
-        :disabled="loading"
-      />
-      <r-input
-        v-model="first_name"
-        :label="$t('first_name')"
-        required="required"
-        :disabled="loading"
-      />
-      <r-input
-        v-model="last_name"
-        :label="$t('last_name')"
-        required="required"
-        :disabled="loading"
-      />
+      <r-input v-model="email" type="email" :label="$t('email')" :required="true" :disabled="loading" />
+      <r-input v-model="first_name" :label="$t('first_name')" :required="true" :disabled="loading" />
+      <r-input v-model="last_name" :label="$t('last_name')" :required="true" :disabled="loading" />
       <r-input v-model="phone" :label="$t('phone')" :disabled="loading" />
 
-      <r-input
-        v-if="userId"
-        v-model="changePassword"
-        type="checkbox"
-        :one-line="true"
-        :label="$t('Change password')"
-      />
+      <r-input v-if="userId" v-model="changePassword" type="checkbox" :one-line="true" :label="$t('Change password')" />
       <div v-if="changePassword || !userId">
         <r-input
           v-model="password"
           :required="changePassword || !userId"
           type="password"
           :label="$t('Password')"
-          :enablePasswordToggle="true"
+          :enable-password-toggle="true"
         />
 
         <r-input
-          class="mt-6"
           v-model="passwordConfirmation"
+          class="mt-6"
           :required="changePassword || !userId"
           type="password"
           :label="$t('Password confirmation')"
-          :enablePasswordToggle="true"
+          :enable-password-toggle="true"
         />
       </div>
 
-      <r-input
-        v-model="active"
-        type="checkbox"
-        :one-line="true"
-        :label="$t('active') | capitalize"
-      />
+      <r-input v-model="active" type="checkbox" :one-line="true" :label="$filters.capitalize($t('active'))" />
 
       <label class="block mb-1 text-sm font-medium text-gray-800">
-        {{ $t('roles') | capitalize }}
+        {{ $filters.capitalize($t('roles')) }}
         <span class="text-red-500">*</span>
       </label>
       <multiselect
@@ -101,40 +63,33 @@
         :deselect-label="$t('deselect')"
       />
 
-      <r-button
-        type="submit"
-        size="full"
-        :loading="loading"
-        :disabled="loading"
-      >
+      <r-button type="submit" size="full" :loading="loading" :disabled="loading">
         <span v-if="userId">
-          {{ $t('Update') | uppercase }}
+          {{ $filters.uppercase($t('Update')) }}
         </span>
         <span v-else>
-          {{ $t('Create') | uppercase }}
+          {{ $filters.uppercase($t('Create')) }}
         </span>
       </r-button>
     </r-form>
   </div>
 </template>
 
-<script>
-import RButton from '../../ui/RButton.vue'
-import RForm from '../../ui/RForm.vue'
-import RInput from '../../ui/RInput.vue'
-import {
-  getUser,
-  createUser,
-  updateUser,
-  deleteAvatar
-} from '../../../backend/services/UsersService'
-import { getRoles } from '../../../backend/services/RoleService'
+<script lang="ts">
+import { mapStores } from 'pinia'
+import { defineComponent } from 'vue'
 import Multiselect from 'vue-multiselect'
-import ImageUpload from '../../ui/ImageUpload.vue'
 
-export default {
+import ImageUpload from '@/components/ui/ImageUpload.vue'
+import RButton from '@/components/ui/RButton.vue'
+import RForm from '@/components/ui/RForm.vue'
+import RInput from '@/components/ui/RInput.vue'
+import { getRoles } from '@/services/RoleService'
+import { createUser, deleteAvatar, getUser, updateUser } from '@/services/UsersService'
+import { useMainStore } from '@/stores/mainStore'
+export default defineComponent({
   components: { RForm, RButton, RInput, Multiselect, ImageUpload },
-  data () {
+  data() {
     return {
       error: '',
       loading: false,
@@ -154,24 +109,25 @@ export default {
       updated: false
     }
   },
-  mounted () {
-    this.fetchData()
-    this.setTitle()
-  },
-  updated () {
-    this.setTitle()
-  },
   computed: {
-    userId () {
+    userId() {
       return this.$route.params.id
-    }
+    },
+    ...mapStores(useMainStore)
+  },
+  async mounted() {
+    await this.fetchData()
+    await this.setTitle()
+  },
+  updated() {
+    this.setTitle()
   },
   methods: {
-    async fetchData () {
+    async fetchData() {
       this.loading = true
       try {
         const roles = await getRoles()
-        this.availableRoles = roles.data.data.map(role => {
+        this.availableRoles = roles.data.data.map((role) => {
           return {
             id: role.id,
             name: role.attributes.name
@@ -187,11 +143,9 @@ export default {
           }
           for (let [key, relationship] of Object.entries(relationships)) {
             this[key] = relationship.data
-              .map(rel => {
+              .map((rel) => {
                 if (key === 'roles') {
-                  const userRoles = this.availableRoles.filter(
-                    role => role.id === rel.id
-                  )
+                  const userRoles = this.availableRoles.filter((role) => role.id === rel.id)
 
                   return userRoles
                 }
@@ -203,7 +157,7 @@ export default {
       } catch (error) {}
       this.loading = false
     },
-    async create () {
+    async create() {
       this.updated = false
 
       if (!this.validateFields()) {
@@ -212,8 +166,7 @@ export default {
 
       this.loading = true
       const endpoint = this.userId ? updateUser : createUser
-      const password =
-        !this.userId || this.changePassword ? { password: this.password } : {}
+      const password = !this.userId || this.changePassword ? { password: this.password } : {}
       try {
         if (this.deleteAvatar) {
           await deleteAvatar(this.userId)
@@ -227,48 +180,38 @@ export default {
           email: this.email,
           phone: this.phone,
           active: this.active,
-          roles: this.roles.map(role => parseInt(role.id)),
+          roles: this.roles.map((role) => parseInt(role.id)),
           avatar: this.avatarFile
         })
 
-        if (this.userId === this.$store.state.currentUser.id) {
+        if (this.userId === this.mainStore.currentUser.id) {
           const userId = newUser.data.data.id
           const attributes = newUser.data.data.attributes
-          const roles = newUser.data.included
-            .filter(inc => inc.type === 'role')
-            .map(role => role.attributes.name)
+          const roles = newUser.data.included.filter((inc) => inc.type === 'role').map((role) => role.attributes.name)
 
-          this.$store.commit('setCurrentUser', {
-            currentUser: {
-              id: userId,
-              ...attributes,
-              roles: roles
-            }
+          this.mainStore.setCurrentUser({
+            id: userId,
+            ...attributes,
+            roles: roles
           })
         }
 
-        this.$root.$emit(
-          'alert',
-          'success',
-          this.userId
-            ? this.$t('User was successfully updated')
-            : this.$t('User was successfully created')
-        )
+        this.eventBus.emit('alert', {
+          level: 'success',
+          message: this.userId ? this.$t('User was successfully updated') : this.$t('User was successfully created')
+        })
         if (!this.userId) {
           this.updated = true
         }
         this.resetForm()
       } catch (error) {
-        this.$root.$emit('alert', 'alert', error)
+        this.eventBus.emit('alert', { level: 'alert', message: error })
       }
       this.loading = false
     },
-    validateFields () {
+    validateFields() {
       this.error = ''
-      if (
-        (this.changePassword || !this.userId) &&
-        this.password !== this.passwordConfirmation
-      ) {
+      if ((this.changePassword || !this.userId) && this.password !== this.passwordConfirmation) {
         this.error = this.$t('Passwords have to match')
         return false
       }
@@ -280,7 +223,7 @@ export default {
 
       return true
     },
-    resetForm () {
+    resetForm() {
       if (!this.userId) {
         this.first_name = ''
         this.last_name = ''
@@ -295,7 +238,7 @@ export default {
       this.password = ''
       this.passwordConfirmation = ''
     },
-    handleAvatarChange (file) {
+    handleAvatarChange(file) {
       if (!file) {
         this.deleteAvatar = true
       } else {
@@ -304,14 +247,14 @@ export default {
 
       this.avatarFile = file
     },
-    setTitle () {
+    setTitle() {
       if (this.email) {
-        this.$store.commit('setCurrentTitle', this.$t('Users'))
-        this.$store.commit('setCurrentSubtitle', this.email)
+        this.mainStore.setCurrentTitle(this.$t('Users'))
+        this.mainStore.setCurrentSubtitle(this.email)
       }
     }
   }
-}
+})
 </script>
 
-<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
+<style src="vue-multiselect/dist/vue-multiselect.css"></style>

@@ -1,8 +1,8 @@
 <template>
   <div>
-    <alert />
+    <main-alert />
     <my-header />
-    <main class="container max-w-6xl px-4 mx-auto md:px-12">
+    <main class="container px-4 mx-auto max-w-6xl md:px-12">
       <sign-in v-if="isSignIn" />
       <sign-up v-if="isSignUp" />
       <router-view />
@@ -11,32 +11,29 @@
   </div>
 </template>
 
-<script>
-import LanguageSwitcher from '../../components/LanguageSwitcher.vue'
-import SignIn from '../../components/SignIn.vue'
-import SignUp from '../../components/SignUp.vue'
-import Logo from '../../components/ui/Logo.vue'
-import MyFooter from '../../components/Footer.vue'
-import MyHeader from '../../components/Header.vue'
-import Alert from '../../components/ui/Alert.vue'
+<script lang="ts">
+import { defineComponent } from 'vue'
 
-export default {
+import MyFooter from '@/components/MyFooter.vue'
+import MyHeader from '@/components/MyHeader.vue'
+import SignIn from '@/components/SignIn.vue'
+import SignUp from '@/components/SignUp.vue'
+import MainAlert from '@/components/ui/MainAlert.vue'
+export default defineComponent({
   components: {
     SignIn,
     SignUp,
-    Logo,
-    LanguageSwitcher,
     MyFooter,
     MyHeader,
-    Alert
+    MainAlert
   },
   computed: {
-    isSignIn () {
+    isSignIn() {
       return this.$route.name === 'SignIn'
     },
-    isSignUp () {
+    isSignUp() {
       return this.$route.name === 'SignUp'
     }
   }
-}
+})
 </script>

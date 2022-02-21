@@ -7,18 +7,14 @@
     <div class="relative" @dragover.prevent @drop.stop.prevent="dragFile">
       <div
         v-if="hasImageInSlot || (deleteImage && image)"
-        class="absolute top-0 flex items-center justify-center text-gray-300 bg-white border-2 border-gray-300 rounded-full cursor-pointer hover:border-red-500 hover:text-red-500 right-2 w-7 h-7"
+        class="flex absolute top-0 right-2 justify-center items-center w-7 h-7 text-gray-300 hover:text-red-500 bg-white rounded-full border-2 border-gray-300 hover:border-red-500 cursor-pointer"
         @click="clearFile"
       >
         <span class="text-base material-icons">delete</span>
       </div>
       <div
-        class="flex flex-wrap items-center justify-center w-full px-5 py-3 cursor-pointer"
-        :class="
-          !hasImageInSlot && !(deleteImage && image)
-            ? 'rounded-sm'
-            : 'rounded-md'
-        "
+        class="flex flex-wrap justify-center items-center py-3 px-5 w-full cursor-pointer"
+        :class="!hasImageInSlot && !(deleteImage && image) ? 'rounded-sm' : 'rounded-md'"
       >
         <label
           class="flex flex-col w-64 cursor-pointer"
@@ -29,53 +25,37 @@
           "
         >
           <slot v-if="!image && !deleteImage" name="image" />
-          <img
-            class="object-contain max-h-48"
-            v-if="hasImageInSlot || image"
-            :src="image"
-          />
+          <img v-if="hasImageInSlot || image" class="object-contain max-h-48" :src="image" />
           <div
             v-if="!hasImageInSlot && !(deleteImage && image)"
-            class="w-full h-full pt-2 tracking-wider text-center text-gray-400 cursor-pointer group-hover:text-gray-600 hover:text-blue-600"
+            class="pt-2 w-full h-full tracking-wider text-center text-gray-400 group-hover:text-gray-600 hover:text-blue-600 cursor-pointer"
           >
-            <span class="text-5xl material-icons text-inherit"
-              >cloud_upload</span
-            >
+            <span class="text-5xl text-inherit material-icons">cloud_upload</span>
             <p class="p-2 text-base">{{ $t('Upload') }}</p>
           </div>
           <input
+            v-bind="$attrs"
+            ref="inputFile"
             type="file"
             class="w-0 h-0 opacity-0"
             accept=".jpg,.jpeg,.png"
             :value="value"
             :required="required"
             :disabled="disabled"
-            v-bind="$attrs"
-            ref="inputFile"
             @change="handleFileChange"
           />
         </label>
       </div>
     </div>
-    <span
-      v-if="error && error.length"
-      class="py-2 text-xs font-bold text-red-500"
-    >
+    <span v-if="error && error.length" class="py-2 text-xs font-bold text-red-500">
       {{ $t(error) }}
     </span>
   </div>
 </template>
 
-<script>
-import Vue from 'vue'
-export default Vue.extend({
-  data () {
-    return {
-      image: undefined,
-      deleteImage: false
-    }
-  },
-
+<script lang="ts">
+import { defineComponent } from 'vue'
+export default defineComponent({
   props: {
     label: {
       type: String,
@@ -98,17 +78,24 @@ export default Vue.extend({
       default: ''
     }
   },
+  emits: ['change'],
+  data() {
+    return {
+      image: undefined,
+      deleteImage: false
+    }
+  },
   computed: {
-    hasImageInSlot () {
+    hasImageInSlot() {
       return (!!this.$slots.image || this.image) && !this.deleteImage
     }
   },
   methods: {
-    dragFile (e) {
+    dragFile(e) {
       this.$refs.inputFile.files = e.dataTransfer.files
       this.handleFileChange(undefined, e.dataTransfer.files[0])
     },
-    handleFileChange (e, fileAttr = undefined) {
+    handleFileChange(e, fileAttr = undefined) {
       let file = fileAttr
       if (!fileAttr) {
         file = e.target.files[0]
@@ -118,7 +105,7 @@ export default Vue.extend({
 
       this.$emit('change', file)
     },
-    clearFile () {
+    clearFile() {
       this.$refs.inputFile.value = null
       if (!this.image) {
         this.deleteImage = true

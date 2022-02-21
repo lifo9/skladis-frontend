@@ -1,72 +1,48 @@
 <template>
   <div>
-    <router-link
-      class="flex items-center text-blue-600"
-      :to="{ name: 'VendorsView' }"
-    >
+    <router-link class="flex items-center text-blue-600" :to="{ name: 'VendorsView' }">
       <span class="material-icons">arrow_back</span>
       {{ $t('Back') }}
     </router-link>
-    <r-form @submit.prevent="create" class="w-full max-w-md mx-auto my-14">
+    <r-form class="my-14 mx-auto w-full max-w-md" @submit.prevent="create">
       <image-upload
         :key="logo != '' ? logo : updated.toString()"
         :label="$t('Logo')"
         :disabled="loading"
         @change="handleLogoChange"
       >
-        <template v-slot:image>
-          <img
-            v-if="logo"
-            :src="logo"
-            class="object-contain w-64 text-center max-h-48"
-          />
+        <template v-if="logo" #image>
+          <img :src="logo" class="object-contain w-64 max-h-48 text-center" />
         </template>
       </image-upload>
-      <r-input
-        v-model="name"
-        :label="$t('name')"
-        required="required"
-        :disabled="loading"
-      />
-      <r-input
-        v-model="url"
-        :label="$t('url')"
-        required="required"
-        :disabled="loading"
-      />
+      <r-input v-model="name" :label="$t('name')" :required="true" :disabled="loading" />
+      <r-input v-model="url" :label="$t('url')" :required="true" :disabled="loading" />
 
-      <r-button
-        type="submit"
-        size="full"
-        :loading="loading"
-        :disabled="loading"
-      >
+      <r-button type="submit" size="full" :loading="loading" :disabled="loading">
         <span v-if="vendorId">
-          {{ $t('Update') | uppercase }}
+          {{ $filters.uppercase($t('Update')) }}
         </span>
         <span v-else>
-          {{ $t('Create') | uppercase }}
+          {{ $filters.uppercase($t('Create')) }}
         </span>
       </r-button>
     </r-form>
   </div>
 </template>
 
-<script>
-import RButton from '../../ui/RButton.vue'
-import RForm from '../../ui/RForm.vue'
-import RInput from '../../ui/RInput.vue'
-import {
-  getVendor,
-  createVendor,
-  updateVendor,
-  deleteLogo
-} from '../../../backend/services/VendorService'
-import ImageUpload from '../../ui/ImageUpload.vue'
+<script lang="ts">
+import { mapStores } from 'pinia'
+import { defineComponent } from 'vue'
 
-export default {
+import ImageUpload from '@/components/ui/ImageUpload.vue'
+import RButton from '@/components/ui/RButton.vue'
+import RForm from '@/components/ui/RForm.vue'
+import RInput from '@/components/ui/RInput.vue'
+import { createVendor, deleteLogo, getVendor, updateVendor } from '@/services/VendorService'
+import { useMainStore } from '@/stores/mainStore'
+export default defineComponent({
   components: { RForm, RButton, RInput, ImageUpload },
-  data () {
+  data() {
     return {
       loading: false,
       name: '',
@@ -77,20 +53,21 @@ export default {
       updated: false
     }
   },
-  mounted () {
-    this.fetchData()
-    this.setTitle()
-  },
-  updated () {
-    this.setTitle()
-  },
   computed: {
-    vendorId () {
+    vendorId() {
       return this.$route.params.id
-    }
+    },
+    ...mapStores(useMainStore)
+  },
+  async mounted() {
+    await this.fetchData()
+    await this.setTitle()
+  },
+  updated() {
+    this.setTitle()
   },
   methods: {
-    async create () {
+    async create() {
       this.loading = true
       this.updated = false
 
@@ -106,23 +83,22 @@ export default {
           url: this.url,
           logo: this.logoFile
         })
-        this.$root.$emit(
-          'alert',
-          'success',
-          this.vendorId
+        this.eventBus.emit('alert', {
+          level: 'success',
+          message: this.vendorId
             ? this.$t('Vendor was successfully updated')
             : this.$t('Vendor was successfully created')
-        )
+        })
         if (!this.vendorId) {
           this.updated = true
           this.resetForm()
         }
       } catch (error) {
-        this.$root.$emit('alert', 'alert', error)
+        this.eventBus.emit('alert', { level: 'alert', message: error })
       }
       this.loading = false
     },
-    async fetchData () {
+    async fetchData() {
       this.loading = true
       if (this.vendorId) {
         try {
@@ -135,14 +111,14 @@ export default {
       }
       this.loading = false
     },
-    resetForm () {
+    resetForm() {
       this.name = ''
       this.url = ''
       this.logo = ''
       this.logoFile = undefined
       this.deleteLogo = false
     },
-    handleLogoChange (file) {
+    handleLogoChange(file) {
       if (!file) {
         this.deleteLogo = true
       } else {
@@ -151,12 +127,12 @@ export default {
 
       this.logoFile = file
     },
-    setTitle () {
+    setTitle() {
       if (this.email) {
-        this.$store.commit('setCurrentTitle', this.$t('Vendors'))
-        this.$store.commit('setCurrentSubtitle', this.email)
+        this.mainStore.setCurrentTitle(this.$t('Vendors'))
+        this.mainStore.setCurrentSubtitle(this.email)
       }
     }
   }
-}
+})
 </script>

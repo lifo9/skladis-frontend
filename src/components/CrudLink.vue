@@ -1,10 +1,6 @@
 <template>
   <div v-if="link">
-    <a
-      v-if="link && options.editLink"
-      href="#"
-      @click.prevent="handleNavigation"
-    >
+    <a v-if="link && options.editLink" href="#" @click.prevent="handleNavigation">
       <span v-if="label">
         {{ label }}
       </span>
@@ -17,8 +13,9 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue'
+export default defineComponent({
   props: {
     options: {
       type: Object,
@@ -33,9 +30,10 @@ export default {
       default: undefined
     }
   },
+  emits: ['navigated'],
 
   computed: {
-    label () {
+    label() {
       if (this.options.customCaption) {
         return this.options.customCaption
       } else if (!this.options.relationship) {
@@ -52,14 +50,10 @@ export default {
           const id = relatinships[this.options.relationship].data.id
           const type = relatinships[this.options.relationship].data.type
           if (id) {
-            const relationObject = this.included.filter(
-              included => included.type === type && included.id === id
-            )
+            const relationObject = this.included.filter((included) => included.type === type && included.id === id)
             if (relationObject.length === 1) {
               if (Array.isArray(this.options.attribute)) {
-                return this.options.attribute
-                  .map(attribute => relationObject[0].attributes[attribute])
-                  .join(' ')
+                return this.options.attribute.map((attribute) => relationObject[0].attributes[attribute]).join(' ')
               } else {
                 return relationObject[0].attributes[this.options.attribute]
               }
@@ -70,7 +64,7 @@ export default {
 
       return undefined
     },
-    link () {
+    link() {
       if (this.options.linkAttribute) {
         return this.row.attributes[this.options.linkAttribute]
       } else if (!this.options.relationship) {
@@ -100,7 +94,7 @@ export default {
   },
 
   methods: {
-    async handleNavigation () {
+    async handleNavigation() {
       if (this.options.editLink) {
         try {
           await this.$router.push(this.link)
@@ -109,5 +103,5 @@ export default {
       }
     }
   }
-}
+})
 </script>

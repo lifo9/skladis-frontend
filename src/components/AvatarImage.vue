@@ -1,5 +1,5 @@
 <template>
-  <div class="text-center w-max">
+  <div class="w-max text-center">
     <img
       v-if="row.attributes[options.attribute]"
       class="inline object-cover w-12 h-12 rounded-full"
@@ -8,8 +8,9 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue'
+export default defineComponent({
   props: {
     options: {
       type: Object,
@@ -24,5 +25,5 @@ export default {
       default: undefined
     }
   }
-}
+})
 </script>

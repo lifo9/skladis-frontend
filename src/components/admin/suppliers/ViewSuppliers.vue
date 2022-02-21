@@ -5,24 +5,25 @@
     create-route-name="SupplierCreate"
     edit-route-name="SupplierEdit"
     :bulk-select="true"
-    :hideAllCols="true"
-    :relationshipCols="relationshipCols"
-    :customColsAfter="customCols"
+    :hide-all-cols="true"
+    :relationship-cols="relationshipCols"
+    :custom-cols-after="customCols"
   />
 </template>
 
-<script>
+<script lang="ts">
+import { shallowRef } from 'vue'
+import { defineComponent } from 'vue'
+
+import { deleteSupplier, getSuppliers } from '@/services/SupplierService'
+
 import CrudTable from '../../../components/CrudTable.vue'
-import {
-  getSuppliers,
-  deleteSupplier
-} from '../../../backend/services/SupplierService'
 import CrudLink from '../../CrudLink.vue'
 import CrudText from '../../CrudText.vue'
 
-export default {
+export default defineComponent({
   components: { CrudTable },
-  data () {
+  data() {
     return {
       getEndpoint: getSuppliers,
       deleteEndpoint: deleteSupplier,
@@ -41,7 +42,7 @@ export default {
       customCols: [
         {
           header: this.$t('name'),
-          component: CrudLink,
+          component: shallowRef(CrudLink),
           options: {
             attribute: 'name',
             linkAttribute: 'url',
@@ -52,7 +53,7 @@ export default {
         },
         {
           header: this.$t('ico'),
-          component: CrudText,
+          component: shallowRef(CrudText),
           options: {
             attribute: 'ico',
             sort: true,
@@ -61,7 +62,7 @@ export default {
         },
         {
           header: this.$t('dic'),
-          component: CrudText,
+          component: shallowRef(CrudText),
           options: {
             attribute: 'dic',
             sort: true,
@@ -70,7 +71,7 @@ export default {
         },
         {
           header: this.$t('free_delivery_from'),
-          component: CrudText,
+          component: shallowRef(CrudText),
           options: {
             attribute: 'free_delivery_from',
             sort: true,
@@ -79,7 +80,7 @@ export default {
         },
         {
           header: this.$t('contact'),
-          component: CrudLink,
+          component: shallowRef(CrudLink),
           options: {
             relationship: 'contact',
             attribute: ['first_name', 'last_name'],
@@ -89,7 +90,7 @@ export default {
         },
         {
           header: this.$t('street_name'),
-          component: CrudText,
+          component: shallowRef(CrudText),
           options: {
             relationship: 'address',
             attribute: 'street_name',
@@ -99,7 +100,7 @@ export default {
         },
         {
           header: this.$t('street_number'),
-          component: CrudText,
+          component: shallowRef(CrudText),
           options: {
             relationship: 'address',
             attribute: 'street_number',
@@ -109,7 +110,7 @@ export default {
         },
         {
           header: this.$t('city'),
-          component: CrudText,
+          component: shallowRef(CrudText),
           options: {
             relationship: 'address',
             attribute: 'city',
@@ -119,7 +120,7 @@ export default {
         },
         {
           header: this.$t('country'),
-          component: CrudText,
+          component: shallowRef(CrudText),
           options: {
             relationship: 'address',
             attribute: 'country',
@@ -130,5 +131,5 @@ export default {
       ]
     }
   }
-}
+})
 </script>

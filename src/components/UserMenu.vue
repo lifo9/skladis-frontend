@@ -1,43 +1,32 @@
 <template>
-  <div
-    class="relative flex text-gray-800 bg-white rounded-full cursor-pointer"
-    v-click-outside="hideMenu"
-  >
+  <div v-click-outside="hideMenu" class="flex relative text-gray-800 bg-white rounded-full cursor-pointer">
     <div>
       <div @click="toggleMenu">
-        <span class="w-8 text-2xl text-center select-none material-icons-sharp"
-          >person</span
-        >
-        <span
-          class="w-8 text-2xl text-center rounded-full select-none material-icons-sharp hoverable"
-          >arrow_drop_down</span
-        >
+        <span class="w-8 text-2xl text-center select-none material-icons-sharp">person</span>
+        <span class="w-8 text-2xl text-center rounded-full select-none material-icons-sharp hoverable">
+          arrow_drop_down
+        </span>
       </div>
 
       <div
-        class="absolute z-50 right-0 mt-1.5 w-48 top-full rounded-md shadow-lg py-1 bg-white"
+        class="absolute top-full right-0 z-50 py-1 mt-1.5 w-48 bg-white rounded-md shadow-lg"
         :class="[menuHidden ? 'hidden' : '']"
       >
         <ul class="user-menu">
-          <li v-if="this.$store.state.signedIn" class="not-hoverable">
-            <p>{{ this.$store.state.currentUser.email }}</p>
+          <li v-if="mainStore.signedIn" class="not-hoverable">
+            <p>{{ mainStore.currentUser.email }}</p>
           </li>
-          <li v-if="this.$store.state.signedIn" @click="hideMenu">
-            <navigation-item
-              class="text-left"
-              type="plain"
-              route-name="MyProfile"
-              :label="$t('My profile')"
-            />
+          <li v-if="mainStore.signedIn" @click="hideMenu">
+            <navigation-item class="text-left" type="plain" route-name="MyProfile" :label="$t('My profile')" />
           </li>
           <li class="not-hoverable">
             <p><language-switcher @input="hideMenu" /></p>
           </li>
-          <li v-if="!this.$store.state.signedIn" @click="navigate('SignIn')">
+          <li v-if="!mainStore.signedIn" @click="navigate('SignIn')">
             <p>{{ $t('Sign In') }}</p>
           </li>
-          <li v-if="this.$store.state.signedIn" @click="hideMenu">
-            <logout />
+          <li v-if="mainStore.signedIn" @click="hideMenu">
+            <user-logout />
           </li>
         </ul>
       </div>
@@ -45,35 +34,42 @@
   </div>
 </template>
 
-<script>
-import LanguageSwitcher from './LanguageSwitcher.vue'
-import Logout from './Logout.vue'
-import NavigationItem from './NavigationItem.vue'
-export default {
-  components: { Logout, LanguageSwitcher, NavigationItem },
-  data () {
+<script lang="ts">
+import { mapStores } from 'pinia'
+import { defineComponent } from 'vue'
+
+import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
+import NavigationItem from '@/components/NavigationItem.vue'
+import UserLogout from '@/components/UserLogout.vue'
+import { useMainStore } from '@/stores/mainStore'
+export default defineComponent({
+  components: { LanguageSwitcher, NavigationItem, UserLogout },
+  data() {
     return {
       menuHidden: true
     }
   },
+  computed: {
+    ...mapStores(useMainStore)
+  },
   methods: {
-    navigate (routeName) {
-      if (this.$router.currentRoute.name !== routeName) {
+    navigate(routeName) {
+      if (this.$router.currentRoute.value.name !== routeName) {
         const route = this.$router.resolve({ name: routeName })
         this.$router.push(route.href)
       }
       this.toggleMenu()
     },
-    toggleMenu () {
+    toggleMenu() {
       this.menuHidden = !this.menuHidden
     },
-    hideMenu () {
+    hideMenu() {
       if (!this.menuHidden) {
         this.menuHidden = true
       }
     }
   }
-}
+})
 </script>
 
 <style lang="postcss">

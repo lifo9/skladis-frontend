@@ -1,30 +1,39 @@
 <template>
-  <div class="flex items-center justify-center">
+  <div class="flex justify-center items-center">
     <r-select
       class="w-full"
       :label="$t('Language')"
       :options="langs"
-      :disableDefaultOption="true"
-      :value="this.$i18n.locale"
+      :disable-default-option="true"
+      :value="$i18n.locale"
       @input="switchLanguage"
     />
   </div>
 </template>
 
-<script>
-import RSelect, { optionsFromValues } from './ui/RSelect.vue'
-export default {
+<script lang="ts">
+import { mapStores } from 'pinia'
+import { defineComponent } from 'vue'
+
+import RSelect, { optionsFromValues } from '@/components/ui/RSelect.vue'
+import { useMainStore } from '@/stores/mainStore'
+
+export default defineComponent({
   components: { RSelect },
-  data () {
+  data() {
     return {
-      langs: optionsFromValues(Object.keys(this.$i18n.messages))
+      langs: optionsFromValues(this.$i18n.availableLocales)
     }
   },
+  computed: {
+    ...mapStores(useMainStore)
+  },
   methods: {
-    switchLanguage (language) {
-      this.$store.commit('setAppLanguage', language)
-      this.$emit('input', language)
+    switchLanguage(event) {
+      const language = event.target.value
+
+      this.mainStore.setAppLanguage(language)
     }
   }
-}
+})
 </script>

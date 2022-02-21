@@ -1,30 +1,24 @@
 <template>
-  <div>
-    <alert />
+  <div :key="mainStore.appLanguage">
+    <main-alert />
     <my-header />
     <main>
-      <navigation
+      <main-navigation
+        :key="$route.fullPath"
         class="hidden md:block"
         type="desktop"
-        :class="isMenuExpanded ? 'w-64' : 'w-16'"
-        :key="$route.fullPath"
+        :class="mainStore.isMenuExpanded ? 'w-64' : 'w-16'"
       />
-      <div
-        class="min-h-screen px-4 py-2"
-        :class="isMenuExpanded ? 'md:ml-64' : 'md:ml-16'"
-      >
+      <div class="py-2 px-4 min-h-screen" :class="mainStore.isMenuExpanded ? 'md:ml-64' : 'md:ml-16'">
         <h1
-          v-if="$store.state.currentTitle"
+          v-if="mainStore.currentTitle"
           class="mt-4 text-3xl font-bold text-gray-900 md:text-4xl"
-          :class="$store.state.currentSubtitle ? 'mb-2' : 'mb-8'"
+          :class="mainStore.currentSubtitle ? 'mb-2' : 'mb-8'"
         >
-          {{ $store.state.currentTitle }}
+          {{ mainStore.currentTitle }}
         </h1>
-        <h1
-          v-if="$store.state.currentSubtitle"
-          class="mb-8 text-xl font-bold text-gray-700 md:text-2xl"
-        >
-          {{ $store.state.currentSubtitle }}
+        <h1 v-if="mainStore.currentSubtitle" class="mb-8 text-xl font-bold text-gray-700 md:text-2xl">
+          {{ mainStore.currentSubtitle }}
         </h1>
         <router-view />
       </div>
@@ -32,25 +26,20 @@
   </div>
 </template>
 
-<script>
-import Logout from '../../components/Logout.vue'
-import MyHeader from '../../components/Header.vue'
-import Navigation from '../../components/Navigation.vue'
-import Alert from '../../components/ui/Alert.vue'
+<script lang="ts">
+import { mapStores } from 'pinia'
+import { defineComponent } from 'vue'
 
-export default {
-  components: { Logout, MyHeader, Navigation, Alert },
+import MainNavigation from '@/components/MainNavigation.vue'
+import MyHeader from '@/components/MyHeader.vue'
+import MainAlert from '@/components/ui/MainAlert.vue'
+import { useMainStore } from '@/stores/mainStore'
 
-  data () {
-    return {
-      isMenuExpanded: this.$store.getters.isMenuExpanded
-    }
-  },
+export default defineComponent({
+  components: { MainNavigation, MyHeader, MainAlert },
 
-  watch: {
-    '$store.state.isMenuExpanded': function () {
-      this.isMenuExpanded = this.$store.getters.isMenuExpanded
-    }
+  computed: {
+    ...mapStores(useMainStore)
   }
-}
+})
 </script>

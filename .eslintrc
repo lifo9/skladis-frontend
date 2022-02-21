@@ -1,0 +1,31 @@
+{
+  "root": true,
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "@vue/typescript/recommended",
+    "plugin:prettier/recommended",
+    "plugin:tailwindcss/recommended",
+    "plugin:vue/vue3-recommended",
+    "prettier"
+  ],
+  "parserOptions": {
+    "parser": "@typescript-eslint/parser",
+    "ecmaVersion": 2021
+  },
+  "plugins": ["vue", "@typescript-eslint", "prettier", "simple-import-sort", "tailwindcss"],
+  "rules": {
+    "@typescript-eslint/no-explicit-any": "off",
+    "tailwindcss/no-custom-classname": "off",
+    "no-empty": [2, { "allowEmptyCatch": true }],
+    "no-unused-vars": "off",
+    "arrow-parens": "off",
+    "eol-last": "error",
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error"
+  }
+}
