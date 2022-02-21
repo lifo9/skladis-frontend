@@ -5,7 +5,7 @@
       {{ $t('Back') }}
     </router-link>
     <div class="flex flex-wrap">
-      <r-form @submit.prevent="create" class="my-14 mx-auto w-full max-w-md xl:w-1/2">
+      <r-form class="my-14 mx-auto w-full max-w-md xl:w-1/2" @submit.prevent="create">
         <r-input v-model="name" :label="$t('name')" required="required" :disabled="loading" />
         <r-input v-model="street_name" :label="$t('street_name')" required="required" :disabled="loading" />
         <r-input v-model="street_number" :label="$t('street_number')" required="required" :disabled="loading" />
@@ -27,16 +27,15 @@
 </template>
 
 <script lang="ts">
+import { mapStores } from 'pinia'
+import { defineComponent } from 'vue'
+
 import RButton from '@/components/ui/RButton.vue'
 import RForm from '@/components/ui/RForm.vue'
 import RInput from '@/components/ui/RInput.vue'
-
 import { reverseGeoCode } from '@/services/MapService'
 import { createWarehouse, getWarehouse, updateWarehouse } from '@/services/WarehouseService'
 import { useMainStore } from '@/stores/mainStore'
-import { mapStores } from 'pinia'
-
-import { defineComponent } from 'vue'
 export default defineComponent({
   components: { RForm, RInput, RButton },
   data() {
@@ -51,13 +50,6 @@ export default defineComponent({
       coordinates: undefined,
       updated: false
     }
-  },
-  async mounted() {
-    await this.fetchData()
-    await this.setTitle()
-  },
-  updated() {
-    this.setTitle()
   },
   computed: {
     longitude() {
@@ -76,6 +68,13 @@ export default defineComponent({
       return this.$route.params.id
     },
     ...mapStores(useMainStore)
+  },
+  async mounted() {
+    await this.fetchData()
+    await this.setTitle()
+  },
+  updated() {
+    this.setTitle()
   },
   methods: {
     async create() {

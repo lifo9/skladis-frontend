@@ -1,8 +1,9 @@
 import axios from 'axios'
-import { useMainStore } from '@/stores/mainStore'
+
 import { getVueLocale } from '@/services/LanguageService'
-import { SIGN_IN_URL } from '@/services/UserService'
 import { getMyProfile } from '@/services/MyProfileService'
+import { SIGN_IN_URL } from '@/services/UserService'
+import { useMainStore } from '@/stores/mainStore'
 
 const API_URL = import.meta.env.VITE_API_BASE_URL
 const appLocale = getVueLocale()
@@ -127,4 +128,4 @@ securedAxiosInstance.interceptors.response.use(null, async (error) => {
   }
 })
 
-export { securedAxiosInstance, plainAxiosInstance }
+export { plainAxiosInstance, securedAxiosInstance }

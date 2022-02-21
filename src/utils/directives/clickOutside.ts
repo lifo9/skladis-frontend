@@ -1,5 +1,6 @@
 export const clickOutside = {
-  beforeMount(el, binding, vnode) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  beforeMount(el, binding, _vnode) {
     el.clickOutsideEvent = function (event) {
       if (!(el === event.target || el.contains(event.target))) {
         binding.value(event, el)

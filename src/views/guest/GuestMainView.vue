@@ -12,13 +12,13 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from 'vue'
+
+import MyFooter from '@/components/MyFooter.vue'
+import MyHeader from '@/components/MyHeader.vue'
 import SignIn from '@/components/SignIn.vue'
 import SignUp from '@/components/SignUp.vue'
-import MyFooter from '@/components/Footer.vue'
-import MyHeader from '@/components/Header.vue'
-import Alert from '@/components/ui/Alert.vue'
-
-import { defineComponent } from 'vue'
+import Alert from '@/components/ui/MainAlert.vue'
 export default defineComponent({
   components: {
     SignIn,

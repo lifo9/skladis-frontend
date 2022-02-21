@@ -35,12 +35,13 @@
 </template>
 
 <script lang="ts">
-import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
-import Logout from '@/components/Logout.vue'
-import NavigationItem from '@/components/NavigationItem.vue'
-import { useMainStore } from '@/stores/mainStore'
 import { mapStores } from 'pinia'
 import { defineComponent } from 'vue'
+
+import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
+import NavigationItem from '@/components/NavigationItem.vue'
+import Logout from '@/components/UserLogout.vue'
+import { useMainStore } from '@/stores/mainStore'
 export default defineComponent({
   components: { Logout, LanguageSwitcher, NavigationItem },
   data() {

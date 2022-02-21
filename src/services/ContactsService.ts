@@ -1,5 +1,5 @@
-import CrudService from './CrudService'
 import { securedAxiosInstance } from './ApiService'
+import CrudService from './CrudService'
 
 const API_PATH = '/contacts'
 const TYPE = 'contact'

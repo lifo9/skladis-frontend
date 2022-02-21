@@ -1,6 +1,7 @@
 import { useMainStore } from '@/stores/mainStore'
 
-function checkRole(el, binding, vnode, old) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function checkRole(el, binding, _vnode, _old) {
   let roles = binding.value
   if (!Array.isArray(roles)) {
     roles = [binding.value]

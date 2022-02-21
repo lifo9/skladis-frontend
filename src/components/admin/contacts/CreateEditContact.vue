@@ -4,7 +4,7 @@
       <span class="material-icons">arrow_back</span>
       {{ $t('Back') }}
     </router-link>
-    <r-form @submit.prevent="create" class="my-14 mx-auto w-full max-w-md">
+    <r-form class="my-14 mx-auto w-full max-w-md" @submit.prevent="create">
       <image-upload
         :key="avatar != '' ? avatar : updated.toString()"
         :label="$t('Avatar')"
@@ -33,15 +33,15 @@
 </template>
 
 <script lang="ts">
+import { mapStores } from 'pinia'
+import { defineComponent } from 'vue'
+
+import ImageUpload from '@/components/ui/ImageUpload.vue'
 import RButton from '@/components/ui/RButton.vue'
 import RForm from '@/components/ui/RForm.vue'
 import RInput from '@/components/ui/RInput.vue'
-import { getContact, createContact, updateContact, deleteAvatar } from '@/services/ContactsService'
-import ImageUpload from '@/components/ui/ImageUpload.vue'
-
-import { defineComponent } from 'vue'
+import { createContact, deleteAvatar, getContact, updateContact } from '@/services/ContactsService'
 import { useMainStore } from '@/stores/mainStore'
-import { mapStores } from 'pinia'
 export default defineComponent({
   components: { RForm, RButton, RInput, ImageUpload },
   data() {
@@ -57,18 +57,18 @@ export default defineComponent({
       updated: false
     }
   },
+  computed: {
+    contactId() {
+      return this.$route.params.id
+    },
+    ...mapStores(useMainStore)
+  },
   async mounted() {
     await this.fetchData()
     await this.setTitle()
   },
   updated() {
     this.setTitle()
-  },
-  computed: {
-    contactId() {
-      return this.$route.params.id
-    },
-    ...mapStores(useMainStore)
   },
   methods: {
     async create() {

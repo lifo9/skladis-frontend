@@ -16,7 +16,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 export default defineComponent({
-  emits: ['navigated'],
   props: {
     options: {
       type: Object,
@@ -31,6 +30,7 @@ export default defineComponent({
       default: undefined
     }
   },
+  emits: ['navigated'],
 
   computed: {
     label() {

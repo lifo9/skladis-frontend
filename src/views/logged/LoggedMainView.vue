@@ -1,13 +1,13 @@
 <template>
   <div :key="mainStore.appLanguage">
-    <alert />
+    <main-alert />
     <my-header />
     <main>
-      <navigation
+      <main-navigation
+        :key="$route.fullPath"
         class="hidden md:block"
         type="desktop"
         :class="mainStore.isMenuExpanded ? 'w-64' : 'w-16'"
-        :key="$route.fullPath"
       />
       <div class="py-2 px-4 min-h-screen" :class="mainStore.isMenuExpanded ? 'md:ml-64' : 'md:ml-16'">
         <h1
@@ -27,16 +27,16 @@
 </template>
 
 <script lang="ts">
-import Logout from '../../components/Logout.vue'
-import MyHeader from '../../components/Header.vue'
-import Navigation from '../../components/Navigation.vue'
-import Alert from '@/components/ui/Alert.vue'
 import { mapStores } from 'pinia'
-import { useMainStore } from '@/stores/mainStore'
 import { defineComponent } from 'vue'
 
+import MainNavigation from '@/components/MainNavigation.vue'
+import MyHeader from '@/components/MyHeader.vue'
+import MainAlert from '@/components/ui/MainAlert.vue'
+import { useMainStore } from '@/stores/mainStore'
+
 export default defineComponent({
-  components: { Logout, MyHeader, Navigation, Alert },
+  components: { MainNavigation, MyHeader, MainAlert },
 
   computed: {
     ...mapStores(useMainStore)

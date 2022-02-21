@@ -6,18 +6,20 @@
     edit-route-name="VendorsEdit"
     :bulk-select="true"
     :custom-cols-before="customCols"
-    :hideAllCols="true"
+    :hide-all-cols="true"
   />
 </template>
 
 <script lang="ts">
+import { shallowRef } from 'vue'
+import { defineComponent } from 'vue'
+
+import { deleteVendor, getVendors } from '@/services/VendorService'
+
 import CrudTable from '../../../components/CrudTable.vue'
-import { getVendors, deleteVendor } from '@/services/VendorService'
 import AvatarImage from '../../AvatarImage.vue'
 import CrudLink from '../../CrudLink.vue'
 import CrudText from '../../CrudText.vue'
-import { shallowRef } from 'vue'
-import { defineComponent } from 'vue'
 
 export default defineComponent({
   components: { CrudTable },

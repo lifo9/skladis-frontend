@@ -1,5 +1,5 @@
 <template>
-  <r-form :error="error" @submit.prevent="signIn" class="my-14 mx-auto w-full max-w-md">
+  <r-form :error="error" class="my-14 mx-auto w-full max-w-md" @submit.prevent="signIn">
     <r-input
       v-model="email"
       :required="true"
@@ -22,15 +22,15 @@
 </template>
 
 <script lang="ts">
-import { signIn } from '@/services/UserService'
-import { getMyProfile } from '@/services/MyProfileService'
+import { mapStores } from 'pinia'
+import { defineComponent } from 'vue'
+
 import RButton from '@/components/ui/RButton.vue'
 import RForm from '@/components/ui/RForm.vue'
 import RInput from '@/components/ui/RInput.vue'
-
-import { defineComponent } from 'vue'
+import { getMyProfile } from '@/services/MyProfileService'
+import { signIn } from '@/services/UserService'
 import { useMainStore } from '@/stores/mainStore'
-import { mapStores } from 'pinia'
 export default defineComponent({
   components: { RButton, RInput, RForm },
   data() {

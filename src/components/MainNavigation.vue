@@ -37,7 +37,7 @@
           label="Home"
           icon="home"
           :only-icon="!mainStore.isMenuExpanded"
-          v-on:navigated="toggleMenu"
+          @navigated="toggleMenu"
         />
         <!-- <navigation-item
           route-name="VendorsView"
@@ -52,7 +52,7 @@
           label="Suppliers"
           icon="directions_car"
           :only-icon="!mainStore.isMenuExpanded"
-          v-on:navigated="toggleMenu"
+          @navigated="toggleMenu"
         />
         <navigation-item
           v-role="[constants.roles.admin, constants.roles.manager]"
@@ -60,7 +60,7 @@
           label="Warehouses"
           icon="warehouse"
           :only-icon="!mainStore.isMenuExpanded"
-          v-on:navigated="toggleMenu"
+          @navigated="toggleMenu"
         />
         <navigation-item
           v-role="[constants.roles.admin, constants.roles.manager]"
@@ -68,14 +68,14 @@
           label="Rooms"
           icon="meeting_room"
           :only-icon="!mainStore.isMenuExpanded"
-          v-on:navigated="toggleMenu"
+          @navigated="toggleMenu"
         />
         <navigation-item
           route-name="ContactsView"
           label="Contacts"
           icon="contacts"
           :only-icon="!mainStore.isMenuExpanded"
-          v-on:navigated="toggleMenu"
+          @navigated="toggleMenu"
         />
         <navigation-item
           v-role="constants.roles.admin"
@@ -83,7 +83,7 @@
           label="Users"
           icon="person"
           :only-icon="!mainStore.isMenuExpanded"
-          v-on:navigated="toggleMenu"
+          @navigated="toggleMenu"
         />
       </ul>
     </div>
@@ -91,28 +91,28 @@
 </template>
 
 <script lang="ts">
-import NavigationItem from '@/components/NavigationItem.vue'
-import { useMainStore } from '@/stores/mainStore'
 import { mapStores } from 'pinia'
 import { defineComponent } from 'vue'
+
+import NavigationItem from '@/components/NavigationItem.vue'
+import { useMainStore } from '@/stores/mainStore'
 export default defineComponent({
-  inject: ['constants'],
   components: { NavigationItem },
+  inject: ['constants'],
   props: {
     type: {
       type: String,
       default: 'mobile'
     }
   },
-  computed: {
-    ...mapStores(useMainStore)
-  },
   data() {
     return {
       isOpen: false
     }
   },
-
+  computed: {
+    ...mapStores(useMainStore)
+  },
   methods: {
     toggleMenu() {
       this.isOpen = !this.isOpen

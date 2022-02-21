@@ -1,4 +1,4 @@
-import { uppercase, arrayToString, capitalize } from '@/utils/filters/textFilters'
+import { arrayToString, capitalize, uppercase } from '@/utils/filters/textFilters'
 
 export default {
   uppercase,

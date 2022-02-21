@@ -12,7 +12,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 export default defineComponent({
-  emits: ['change'],
   props: {
     page: {
       type: Number,
@@ -23,6 +22,7 @@ export default defineComponent({
       required: true
     }
   },
+  emits: ['change'],
   methods: {
     changePage(page) {
       this.$emit('change', page)

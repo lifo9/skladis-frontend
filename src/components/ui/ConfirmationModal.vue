@@ -21,12 +21,13 @@
 </template>
 
 <script lang="ts">
-import RButton from '@/components/ui/RButton.vue'
 import { defineComponent } from 'vue'
 
+import RButton from '@/components/ui/RButton.vue'
+
 export default defineComponent({
-  emits: ['confirm', 'cancel'],
-  components: { RButton }
+  components: { RButton },
+  emits: ['confirm', 'cancel']
 })
 </script>
 

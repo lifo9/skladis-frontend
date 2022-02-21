@@ -1,6 +1,7 @@
-import StorageService from '@/services/StorageService'
 import { acceptHMRUpdate, defineStore } from 'pinia'
+
 import { getStartingLocale, setLocale } from '@/services/LanguageService'
+import StorageService from '@/services/StorageService'
 
 const STORE_ID = 'main'
 

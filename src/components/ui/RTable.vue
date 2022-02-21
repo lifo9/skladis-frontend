@@ -109,28 +109,28 @@
     </table>
   </div>
   <div v-else class="flex flex-wrap justify-center items-center my-4">
-    <spinner class="my-4 w-16 h-16 text-gray-800" />
+    <r-spinner class="my-4 w-16 h-16 text-gray-800" />
   </div>
 </template>
 
 <script lang="ts">
-import NavigationItem from '../NavigationItem.vue'
+import { defineComponent } from 'vue'
+
 import OrderArrow from '@/components/ui/OrderArrow.vue'
 import RButton from '@/components/ui/RButton.vue'
 import RInput from '@/components/ui/RInput.vue'
 import RSelect from '@/components/ui/RSelect.vue'
-import Spinner from '@/components/ui/Spinner.vue'
+import RSpinner from '@/components/ui/RSpinner.vue'
 
-import { defineComponent } from 'vue'
+import NavigationItem from '../NavigationItem.vue'
 export default defineComponent({
-  emits: ['addSelected', 'removeSelected', 'deleteItem', 'order'],
   components: {
-    Spinner,
     RInput,
     RButton,
     NavigationItem,
     OrderArrow,
-    RSelect
+    RSelect,
+    RSpinner
   },
   props: {
     loading: {
@@ -194,6 +194,7 @@ export default defineComponent({
       default: undefined
     }
   },
+  emits: ['addSelected', 'removeSelected', 'deleteItem', 'order'],
   data() {
     return {
       currentlySelected: []

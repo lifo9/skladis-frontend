@@ -119,10 +119,10 @@
 </template>
 
 <script lang="ts">
-import PaginationNumber from '@/components/ui/PaginationNumber.vue'
 import { defineComponent } from 'vue'
+
+import PaginationNumber from '@/components/ui/PaginationNumber.vue'
 export default defineComponent({
-  emits: ['change'],
   components: { PaginationNumber },
   props: {
     current: {
@@ -138,6 +138,7 @@ export default defineComponent({
       required: true
     }
   },
+  emits: ['change'],
   computed: {
     currentRangeStart() {
       return (this.current - 1) * this.perPage + 1

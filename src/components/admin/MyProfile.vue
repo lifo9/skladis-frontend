@@ -3,9 +3,9 @@
     <h1 class="mt-4 mb-8 text-4xl font-bold text-gray-900 sm:truncate">
       {{ $t('My profile') }}
     </h1>
-    <r-form :error="error" @submit.prevent="update" class="my-14 mx-auto w-full max-w-md">
+    <r-form :error="error" class="my-14 mx-auto w-full max-w-md" @submit.prevent="update">
       <image-upload :key="avatar" :label="$t('Avatar')" :disabled="loading" @change="handleAvatarChange">
-        <template v-if="avatar" v-slot:image>
+        <template v-if="avatar" #image>
           <img :src="avatar" class="object-contain w-64 max-h-48 text-center" />
         </template>
       </image-upload>
@@ -44,15 +44,15 @@
 </template>
 
 <script lang="ts">
+import { mapStores } from 'pinia'
+import { defineComponent } from 'vue'
+
+import ImageUpload from '@/components/ui/ImageUpload.vue'
 import RButton from '@/components/ui/RButton.vue'
 import RForm from '@/components/ui/RForm.vue'
 import RInput from '@/components/ui/RInput.vue'
-import { getMyProfile, updateMyProfile, deleteAvatar } from '@/services/MyProfileService'
-import ImageUpload from '@/components/ui/ImageUpload.vue'
-
-import { defineComponent } from 'vue'
+import { deleteAvatar, getMyProfile, updateMyProfile } from '@/services/MyProfileService'
 import { useMainStore } from '@/stores/mainStore'
-import { mapStores } from 'pinia'
 export default defineComponent({
   components: { RForm, RButton, RInput, ImageUpload },
   data() {

@@ -4,14 +4,14 @@
       <span class="material-icons">arrow_back</span>
       {{ $t('Back') }}
     </router-link>
-    <r-form @submit.prevent="create" class="my-14 mx-auto w-full max-w-md">
+    <r-form class="my-14 mx-auto w-full max-w-md" @submit.prevent="create">
       <image-upload
         :key="logo != '' ? logo : updated.toString()"
         :label="$t('Logo')"
         :disabled="loading"
         @change="handleLogoChange"
       >
-        <template v-if="logo" v-slot:image>
+        <template v-if="logo" #image>
           <img :src="logo" class="object-contain w-64 max-h-48 text-center" />
         </template>
       </image-upload>
@@ -31,15 +31,15 @@
 </template>
 
 <script lang="ts">
+import { mapStores } from 'pinia'
+import { defineComponent } from 'vue'
+
+import ImageUpload from '@/components/ui/ImageUpload.vue'
 import RButton from '@/components/ui/RButton.vue'
 import RForm from '@/components/ui/RForm.vue'
 import RInput from '@/components/ui/RInput.vue'
-import { getVendor, createVendor, updateVendor, deleteLogo } from '@/services/VendorService'
-import ImageUpload from '@/components/ui/ImageUpload.vue'
-
-import { defineComponent } from 'vue'
+import { createVendor, deleteLogo, getVendor, updateVendor } from '@/services/VendorService'
 import { useMainStore } from '@/stores/mainStore'
-import { mapStores } from 'pinia'
 export default defineComponent({
   components: { RForm, RButton, RInput, ImageUpload },
   data() {
@@ -53,18 +53,18 @@ export default defineComponent({
       updated: false
     }
   },
+  computed: {
+    vendorId() {
+      return this.$route.params.id
+    },
+    ...mapStores(useMainStore)
+  },
   async mounted() {
     await this.fetchData()
     await this.setTitle()
   },
   updated() {
     this.setTitle()
-  },
-  computed: {
-    vendorId() {
-      return this.$route.params.id
-    },
-    ...mapStores(useMainStore)
   },
   methods: {
     async create() {

@@ -1,5 +1,5 @@
-import CrudService from '@/services/CrudService'
 import { securedAxiosInstance } from '@/services/ApiService'
+import CrudService from '@/services/CrudService'
 
 const API_PATH = '/vendors'
 const TYPE = 'vendor'

@@ -5,19 +5,21 @@
     create-route-name="SupplierCreate"
     edit-route-name="SupplierEdit"
     :bulk-select="true"
-    :hideAllCols="true"
-    :relationshipCols="relationshipCols"
-    :customColsAfter="customCols"
+    :hide-all-cols="true"
+    :relationship-cols="relationshipCols"
+    :custom-cols-after="customCols"
   />
 </template>
 
 <script lang="ts">
-import CrudTable from '../../../components/CrudTable.vue'
-import { getSuppliers, deleteSupplier } from '@/services/SupplierService'
-import CrudLink from '../../CrudLink.vue'
-import CrudText from '../../CrudText.vue'
 import { shallowRef } from 'vue'
 import { defineComponent } from 'vue'
+
+import { deleteSupplier, getSuppliers } from '@/services/SupplierService'
+
+import CrudTable from '../../../components/CrudTable.vue'
+import CrudLink from '../../CrudLink.vue'
+import CrudText from '../../CrudText.vue'
 
 export default defineComponent({
   components: { CrudTable },

@@ -5,8 +5,9 @@
 </template>
 
 <script lang="ts">
-import BarcodeScanner from '../../components/admin/BarcodeScanner.vue'
 import { defineComponent } from 'vue'
+
+import BarcodeScanner from '../../components/admin/BarcodeScanner.vue'
 export default defineComponent({
   components: { BarcodeScanner }
 })

@@ -1,5 +1,5 @@
 <template>
-  <span @click="click" class="cursor-pointer material-icons" :class="order === 'asc' ? 'transform-rotate-180' : ''">
+  <span class="cursor-pointer material-icons" :class="order === 'asc' ? 'transform-rotate-180' : ''" @click="click">
     arrow_drop_down
   </span>
 </template>
@@ -7,13 +7,13 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 export default defineComponent({
-  emits: ['click'],
   props: {
     order: {
       type: String,
       default: 'asc'
     }
   },
+  emits: ['click'],
   methods: {
     click() {
       this.$emit('click')

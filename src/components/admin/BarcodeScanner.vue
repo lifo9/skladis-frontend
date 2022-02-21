@@ -37,12 +37,12 @@
 <script lang="ts">
 // TODO - Refactor !
 import Quagga from 'quagga'
-import RButton from '@/components/ui/RButton.vue'
-
 import { defineComponent } from 'vue'
+
+import RButton from '@/components/ui/RButton.vue'
 export default defineComponent({
-  emits: ['input'],
   components: { RButton },
+  emits: ['input'],
 
   data() {
     return {

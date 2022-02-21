@@ -1,7 +1,8 @@
 /* eslint-disable prefer-const */
 import { createI18n } from 'vue-i18n/index'
-import StorageService from '@/services/StorageService'
+
 import { getStartingLocale } from '@/services/LanguageService'
+import StorageService from '@/services/StorageService'
 
 // Load all locales and remember context
 function loadMessages() {

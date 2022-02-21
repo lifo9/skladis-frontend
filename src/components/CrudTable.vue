@@ -1,7 +1,7 @@
 <template>
   <div class="my-4">
     <div class="flex flex-wrap justify-start items-center my-4 sm:justify-end">
-      <search class="m-2" @search="handleSearch" />
+      <r-search class="m-2" @search="handleSearch" />
       <r-button
         v-if="enableDefaultActions"
         class="m-2"
@@ -41,9 +41,9 @@
         :hidden-cols="hiddenCols"
         :custom-ordering-options="customOrderingOptions"
         :hide-all-cols="hideAllCols"
-        @addSelected="handleAddSelected"
-        @removeSelected="handleRemoveSelected"
-        @deleteItem="deleteItems"
+        @add-selected="handleAddSelected"
+        @remove-selected="handleRemoveSelected"
+        @delete-item="deleteItems"
         @order="changeOrder"
       >
         <template #customActions="{ row }">
@@ -114,7 +114,7 @@
           </td>
         </template>
       </r-table>
-      <pagination v-if="total > 1" :current="currentPage" :per-page="perPage" :total="total" @change="changePage" />
+      <r-pagination v-if="total > 1" :current="currentPage" :per-page="perPage" :total="total" @change="changePage" />
     </div>
     <div v-else class="my-4">
       <p>
@@ -126,24 +126,23 @@
 </template>
 
 <script lang="ts">
-import Pagination from '@/components/ui/Pagination.vue'
-import RTable from '@/components/ui/RTable.vue'
-import { arrayUnique, enableScroll, disableScroll } from '@/utils/helpers'
-import RButton from '@/components/ui/RButton.vue'
-import ConfirmationModal from '@/components/ui/ConfirmationModal.vue'
-import NavigationItem from '@/components/NavigationItem.vue'
-import Search from '@/components/ui/Search.vue'
-import OrderArrow from '@/components/ui/OrderArrow.vue'
-
 import { defineComponent } from 'vue'
+
+import NavigationItem from '@/components/NavigationItem.vue'
+import OrderArrow from '@/components/ui/OrderArrow.vue'
+import RButton from '@/components/ui/RButton.vue'
+import RPagination from '@/components/ui/RPagination.vue'
+import RSearch from '@/components/ui/RSearch.vue'
+import RTable from '@/components/ui/RTable.vue'
+import { arrayUnique } from '@/utils/helpers'
 export default defineComponent({
   components: {
     RTable,
-    Pagination,
     RButton,
     NavigationItem,
-    Search,
-    OrderArrow
+    OrderArrow,
+    RPagination,
+    RSearch
   },
   props: {
     getEndpoint: {

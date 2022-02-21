@@ -5,7 +5,7 @@
       <span class="material-icons">arrow_back</span>
       <router-link to="/sign-in">{{ $t('Sign In') }}</router-link>
     </p>
-    <r-form @submit.prevent="signUp" :error="error" class="my-14 mx-auto w-full max-w-md">
+    <r-form :error="error" class="my-14 mx-auto w-full max-w-md" @submit.prevent="signUp">
       <r-input
         v-model="email"
         required="required"
@@ -19,7 +19,7 @@
         type="password"
         :label="$t('Password')"
         :placeholder="$t('Password')"
-        :enablePasswordToggle="true"
+        :enable-password-toggle="true"
       />
       <r-input
         v-model="passwordConfirmation"
@@ -27,7 +27,7 @@
         type="password"
         :label="$t('Password confirmation')"
         :placeholder="$t('Password')"
-        :enablePasswordToggle="true"
+        :enable-password-toggle="true"
       />
       <r-input v-model="firstName" required="required" :label="$t('First name')" :placeholder="$t('First name')" />
       <r-input v-model="lastName" required="required" :label="$t('Last name')" :placeholder="$t('Last name')" />
@@ -37,14 +37,14 @@
 </template>
 
 <script lang="ts">
-import { signUp } from '@/services/UserService'
+import { mapStores } from 'pinia'
+import { defineComponent } from 'vue'
+
 import RButton from '@/components/ui/RButton.vue'
 import RForm from '@/components/ui/RForm.vue'
 import RInput from '@/components/ui/RInput.vue'
-
-import { defineComponent } from 'vue'
+import { signUp } from '@/services/UserService'
 import { useMainStore } from '@/stores/mainStore'
-import { mapStores } from 'pinia'
 export default defineComponent({
   components: { RButton, RInput, RForm },
   data() {

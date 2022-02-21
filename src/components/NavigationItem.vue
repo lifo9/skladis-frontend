@@ -1,21 +1,21 @@
 <template>
   <li
     v-if="type === 'list'"
-    @click="navigate"
     class="navigation-menu-item"
     :class="{ isActiveRoute: 'active', isMenuExpanded: 'justify-center' }"
+    @click="navigate"
   >
     <div class="flex flex-wrap space-x-2">
       <span v-if="icon" class="material-icons">{{ icon }}</span>
       <span v-if="!onlyIcon">{{ $t(label) }}</span>
     </div>
   </li>
-  <r-button v-else-if="type === 'button'" @click="navigate" :size="size ? size : ''">
+  <r-button v-else-if="type === 'button'" :size="size ? size : ''" @click="navigate">
     <span v-if="icon" class="material-icons">{{ icon }}</span>
     &nbsp;
     <span v-if="!onlyIcon">{{ label }}</span>
   </r-button>
-  <p v-else-if="type === 'plain'" @click="navigate" :size="size ? size : ''">
+  <p v-else-if="type === 'plain'" :size="size ? size : ''" @click="navigate">
     <span v-if="!onlyIcon">{{ label }}</span>
   </p>
   <li v-else-if="type === 'list-custom'" class="navigation-menu-item" :class="{ isMenuExpanded: 'justify-center' }">
@@ -24,13 +24,12 @@
 </template>
 
 <script lang="ts">
+import { mapState } from 'pinia'
+import { defineComponent } from 'vue'
+
 import RButton from '@/components/ui/RButton.vue'
 import { useMainStore } from '@/stores/mainStore'
-import { mapState } from 'pinia'
-
-import { defineComponent } from 'vue'
 export default defineComponent({
-  emits: ['navigated'],
   components: { RButton },
   props: {
     type: {
@@ -62,6 +61,7 @@ export default defineComponent({
       default: false
     }
   },
+  emits: ['navigated'],
   computed: {
     isActiveRoute() {
       return this.$router.currentRoute.name === this.routeName

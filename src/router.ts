@@ -1,48 +1,31 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 
-import { useMainStore } from '@/stores/mainStore'
-import { CONSTANTS } from '@/plugins/constants'
-import { isCurrentUserInRoles } from '@/utils/directives/role'
-
-// main views
-import LoggedMainView from '@/views/logged/LoggedMainView.vue'
-import GuestMainView from '@/views/guest/GuestMainView.vue'
-
-// pages
 import ActivateUser from '@/components/ActivateUser.vue'
-import HomeView from '@/views/logged/HomeView.vue'
-
-// contacts
-import ContactsView from '@/views/logged/ContactsView.vue'
 import CreateEditContact from '@/components/admin/contacts/CreateEditContact.vue'
 import ViewContacts from '@/components/admin/contacts/ViewContacts.vue'
-
-// users
-import UsersView from '@/views/logged/admin/UsersView.vue'
-import ViewUsers from '@/components/admin/users/ViewUsers.vue'
-import CreateEditUser from '@/components/admin/users/CreateEditUser.vue'
-
 import MyProfile from '@/components/admin/MyProfile.vue'
-
-// vendors
-import VendorsView from '@/views/logged/VendorsView.vue'
-import CreateEditVendor from '@/components/admin/vendors/CreateEditVendor.vue'
-import ViewVendors from '@/components/admin/vendors/ViewVendors.vue'
-
-// warehouses
-import WarehousesView from '@/views/logged/WarehousesView.vue'
-import CreateEditWarehouse from '@/components/admin/warehouses/CreateEditWarehouse.vue'
-import ViewWarehouses from '@/components/admin/warehouses/ViewWarehouses.vue'
-
-// rooms
-import RoomsView from '@/views/logged/RoomsView.vue'
 import CreateEditRoom from '@/components/admin/rooms/CreateEditRoom.vue'
 import ViewRooms from '@/components/admin/rooms/ViewRooms.vue'
-
-// suppliers
-import SuppliersView from '@/views/logged/SuppliersView.vue'
 import CreateEditSupplier from '@/components/admin/suppliers/CreateEditSupplier.vue'
 import ViewSuppliers from '@/components/admin/suppliers/ViewSuppliers.vue'
+import CreateEditUser from '@/components/admin/users/CreateEditUser.vue'
+import ViewUsers from '@/components/admin/users/ViewUsers.vue'
+import CreateEditVendor from '@/components/admin/vendors/CreateEditVendor.vue'
+import ViewVendors from '@/components/admin/vendors/ViewVendors.vue'
+import CreateEditWarehouse from '@/components/admin/warehouses/CreateEditWarehouse.vue'
+import ViewWarehouses from '@/components/admin/warehouses/ViewWarehouses.vue'
+import { CONSTANTS } from '@/plugins/constants'
+import { useMainStore } from '@/stores/mainStore'
+import { isCurrentUserInRoles } from '@/utils/directives/role'
+import GuestMainView from '@/views/guest/GuestMainView.vue'
+import UsersView from '@/views/logged/admin/UsersView.vue'
+import ContactsView from '@/views/logged/ContactsView.vue'
+import HomeView from '@/views/logged/HomeView.vue'
+import LoggedMainView from '@/views/logged/LoggedMainView.vue'
+import RoomsView from '@/views/logged/RoomsView.vue'
+import SuppliersView from '@/views/logged/SuppliersView.vue'
+import VendorsView from '@/views/logged/VendorsView.vue'
+import WarehousesView from '@/views/logged/WarehousesView.vue'
 
 function redirectSignedOut(to, from, next) {
   const store = useMainStore()

@@ -31,7 +31,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 export default defineComponent({
-  emits: ['update:modelValue'],
   props: {
     label: {
       type: String,
@@ -68,6 +67,7 @@ export default defineComponent({
       default: undefined
     }
   },
+  emits: ['update:modelValue'],
   methods: {
     handleInputChange(event) {
       this.$emit('update:modelValue', event.target.value)

@@ -1,19 +1,19 @@
-import { createApp } from 'vue'
-
-import App from '@/App.vue'
-import router from '@/router'
-import { createPinia } from 'pinia'
-import { i18n } from '@/plugins/i18n'
-import filters from '@/plugins/filters'
-import { role } from '@/utils/directives/role'
-import { clickOutside } from '@/utils/directives/clickOutside'
-import { eventBus } from '@/utils//eventBus'
-import vfmPlugin from 'vue-final-modal'
-import ConfirmationModal from '@/components/ui/ConfirmationModal.vue'
-import { CONSTANTS } from '@/plugins/constants'
-
 import 'material-icons/iconfont/material-icons.css'
 import '@/assets/tailwind.css'
+
+import { createPinia } from 'pinia'
+import { createApp } from 'vue'
+import vfmPlugin from 'vue-final-modal'
+
+import App from '@/App.vue'
+import ConfirmationModal from '@/components/ui/ConfirmationModal.vue'
+import { CONSTANTS } from '@/plugins/constants'
+import filters from '@/plugins/filters'
+import { i18n } from '@/plugins/i18n'
+import router from '@/router'
+import { eventBus } from '@/utils//eventBus'
+import { clickOutside } from '@/utils/directives/clickOutside'
+import { role } from '@/utils/directives/role'
 
 const app = createApp(App)
 const pinia = createPinia()

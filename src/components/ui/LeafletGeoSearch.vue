@@ -6,16 +6,17 @@
 import { GeoSearchControl } from 'leaflet-geosearch'
 import { defineComponent } from 'vue'
 export default defineComponent({
+  name: 'VGeosearch',
   props: {
     options: {
+      type: Object,
       required: true
     }
   },
-  name: 'v-geosearch',
   mounted() {
     this.add()
   },
-  beforeDestroy() {
+  beforeUnmount() {
     this.remove()
   },
   methods: {

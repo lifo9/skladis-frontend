@@ -12,10 +12,11 @@
 </template>
 
 <script lang="ts">
-import RSelect, { optionsFromValues } from '@/components/ui/RSelect.vue'
-import { useMainStore } from '@/stores/mainStore'
 import { mapStores } from 'pinia'
 import { defineComponent } from 'vue'
+
+import RSelect, { optionsFromValues } from '@/components/ui/RSelect.vue'
+import { useMainStore } from '@/stores/mainStore'
 
 export default defineComponent({
   components: { RSelect },

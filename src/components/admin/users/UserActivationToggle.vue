@@ -10,14 +10,14 @@
 </template>
 
 <script lang="ts">
+import { mapStores } from 'pinia'
+import { defineComponent } from 'vue'
+
 import RButton from '@/components/ui/RButton.vue'
 import { activateUser, deactivateUser } from '@/services/UsersService'
-import { defineComponent } from 'vue'
 import { useMainStore } from '@/stores/mainStore'
-import { mapStores } from 'pinia'
 
 export default defineComponent({
-  emits: ['change'],
   components: { RButton },
   props: {
     row: {
@@ -29,6 +29,7 @@ export default defineComponent({
       default: undefined
     }
   },
+  emits: ['change'],
   computed: {
     isCurrentlyLoggedIn() {
       return this.row.id === this.mainStore.currentUser.id
@@ -47,6 +48,7 @@ export default defineComponent({
             const endpoint = activate ? activateUser : deactivateUser
             endpoint(this.row.id)
               .then(() => {
+                // eslint-disable-next-line vue/no-mutating-props
                 this.row.attributes.active = activate
                 this.eventBus.emit('alert', {
                   level: 'success',

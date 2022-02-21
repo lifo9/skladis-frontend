@@ -6,17 +6,18 @@
     edit-route-name="ContactsEdit"
     :bulk-select="true"
     :custom-cols-before="customCols"
-    :hiddenCols="['avatar']"
+    :hidden-cols="['avatar']"
   />
 </template>
 
 <script lang="ts">
-import CrudTable from '../../../components/CrudTable.vue'
-import { getContacts, deleteContact } from '@/services/ContactsService'
-import AvatarImage from '../../AvatarImage.vue'
 import { shallowRef } from 'vue'
-
 import { defineComponent } from 'vue'
+
+import { deleteContact, getContacts } from '@/services/ContactsService'
+
+import CrudTable from '../../../components/CrudTable.vue'
+import AvatarImage from '../../AvatarImage.vue'
 export default defineComponent({
   components: { CrudTable },
   data() {

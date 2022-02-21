@@ -3,18 +3,19 @@
 </template>
 
 <script lang="ts">
-import { useMainStore } from '@/stores/mainStore'
 import { mapStores } from 'pinia'
 import { defineComponent } from 'vue'
+
+import { useMainStore } from '@/stores/mainStore'
 export default defineComponent({
+  computed: {
+    ...mapStores(useMainStore)
+  },
   mounted() {
     this.setTitle()
   },
   updated() {
     this.setTitle()
-  },
-  computed: {
-    ...mapStores(useMainStore)
   },
   methods: {
     setTitle() {

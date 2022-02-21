@@ -3,11 +3,11 @@
 </template>
 
 <script lang="ts">
+import { mapStores } from 'pinia'
+import { defineComponent } from 'vue'
+
 import { signOut } from '@/services/UserService'
 import { useMainStore } from '@/stores/mainStore'
-import { mapStores } from 'pinia'
-
-import { defineComponent } from 'vue'
 
 export default defineComponent({
   computed: {

@@ -5,7 +5,7 @@
       {{ $t('Back') }}
     </router-link>
     <div class="flex flex-wrap">
-      <r-form @submit.prevent="create" class="my-14 mx-auto w-full max-w-xl xl:w-2/3">
+      <r-form class="my-14 mx-auto w-full max-w-xl xl:w-2/3" @submit.prevent="create">
         <div class="flex flex-wrap justify-center items-stretch space-y-6 xl:flex-nowrap xl:space-y-0 xl:space-x-4">
           <div class="space-y-6 w-full xl:space-y-2 xl:w-1/2">
             <r-input v-model="name" :label="$t('name')" required="required" :disabled="loading" />
@@ -24,8 +24,8 @@
               v-model="contact_id"
               :label="$t('contact')"
               :options="contacts"
-              :disableDefaultOption="false"
-              :defaultOption="$t('Please, select contact')"
+              :disable-default-option="false"
+              :default-option="$t('Please, select contact')"
               :value="contact_id"
             />
           </div>
@@ -51,18 +51,17 @@
 </template>
 
 <script lang="ts">
+import { mapStores } from 'pinia'
+import { defineComponent } from 'vue'
+
 import RButton from '@/components/ui/RButton.vue'
 import RForm from '@/components/ui/RForm.vue'
 import RInput from '@/components/ui/RInput.vue'
-
+import RSelect from '@/components/ui/RSelect.vue'
+import { getContacts } from '@/services/ContactsService'
 import { reverseGeoCode } from '@/services/MapService'
 import { createSupplier, getSupplier, updateSupplier } from '@/services/SupplierService'
-import { getContacts } from '@/services/ContactsService'
-import RSelect from '@/components/ui/RSelect.vue'
-
-import { defineComponent } from 'vue'
 import { useMainStore } from '@/stores/mainStore'
-import { mapStores } from 'pinia'
 export default defineComponent({
   components: { RForm, RInput, RButton, RSelect },
   data() {
@@ -84,16 +83,6 @@ export default defineComponent({
       updated: false
     }
   },
-  beforeMount() {
-    this.fetchContacts()
-  },
-  async mounted() {
-    await this.fetchData()
-    await this.setTitle()
-  },
-  updated() {
-    this.setTitle()
-  },
   computed: {
     longitude() {
       return this.coordinates && this.coordinates.length === 2 ? this.coordinates[0] : 18.5786596
@@ -111,6 +100,16 @@ export default defineComponent({
       return this.$route.params.id
     },
     ...mapStores(useMainStore)
+  },
+  beforeMount() {
+    this.fetchContacts()
+  },
+  async mounted() {
+    await this.fetchData()
+    await this.setTitle()
+  },
+  updated() {
+    this.setTitle()
   },
   methods: {
     async create() {

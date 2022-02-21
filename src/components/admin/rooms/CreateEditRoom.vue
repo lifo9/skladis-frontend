@@ -7,15 +7,15 @@
     <p v-if="noWarehouses" class="py-4">
       {{ $t('Please, first create a warehouse') }}
     </p>
-    <r-form v-else @submit.prevent="create" class="my-14 mx-auto w-full max-w-md">
+    <r-form v-else class="my-14 mx-auto w-full max-w-md" @submit.prevent="create">
       <r-input v-model="name" :label="$t('name')" required="required" :disabled="loading" />
       <r-select
         v-model="warehouse"
         :label="$t('warehouse')"
         :options="warehouses"
         :required="true"
-        :disableDefaultOption="false"
-        :defaultOption="$t('Please, select warehouse')"
+        :disable-default-option="false"
+        :default-option="$t('Please, select warehouse')"
       />
 
       <r-button type="submit" size="full" :loading="loading" :disabled="loading || noWarehouses">
@@ -31,16 +31,16 @@
 </template>
 
 <script lang="ts">
+import { mapStores } from 'pinia'
+import { defineComponent } from 'vue'
+
 import RButton from '@/components/ui/RButton.vue'
 import RForm from '@/components/ui/RForm.vue'
 import RInput from '@/components/ui/RInput.vue'
-import { getRoom, createRoom, updateRoom } from '@/services/RoomService'
-import { getWarehouses } from '@/services/WarehouseService'
 import RSelect from '@/components/ui/RSelect.vue'
-
-import { defineComponent } from 'vue'
+import { createRoom, getRoom, updateRoom } from '@/services/RoomService'
+import { getWarehouses } from '@/services/WarehouseService'
 import { useMainStore } from '@/stores/mainStore'
-import { mapStores } from 'pinia'
 export default defineComponent({
   components: { RForm, RButton, RInput, RSelect },
   data() {
@@ -52,6 +52,12 @@ export default defineComponent({
       warehouse: undefined
     }
   },
+  computed: {
+    roomId() {
+      return this.$route.params.id
+    },
+    ...mapStores(useMainStore)
+  },
   beforeMount() {
     this.fetchWarehouses()
   },
@@ -61,12 +67,6 @@ export default defineComponent({
   },
   updated() {
     this.setTitle()
-  },
-  computed: {
-    roomId() {
-      return this.$route.params.id
-    },
-    ...mapStores(useMainStore)
   },
   methods: {
     setWarehouse(warehouseId) {

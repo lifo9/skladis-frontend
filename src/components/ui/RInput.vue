@@ -36,7 +36,6 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  emits: ['update:modelValue'],
   props: {
     type: {
       type: String,
@@ -75,6 +74,7 @@ export default defineComponent({
       default: false
     }
   },
+  emits: ['update:modelValue'],
   data() {
     return {
       showPassword: false

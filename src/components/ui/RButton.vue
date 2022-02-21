@@ -8,7 +8,7 @@
     :size="size"
     :href="to"
   >
-    <spinner v-if="loading" class="mr-3 ml-1 w-4 h-4 text-white" />
+    <r-spinner v-if="loading" class="mr-3 ml-1 w-4 h-4 text-white" />
     <slot />
   </component>
 </template>
@@ -17,10 +17,12 @@
 const sizes = ['verySmall', 'small', 'normal', 'full', 'min']
 const variants = ['primary', 'secondary', 'danger', 'success', 'plain']
 
-import Spinner from '@/components/ui/Spinner.vue'
 import { defineComponent } from 'vue'
+
+import RSpinner from '@/components/ui/RSpinner.vue'
+
 export default defineComponent({
-  components: { Spinner },
+  components: { RSpinner },
   props: {
     size: {
       default: 'normal',
@@ -39,7 +41,8 @@ export default defineComponent({
       default: false
     },
     to: {
-      type: String
+      type: String,
+      default: undefined
     }
   },
   computed: {
