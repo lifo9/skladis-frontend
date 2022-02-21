@@ -4,14 +4,14 @@
       <thead>
         <tr>
           <th class="ordering">
-            <div class="flex justify-between items-center w-full">
+            <div class="flex flex-wrap justify-between items-center w-full">
               {{ $t('Order') }}
               <div class="flex flex-wrap justify-end items-center">
                 <r-select
                   :options="orderingOptions"
                   :disable-default-option="true"
                   :value="orderBy"
-                  @input="changeOrder"
+                  @input="changeOrder(($event.target as HTMLSelectElement).value)"
                 />
                 <order-arrow class="ml-2 text-3xl" :order="order" @click="changeOrder(orderBy)" />
               </div>

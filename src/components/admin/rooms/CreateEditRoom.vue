@@ -10,13 +10,12 @@
     <r-form v-else @submit.prevent="create" class="my-14 mx-auto w-full max-w-md">
       <r-input v-model="name" :label="$t('name')" required="required" :disabled="loading" />
       <r-select
+        v-model="warehouse"
         :label="$t('warehouse')"
         :options="warehouses"
         :required="true"
         :disableDefaultOption="false"
         :defaultOption="$t('Please, select warehouse')"
-        :value="warehouse"
-        @input="setWarehouse"
       />
 
       <r-button type="submit" size="full" :loading="loading" :disabled="loading || noWarehouses">

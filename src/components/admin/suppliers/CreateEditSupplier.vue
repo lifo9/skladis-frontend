@@ -21,12 +21,12 @@
               :disabled="loading"
             />
             <r-select
+              v-model="contact_id"
               :label="$t('contact')"
               :options="contacts"
               :disableDefaultOption="false"
               :defaultOption="$t('Please, select contact')"
               :value="contact_id"
-              @input="setContact"
             />
           </div>
           <div class="space-y-6 w-full xl:space-y-2 xl:w-1/2">
@@ -216,9 +216,6 @@ export default defineComponent({
       } catch (_) {
         // do nothing
       }
-    },
-    setContact(contactId) {
-      this.contact_id = contactId
     },
     setTitle() {
       if (this.name) {
