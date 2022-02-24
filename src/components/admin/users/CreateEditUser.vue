@@ -119,9 +119,6 @@ export default defineComponent({
     await this.fetchData()
     await this.setTitle()
   },
-  updated() {
-    this.setTitle()
-  },
   methods: {
     async fetchData() {
       this.loading = true
@@ -155,6 +152,7 @@ export default defineComponent({
           }
         }
       } catch (error) {}
+      this.setTitle()
       this.loading = false
     },
     async create() {

@@ -15,11 +15,10 @@
 import { shallowRef } from 'vue'
 import { defineComponent } from 'vue'
 
+import CrudLink from '@/components/CrudLink.vue'
+import CrudTable from '@/components/CrudTable.vue'
+import CrudText from '@/components/CrudText.vue'
 import { deleteSupplier, getSuppliers } from '@/services/SupplierService'
-
-import CrudTable from '../../../components/CrudTable.vue'
-import CrudLink from '../../CrudLink.vue'
-import CrudText from '../../CrudText.vue'
 
 export default defineComponent({
   components: { CrudTable },

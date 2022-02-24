@@ -65,9 +65,6 @@ export default defineComponent({
     await this.fetchData()
     await this.setTitle()
   },
-  updated() {
-    this.setTitle()
-  },
   methods: {
     setWarehouse(warehouseId) {
       this.warehouse = warehouseId
@@ -95,6 +92,7 @@ export default defineComponent({
       } catch (error) {
         this.eventBus.emit('alert', { level: 'alert', message: error })
       }
+      this.setTitle()
       this.loading = false
     },
     async fetchData() {

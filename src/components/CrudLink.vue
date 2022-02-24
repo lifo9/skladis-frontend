@@ -1,15 +1,21 @@
 <template>
-  <div v-if="link">
-    <a v-if="link && options.editLink" href="#" @click.prevent="handleNavigation">
-      <span v-if="label">
-        {{ label }}
-      </span>
-    </a>
-    <a v-else :href="link" :target="options.newTab ? '_blank' : ''">
-      <span v-if="label">
-        {{ label }}
-      </span>
-    </a>
+  <div v-if="options.editLink">
+    <div v-for="label in labels" :key="label.id">
+      <a href="#" @click.prevent="handleNavigation(label.id)">
+        <span>
+          {{ label.label }}
+        </span>
+      </a>
+    </div>
+  </div>
+  <div v-else>
+    <div v-for="label in labels" :key="label.id">
+      <a :href="link" :target="options.newTab ? '_blank' : ''">
+        <span>
+          {{ label.label }}
+        </span>
+      </a>
+    </div>
   </div>
 </template>
 
@@ -33,7 +39,7 @@ export default defineComponent({
   emits: ['navigated'],
 
   computed: {
-    label() {
+    labels() {
       if (this.options.customCaption) {
         return this.options.customCaption
       } else if (!this.options.relationship) {
@@ -47,17 +53,22 @@ export default defineComponent({
           this.included &&
           this.included.length > 0
         ) {
-          const id = relatinships[this.options.relationship].data.id
-          const type = relatinships[this.options.relationship].data.type
-          if (id) {
-            const relationObject = this.included.filter((included) => included.type === type && included.id === id)
-            if (relationObject.length === 1) {
-              if (Array.isArray(this.options.attribute)) {
-                return this.options.attribute.map((attribute) => relationObject[0].attributes[attribute]).join(' ')
-              } else {
-                return relationObject[0].attributes[this.options.attribute]
+          if (Array.isArray(relatinships[this.options.relationship].data)) {
+            let labels = []
+            relatinships[this.options.relationship].data.forEach((relationship) => {
+              const attributes = this.extractRelationshipObjectAttributes(relationship.id, relationship.type)
+              const label = this.extractAttributeLabelFromRelationObject(attributes)
+              if (label) {
+                labels.push({ id: relationship.id, label: label })
               }
-            }
+            })
+            return labels
+          } else {
+            const id = relatinships[this.options.relationship].data.id
+            const type = relatinships[this.options.relationship].data.type
+            const attributes = this.extractRelationshipObjectAttributes(id, type)
+
+            return [{ id: id, label: this.extractAttributeLabelFromRelationObject(attributes) }]
           }
         }
       }
@@ -69,24 +80,6 @@ export default defineComponent({
         return this.row.attributes[this.options.linkAttribute]
       } else if (!this.options.relationship) {
         return this.row.attributes[this.options.attribute]
-      } else if (this.options.editLink) {
-        const relatinships = this.row.relationships
-        if (
-          relatinships &&
-          relatinships[this.options.relationship] &&
-          relatinships[this.options.relationship].data &&
-          this.included &&
-          this.included.length > 0
-        ) {
-          const id = relatinships[this.options.relationship].data.id
-          const route = this.$router.resolve({
-            name: this.options.editRouteName,
-            params: { id: id }
-          })
-          if (route) {
-            return route.href
-          }
-        }
       }
 
       return '#'
@@ -94,13 +87,42 @@ export default defineComponent({
   },
 
   methods: {
-    async handleNavigation() {
+    async handleNavigation(id) {
       if (this.options.editLink) {
-        try {
-          await this.$router.push(this.link)
-          this.$emit('navigated')
-        } catch (error) {}
+        const route = this.$router.resolve({
+          name: this.options.editRouteName,
+          params: { id: id }
+        })
+
+        if (route) {
+          try {
+            await this.$router.push(route.href)
+            this.$emit('navigated')
+          } catch (error) {}
+        }
       }
+    },
+    extractRelationshipObjectAttributes(id, type) {
+      if (id && type && this.included) {
+        const relationObject = this.included.filter((included) => included.type === type && included.id === id)
+
+        if (relationObject.length === 1) {
+          return relationObject[0].attributes
+        }
+      }
+
+      return undefined
+    },
+    extractAttributeLabelFromRelationObject(attributes) {
+      if (attributes) {
+        if (Array.isArray(this.options.attribute)) {
+          return this.options.attribute.map((attribute) => attributes[attribute]).join(' ')
+        } else {
+          return attributes[this.options.attribute]
+        }
+      }
+
+      return undefined
     }
   }
 })

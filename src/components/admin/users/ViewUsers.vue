@@ -17,10 +17,9 @@ import { markRaw, shallowRef } from 'vue'
 import { defineComponent } from 'vue'
 
 import UserActivationToggle from '@//components/admin/users/UserActivationToggle.vue'
+import AvatarImage from '@/components/AvatarImage.vue'
+import CrudTable from '@/components/CrudTable.vue'
 import { deleteUser, getUsers } from '@/services/UsersService'
-
-import AvatarImage from '../../AvatarImage.vue'
-import CrudTable from '../../CrudTable.vue'
 
 export default defineComponent({
   components: { CrudTable },
@@ -34,7 +33,8 @@ export default defineComponent({
           header: '',
           component: shallowRef(AvatarImage),
           options: {
-            attribute: 'avatar'
+            attribute: 'avatar',
+            rounded: true
           }
         }
       ],

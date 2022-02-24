@@ -4,6 +4,8 @@ import ActivateUser from '@/components/ActivateUser.vue'
 import CreateEditContact from '@/components/admin/contacts/CreateEditContact.vue'
 import ViewContacts from '@/components/admin/contacts/ViewContacts.vue'
 import MyProfile from '@/components/admin/MyProfile.vue'
+import CreateEditProduct from '@/components/admin/products/CreateEditProduct.vue'
+import ViewProducts from '@/components/admin/products/ViewProducts.vue'
 import CreateEditRoom from '@/components/admin/rooms/CreateEditRoom.vue'
 import ViewRooms from '@/components/admin/rooms/ViewRooms.vue'
 import CreateEditSupplier from '@/components/admin/suppliers/CreateEditSupplier.vue'
@@ -22,6 +24,7 @@ import UsersView from '@/views/logged/admin/UsersView.vue'
 import ContactsView from '@/views/logged/ContactsView.vue'
 import HomeView from '@/views/logged/HomeView.vue'
 import LoggedMainView from '@/views/logged/LoggedMainView.vue'
+import ProductsView from '@/views/logged/ProductsView.vue'
 import RoomsView from '@/views/logged/RoomsView.vue'
 import SuppliersView from '@/views/logged/SuppliersView.vue'
 import VendorsView from '@/views/logged/VendorsView.vue'
@@ -195,6 +198,27 @@ const routes: Array<RouteRecordRaw> = [
             path: 'edit/:id',
             name: 'SupplierEdit',
             component: CreateEditSupplier
+          }
+        ]
+      },
+      {
+        path: 'products',
+        component: ProductsView,
+        children: [
+          {
+            path: '',
+            name: 'ProductsView',
+            component: ViewProducts
+          },
+          {
+            path: 'create',
+            name: 'ProductCreate',
+            component: CreateEditProduct
+          },
+          {
+            path: 'edit/:id',
+            name: 'ProductEdit',
+            component: CreateEditProduct
           }
         ]
       }

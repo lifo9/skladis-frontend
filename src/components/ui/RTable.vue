@@ -116,13 +116,13 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 
+import NavigationItem from '@/components/NavigationItem.vue'
 import OrderArrow from '@/components/ui/OrderArrow.vue'
 import RButton from '@/components/ui/RButton.vue'
 import RInput from '@/components/ui/RInput.vue'
 import RSelect from '@/components/ui/RSelect.vue'
 import RSpinner from '@/components/ui/RSpinner.vue'
 
-import NavigationItem from '../NavigationItem.vue'
 export default defineComponent({
   components: {
     RInput,

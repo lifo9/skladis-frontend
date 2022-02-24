@@ -2,8 +2,8 @@
   <crud-table
     :get-endpoint="getEndpoint"
     :delete-endpoint="deleteEndpoint"
-    create-route-name="VendorsCreate"
-    edit-route-name="VendorsEdit"
+    create-route-name="ProductCreate"
+    edit-route-name="ProductEdit"
     :bulk-select="true"
     :custom-cols-before="customCols"
     :hide-all-cols="true"
@@ -18,20 +18,20 @@ import AvatarImage from '@/components/AvatarImage.vue'
 import CrudLink from '@/components/CrudLink.vue'
 import CrudTable from '@/components/CrudTable.vue'
 import CrudText from '@/components/CrudText.vue'
-import { deleteVendor, getVendors } from '@/services/VendorService'
+import { deleteProduct, getProducts } from '@/services/ProductService'
 
 export default defineComponent({
   components: { CrudTable },
   data() {
     return {
-      getEndpoint: getVendors,
-      deleteEndpoint: deleteVendor,
+      getEndpoint: getProducts,
+      deleteEndpoint: deleteProduct,
       customCols: [
         {
           header: '',
           component: shallowRef(AvatarImage),
           options: {
-            attribute: 'logo'
+            attribute: 'images'
           }
         },
         {
@@ -43,13 +43,13 @@ export default defineComponent({
           }
         },
         {
-          header: this.$t('url'),
+          header: this.$t('Suppliers'),
           component: shallowRef(CrudLink),
           options: {
-            attribute: 'url',
-            newTab: true,
-            sort: true,
-            orderBy: 'url'
+            relationship: 'suppliers',
+            attribute: 'name',
+            editLink: true,
+            editRouteName: 'SupplierEdit'
           }
         }
       ]
