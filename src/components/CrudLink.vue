@@ -41,9 +41,9 @@ export default defineComponent({
   computed: {
     labels() {
       if (this.options.customCaption) {
-        return this.options.customCaption
+        return [{ id: this.options.customCaption, label: this.options.customCaption }]
       } else if (!this.options.relationship) {
-        return this.row.attributes[this.options.attribute]
+        return [{ id: this.row.attributes[this.options.attribute], label: this.row.attributes[this.options.attribute] }]
       } else {
         const relatinships = this.row.relationships
         if (
