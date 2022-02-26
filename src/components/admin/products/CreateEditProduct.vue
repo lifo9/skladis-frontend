@@ -7,7 +7,39 @@
     <p v-if="noSuppliers" class="py-4">
       {{ $t('Please, first create a supplier') }}
     </p>
-    <r-form v-else class="my-14 mx-auto w-full max-w-md" @submit.prevent="create">
+    <r-form v-else class="my-14 mx-auto w-full max-w-xl" @submit.prevent="create">
+      <vue-final-modal v-model="showImageUploadModal" classes="modal-container">
+        <div class="flex flex-wrap justify-center items-center p-8 m-4 max-w-5xl bg-white rounded-md md:justify-start">
+          <div class="flex flex-wrap justify-between pb-4 w-full">
+            <h3 class="font-medium text-gray-800">{{ $t('Images') }}</h3>
+            <r-button size="min" variant="plain" @click.prevent="showImageUploadModal = false">
+              <span class="font-bold text-gray-800 material-icons">close</span>
+            </r-button>
+          </div>
+          <div v-for="(image, idx) in images" :key="`image_${idx}`" class="flex flex-wrap">
+            <image-upload
+              :key="image != '' ? image : `image_${idx}`"
+              :disabled="loading"
+              @change="handleImageChange($event, idx)"
+            >
+              <template v-if="image" #image>
+                <img v-if="image.blob" :src="image.blob" class="object-contain w-64 max-h-48 text-center" />
+                <img v-else-if="image.url" :src="image.url" class="object-contain w-64 max-h-48 text-center" />
+              </template>
+            </image-upload>
+          </div>
+          <image-upload :disabled="loading" :show-image="false" class="w-full" @change="handleImageChange" />
+          <r-button variant="success" class="mx-auto mt-10 w-full" @click="showImageUploadModal = false">
+            {{ $t('OK') }}
+          </r-button>
+        </div>
+      </vue-final-modal>
+      <image-slider v-if="images.length > 0" :images="imageUrls" class="object-contain h-60 md:h-80" />
+      <div class="flex flex-wrap justify-center items-center">
+        <r-button variant="success" @click.prevent="showImageUploadModal = true">
+          {{ $filters.uppercase($t('Edit images')) }}
+        </r-button>
+      </div>
       <r-input v-model="name" :label="$t('name')" :required="true" :disabled="loading" />
       <multiselect
         v-model="suppliers"
@@ -27,10 +59,10 @@
 
       <r-button type="submit" size="full" :loading="loading" :disabled="loading || noSuppliers">
         <span v-if="productId">
-          {{ $filters.uppercase($t('Update')) }}
+          {{ $filters.uppercase($t('Update') + ' ' + $t('Product')) }}
         </span>
         <span v-else>
-          {{ $filters.uppercase($t('Create')) }}
+          {{ $filters.uppercase($t('Create') + ' ' + $t('Product')) }}
         </span>
       </r-button>
     </r-form>
@@ -42,6 +74,8 @@ import { mapStores } from 'pinia'
 import { defineComponent } from 'vue'
 import Multiselect from 'vue-multiselect'
 
+import ImageSlider from '@/components/ui/ImageSlider.vue'
+import ImageUpload from '@/components/ui/ImageUpload.vue'
 import RButton from '@/components/ui/RButton.vue'
 import RForm from '@/components/ui/RForm.vue'
 import RInput from '@/components/ui/RInput.vue'
@@ -50,19 +84,31 @@ import { getSuppliers } from '@/services/SupplierService'
 import { useMainStore } from '@/stores/mainStore'
 
 export default defineComponent({
-  components: { RForm, RButton, RInput, Multiselect },
+  components: { RForm, RButton, RInput, Multiselect, ImageUpload, ImageSlider },
   data() {
     return {
       loading: false,
       name: '',
       supplierOptions: [],
       noSuppliers: false,
-      suppliers: []
+      suppliers: [],
+      images: [],
+      newImage: '',
+      showImageUploadModal: false
     }
   },
   computed: {
     productId() {
       return this.$route.params.id
+    },
+    imageUrls() {
+      return this.images.map((image) => {
+        if (image.blob) {
+          return image.blob
+        } else if (image.url) {
+          return image.url
+        }
+      })
     },
     ...mapStores(useMainStore)
   },
@@ -83,7 +129,8 @@ export default defineComponent({
         await endpoint({
           id: this.productId,
           name: this.name,
-          supplierIds: this.suppliers.map((supplier) => supplier.id)
+          supplierIds: this.suppliers.map((supplier) => supplier.id),
+          images: this.images.map((image) => (image.file ? image.file : image.id))
         })
         this.eventBus.emit('alert', {
           level: 'success',
@@ -160,6 +207,17 @@ export default defineComponent({
 
       return {}
     },
+    handleImageChange(file, idx) {
+      if (file) {
+        if (this.images[idx]) {
+          this.images[idx] = { file: file, blob: URL.createObjectURL(file) }
+        } else {
+          this.images.push(file)
+        }
+      } else {
+        this.images.splice(idx, 1)
+      }
+    },
     setTitle() {
       if (this.name) {
         this.mainStore.setCurrentTitle(this.$t('Products'))
@@ -169,5 +227,14 @@ export default defineComponent({
   }
 })
 </script>
+
+<style lang="postcss" scoped>
+:deep(.modal-container) {
+  @apply flex justify-center items-center overflow-hidden z-50;
+}
+.modal__close {
+  @apply absolute top-2 right-2;
+}
+</style>
 
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>

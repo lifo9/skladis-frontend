@@ -31,7 +31,8 @@ export default defineComponent({
           header: '',
           component: shallowRef(AvatarImage),
           options: {
-            attribute: 'images'
+            attribute: 'images',
+            subAttribute: 'url'
           }
         },
         {

@@ -6,7 +6,7 @@
     </label>
     <div class="relative" @dragover.prevent @drop.stop.prevent="dragFile">
       <div
-        v-if="hasImageInSlot || (deleteImage && image)"
+        v-if="showImage && (hasImageInSlot || (deleteImage && image))"
         class="flex absolute top-0 right-2 justify-center items-center w-7 h-7 text-gray-300 hover:text-red-500 bg-white rounded-full border-2 border-gray-300 hover:border-red-500 cursor-pointer"
         @click="clearFile"
       >
@@ -19,15 +19,15 @@
         <label
           class="flex flex-col w-64 cursor-pointer"
           :class="
-            !hasImageInSlot && !(deleteImage && image)
+            (!hasImageInSlot && !(deleteImage && image)) || !showImage
               ? 'w-full border-4 border-gray-300 border-dashed hover:bg-gray-50 rounded-sm'
               : 'border-4 border-white hover:border-blue-600 rounded-md'
           "
         >
           <slot v-if="!image && !deleteImage" name="image" />
-          <img v-if="hasImageInSlot || image" class="object-contain max-h-48" :src="image" />
+          <img v-if="showImage && (hasImageInSlot || image)" class="object-contain max-h-48" :src="image" />
           <div
-            v-if="!hasImageInSlot && !(deleteImage && image)"
+            v-if="(!hasImageInSlot && !(deleteImage && image)) || !showImage"
             class="pt-2 w-full h-full tracking-wider text-center text-gray-400 group-hover:text-gray-600 hover:text-blue-600 cursor-pointer"
           >
             <span class="text-5xl text-inherit material-icons">cloud_upload</span>
@@ -73,6 +73,10 @@ export default defineComponent({
       type: [String, Number, Boolean],
       default: undefined
     },
+    showImage: {
+      type: Boolean,
+      default: true
+    },
     error: {
       type: String,
       default: ''
@@ -101,9 +105,12 @@ export default defineComponent({
         file = e.target.files[0]
       }
 
-      this.image = URL.createObjectURL(file)
-
-      this.$emit('change', file)
+      if (this.showImage) {
+        this.image = URL.createObjectURL(file)
+        this.$emit('change', file)
+      } else {
+        this.$emit('change', { file: file, blob: URL.createObjectURL(file) })
+      }
     },
     clearFile() {
       this.$refs.inputFile.value = null

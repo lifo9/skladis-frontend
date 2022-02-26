@@ -32,10 +32,18 @@ export default defineComponent({
       if (attribute) {
         if (Array.isArray(attribute)) {
           if (attribute.length > 0) {
-            return attribute[0]
+            if (this.options.subAttribute) {
+              return attribute[0][this.options.subAttribute]
+            } else {
+              return attribute[0]
+            }
           }
         } else {
-          return attribute
+          if (this.options.subAttribute) {
+            return attribute[this.options.subAttribute]
+          } else {
+            return attribute
+          }
         }
       }
       return undefined

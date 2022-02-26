@@ -33,20 +33,20 @@ class CrudService {
   getRecord(id) {
     return securedAxiosInstance.get(this.API_PATH + '/' + id)
   }
-  createRecord(params, formData = false) {
+  createRecord(params, formData = false, allowEmpty = false) {
     let payload = {}
     if (formData) {
-      payload = this._buildFormData(params)
+      payload = this._buildFormData(params, allowEmpty)
     } else {
       payload[this.TYPE] = params
     }
 
     return securedAxiosInstance.post(this.API_PATH, payload)
   }
-  updateRecord(id, params, formData = false) {
+  updateRecord(id, params, formData = false, allowEmpty = false) {
     let payload = {}
     if (formData) {
-      payload = this._buildFormData(params)
+      payload = this._buildFormData(params, allowEmpty)
     } else {
       payload[this.TYPE] = params
     }
@@ -60,13 +60,16 @@ class CrudService {
   deleteRecord(id) {
     return securedAxiosInstance.delete(this.API_PATH + '/' + id)
   }
-  _buildFormData(params) {
+  _buildFormData(params, allowEmpty) {
     const formData = new FormData()
 
     for (const key in params) {
       if (Array.isArray(params[key])) {
         for (let i = 0; i < params[key].length; i++) {
           formData.append(`${this.TYPE}[${key}][]`, params[key][i])
+        }
+        if (allowEmpty && params[key].length === 0) {
+          formData.append(`${this.TYPE}[${key}][]`, params[key])
         }
       } else {
         formData.append(`${this.TYPE}[${key}]`, params[key])

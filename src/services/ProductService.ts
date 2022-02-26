@@ -12,22 +12,24 @@ export function getProducts(params) {
   return crud.getRecords(params)
 }
 
-export function updateProduct({ id, name, supplierIds }: any = {}) {
+export function updateProduct({ id, name, supplierIds, images }: any = {}) {
   const params = {
     name: name,
-    supplier_ids: supplierIds
+    supplier_ids: supplierIds,
+    images: images
   }
 
-  return crud.updateRecord(id, params)
+  return crud.updateRecord(id, params, true, true)
 }
 
-export function createProdcut({ name, supplierIds }: any = {}) {
+export function createProdcut({ name, supplierIds, images }: any = {}) {
   const params = {
     name: name,
-    supplier_ids: supplierIds
+    supplier_ids: supplierIds,
+    images: images
   }
 
-  return crud.createRecord(params)
+  return crud.createRecord(params, true, true)
 }
 
 export function deleteProduct(id) {
