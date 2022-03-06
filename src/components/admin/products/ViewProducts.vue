@@ -2,6 +2,7 @@
   <crud-table
     :get-endpoint="getEndpoint"
     :delete-endpoint="deleteEndpoint"
+    :filters="filters"
     create-route-name="ProductCreate"
     edit-route-name="ProductEdit"
     :bulk-select="true"
@@ -53,7 +54,8 @@ export default defineComponent({
             editRouteName: 'SupplierEdit'
           }
         }
-      ]
+      ],
+      filters: this.$route.query
     }
   }
 })

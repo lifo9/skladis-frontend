@@ -8,9 +8,9 @@ class CrudService {
     this.TYPE = TYPE
   }
 
-  getRecords({ page, perPage, searchQuery, order, orderBy }: any = {}) {
+  getRecords({ page, perPage, searchQuery, order, orderBy, filters }: any = {}) {
     // eslint-disable-next-line prefer-const
-    let params = {} as { page; per_page; search; order; order_by }
+    let params = {} as { page; per_page; search; order; order_by; filters }
 
     if (page) {
       params.page = page
@@ -26,6 +26,9 @@ class CrudService {
     }
     if (orderBy) {
       params.order_by = orderBy
+    }
+    if (filters) {
+      params = { ...params, ...filters }
     }
 
     return securedAxiosInstance.get(this.API_PATH, { params: params })

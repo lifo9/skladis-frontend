@@ -198,6 +198,10 @@ export default defineComponent({
     hideAllCols: {
       type: Boolean,
       default: false
+    },
+    filters: {
+      type: Object,
+      default: undefined
     }
   },
   data() {
@@ -275,7 +279,8 @@ export default defineComponent({
         perPage: this.perPage,
         searchQuery: this.searchQuery,
         order: this.order,
-        orderBy: this.orderBy
+        orderBy: this.orderBy,
+        filters: this.filters
       })
       const data = rows.data.data
       const included = rows.data.included
