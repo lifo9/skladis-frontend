@@ -1,11 +1,8 @@
 <template>
   <div>
-    <router-link class="flex items-center text-blue-600" :to="{ name: 'SuppliersView' }">
-      <span class="material-icons">arrow_back</span>
-      {{ $t('Back') }}
-    </router-link>
+    <navigation-back />
     <div class="flex flex-wrap">
-      <r-form class="my-14 mx-auto w-full max-w-xl xl:w-2/3" @submit.prevent="create">
+      <r-form class="my-14 mx-auto w-full max-w-3xl xl:w-2/3" @submit.prevent="create">
         <div class="flex flex-wrap justify-center items-stretch space-y-6 xl:flex-nowrap xl:space-y-0 xl:space-x-4">
           <div class="space-y-6 w-full xl:space-y-2 xl:w-1/2">
             <r-input v-model="name" :label="$t('name')" :required="true" :disabled="loading" />
@@ -54,6 +51,7 @@
 import { mapStores } from 'pinia'
 import { defineComponent } from 'vue'
 
+import NavigationBack from '@/components/ui/NavigationBack.vue'
 import RButton from '@/components/ui/RButton.vue'
 import RForm from '@/components/ui/RForm.vue'
 import RInput from '@/components/ui/RInput.vue'
@@ -63,7 +61,7 @@ import { reverseGeoCode } from '@/services/MapService'
 import { createSupplier, getSupplier, updateSupplier } from '@/services/SupplierService'
 import { useMainStore } from '@/stores/mainStore'
 export default defineComponent({
-  components: { RForm, RInput, RButton, RSelect },
+  components: { RForm, RInput, RButton, RSelect, NavigationBack },
   data() {
     return {
       loading: false,
@@ -174,7 +172,7 @@ export default defineComponent({
     async fetchContacts() {
       this.loading = true
       try {
-        const contacts = await getContacts({ perPage: 100 }) // TODO:jf dynamic loading when paginated
+        const contacts = await getContacts({ perPage: 1000 }) // TODO:jf dynamic loading when paginated
         this.contacts = contacts.data.data.map((contact) => {
           return {
             id: contact.id,

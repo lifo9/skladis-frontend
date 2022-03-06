@@ -1,13 +1,10 @@
 <template>
   <div>
-    <router-link class="flex items-center text-blue-600" :to="{ name: 'ProductsView' }">
-      <span class="material-icons">arrow_back</span>
-      {{ $t('Back') }}
-    </router-link>
+    <navigation-back />
     <p v-if="noSuppliers" class="py-4">
       {{ $t('Please, first create a supplier') }}
     </p>
-    <r-form v-else class="my-14 mx-auto w-full max-w-xl" @submit.prevent="create">
+    <r-form v-else class="my-14 mx-auto w-full max-w-3xl" @submit.prevent="create">
       <vue-final-modal v-model="showImageUploadModal" classes="modal-container">
         <div class="flex flex-wrap justify-center items-center p-8 m-4 max-w-5xl bg-white rounded-md md:justify-start">
           <div class="flex flex-wrap justify-between pb-4 w-full">
@@ -76,6 +73,7 @@ import Multiselect from 'vue-multiselect'
 
 import ImageSlider from '@/components/ui/ImageSlider.vue'
 import ImageUpload from '@/components/ui/ImageUpload.vue'
+import NavigationBack from '@/components/ui/NavigationBack.vue'
 import RButton from '@/components/ui/RButton.vue'
 import RForm from '@/components/ui/RForm.vue'
 import RInput from '@/components/ui/RInput.vue'
@@ -84,7 +82,7 @@ import { getSuppliers } from '@/services/SupplierService'
 import { useMainStore } from '@/stores/mainStore'
 
 export default defineComponent({
-  components: { RForm, RButton, RInput, Multiselect, ImageUpload, ImageSlider },
+  components: { RForm, RButton, RInput, Multiselect, ImageUpload, ImageSlider, NavigationBack },
   data() {
     return {
       loading: false,
@@ -174,7 +172,7 @@ export default defineComponent({
     async fetchSuppliers() {
       this.loading = true
       try {
-        const suppliers = await getSuppliers({ perPage: 100 }) // TODO:jf dynamic loading when paginated
+        const suppliers = await getSuppliers({ perPage: 1000 }) // TODO:jf dynamic loading when paginated
         this.supplierOptions = suppliers.data.data.map((supplier) => {
           return {
             id: supplier.id,
@@ -198,6 +196,9 @@ export default defineComponent({
     resetForm() {
       this.name = ''
       this.suppliers = undefined
+      this.images = []
+      this.newImage = ''
+      this.showImageUploadModal = false
     },
     getSupplierById(id) {
       const supplier = this.supplierOptions.filter((option) => option.id == id)

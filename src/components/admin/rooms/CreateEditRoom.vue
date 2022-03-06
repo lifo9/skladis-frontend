@@ -1,13 +1,10 @@
 <template>
   <div>
-    <router-link class="flex items-center text-blue-600" :to="{ name: 'RoomsView' }">
-      <span class="material-icons">arrow_back</span>
-      {{ $t('Back') }}
-    </router-link>
+    <navigation-back />
     <p v-if="noWarehouses" class="py-4">
       {{ $t('Please, first create a warehouse') }}
     </p>
-    <r-form v-else class="my-14 mx-auto w-full max-w-md" @submit.prevent="create">
+    <r-form v-else class="my-14 mx-auto w-full max-w-3xl" @submit.prevent="create">
       <r-input v-model="name" :label="$t('name')" :required="true" :disabled="loading" />
       <r-select
         v-model="warehouse"
@@ -34,6 +31,7 @@
 import { mapStores } from 'pinia'
 import { defineComponent } from 'vue'
 
+import NavigationBack from '@/components/ui/NavigationBack.vue'
 import RButton from '@/components/ui/RButton.vue'
 import RForm from '@/components/ui/RForm.vue'
 import RInput from '@/components/ui/RInput.vue'
@@ -42,7 +40,7 @@ import { createRoom, getRoom, updateRoom } from '@/services/RoomService'
 import { getWarehouses } from '@/services/WarehouseService'
 import { useMainStore } from '@/stores/mainStore'
 export default defineComponent({
-  components: { RForm, RButton, RInput, RSelect },
+  components: { RForm, RButton, RInput, RSelect, NavigationBack },
   data() {
     return {
       loading: false,
@@ -121,7 +119,7 @@ export default defineComponent({
     async fetchWarehouses() {
       this.loading = true
       try {
-        const warehouses = await getWarehouses({ perPage: 100 }) // TODO:jf dynamic loading when paginated
+        const warehouses = await getWarehouses({ perPage: 1000 }) // TODO:jf dynamic loading when paginated
         this.warehouses = warehouses.data.data.map((warehouse) => {
           return {
             id: warehouse.id,

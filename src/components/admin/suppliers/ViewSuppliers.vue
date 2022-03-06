@@ -8,13 +8,15 @@
     :hide-all-cols="true"
     :relationship-cols="relationshipCols"
     :custom-cols-after="customCols"
+    :custom-actions="customActions"
   />
 </template>
 
 <script lang="ts">
-import { shallowRef } from 'vue'
+import { markRaw, shallowRef } from 'vue'
 import { defineComponent } from 'vue'
 
+import ViewSupplierProducts from '@/components/admin/suppliers/ViewSupplierProducts.vue'
 import CrudLink from '@/components/CrudLink.vue'
 import CrudTable from '@/components/CrudTable.vue'
 import CrudText from '@/components/CrudText.vue'
@@ -26,6 +28,7 @@ export default defineComponent({
     return {
       getEndpoint: getSuppliers,
       deleteEndpoint: deleteSupplier,
+      customActions: [markRaw(ViewSupplierProducts)],
       relationshipCols: [
         {
           relationship: 'address',

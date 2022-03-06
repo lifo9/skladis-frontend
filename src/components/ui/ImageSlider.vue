@@ -8,6 +8,7 @@
       </div>
     </transition-group>
     <a
+      v-if="images.length > 1"
       class="absolute top-1/2 left-0 text-4xl text-gray-800 -translate-y-1/2 material-icons"
       href="#"
       @click.prevent="prev"
@@ -15,6 +16,7 @@
       navigate_before
     </a>
     <a
+      v-if="images.length > 1"
       class="absolute top-1/2 right-0 text-4xl text-gray-800 -translate-y-1/2 material-icons"
       href="#"
       @click.prevent="next"
