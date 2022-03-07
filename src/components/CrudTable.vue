@@ -270,9 +270,13 @@ export default defineComponent({
       return [...colsBefore, ...colsAfter]
     }
   },
-  beforeMounted() {
+  mounted() {
     this.handleSearchQuery()
-    this.fetchData()
+
+    // ugly hack to prevent double fetching
+    if (!this.filterOptions) {
+      this.fetchData()
+    }
   },
   methods: {
     async fetchData() {
