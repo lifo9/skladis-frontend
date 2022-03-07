@@ -266,6 +266,14 @@ export default defineComponent({
       return [...colsBefore, ...colsAfter]
     }
   },
+  watch: {
+    filters: {
+      handler() {
+        this.fetchData()
+      },
+      deep: true
+    }
+  },
   mounted() {
     this.fetchData()
   },

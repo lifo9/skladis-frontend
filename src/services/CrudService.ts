@@ -27,7 +27,18 @@ class CrudService {
     if (orderBy) {
       params.order_by = orderBy
     }
-    if (filters) {
+    if (filters && Object.keys(filters).length > 0) {
+      filters = Object.keys(filters)
+        .map((key) => {
+          if (Array.isArray(filters[key]) && filters[key].length > 1) {
+            const newKey = key.replace(/[[,]]/, '')
+            return { [newKey]: filters[key] }
+          } else {
+            return { [key]: filters[key] }
+          }
+        })
+        .reduce((a, b) => Object.assign({}, a, b))
+
       params = { ...params, ...filters }
     }
 
