@@ -1,6 +1,6 @@
 <template>
-  <div class="p-2 max-w-md">
-    <div class="flex flex-wrap items-center text-3xl cursor-pointer select-none" @click="opened = !opened">
+  <div class="p-2 max-w-md md:p-0">
+    <div class="flex flex-wrap items-center mb-2 text-3xl cursor-pointer select-none" @click="opened = !opened">
       <span class="text-gray-800 material-icons">filter_alt</span>
       <span class="text-lg">
         <b>{{ $filters.capitalize($t('filter')) }}</b>
@@ -63,24 +63,24 @@ export default defineComponent({
   },
   methods: {
     handleFilterChange() {
-      if (Object.keys(this.selected).length === 0) {
-        return
-      }
+      let query = { ...this.$route.query }
+      let filters = {}
 
-      let query = {}
       Object.keys(this.selected).forEach((option) => {
         if (this.selected[option] && this.selected[option].length > 0) {
           query[option] = this.selected[option].map((option) => option.id)
+          filters[option] = query[option]
+        } else if (this.selected[option] && this.selected[option].length === 0) {
+          delete query[option]
         }
       })
 
       this.$router.push({ path: this.$route.path, query: query })
-      this.$emit('filter', query)
+      this.$emit('filter', filters)
     },
     selectFilterOptions() {
       let selected = {}
       Object.keys(this.$route.query).forEach((query) => {
-        console.log(query, this.options)
         if (this.options[query]) {
           const option = this.options[query]
 
