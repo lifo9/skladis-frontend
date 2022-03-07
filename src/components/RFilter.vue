@@ -1,5 +1,5 @@
 <template>
-  <div class="p-2 max-w-md md:p-0">
+  <div class="p-2 md:p-0">
     <div class="flex flex-wrap items-center mb-2 text-3xl cursor-pointer select-none" @click="opened = !opened">
       <span class="text-gray-800 material-icons">filter_alt</span>
       <span class="text-lg">
