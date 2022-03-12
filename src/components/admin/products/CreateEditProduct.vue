@@ -42,7 +42,7 @@
       <div class="flex flex-wrap justify-between items-center">
         <div class="w-full md:w-1/2">
           <r-input v-model="barcode_type" type="hidden" />
-          <r-input v-model="barcode_code" :label="$t('barcode_code')" :required="true" :disabled="loading" />
+          <r-input v-model="barcode_code" :label="$t('barcode_code')" :disabled="loading" />
         </div>
         <div class="w-full md:w-1/2">
           <barcode-scanner class="py-2 md:pl-4 md:mt-5" @input="handleBarcodeScanner" />
@@ -129,7 +129,7 @@ export default defineComponent({
       name: '',
       order_code: '',
       barcode_type: undefined,
-      barcode_code: '',
+      barcode_code: undefined,
       pieces_ideal: undefined,
       pieces_critical: undefined,
       supplierOptions: [],
@@ -247,7 +247,7 @@ export default defineComponent({
       this.name = ''
       this.order_code = ''
       this.barcode_type = undefined
-      this.barcode_code = ''
+      this.barcode_code = undefined
       this.pieces_ideal = undefined
       this.pieces_critical = undefined
       this.suppliers = undefined

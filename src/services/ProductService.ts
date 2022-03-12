@@ -23,15 +23,22 @@ export function updateProduct({
   supplierIds,
   images
 }: any = {}) {
-  const params = {
+  // eslint-disable-next-line prefer-const
+  let params = {
     name: name,
     order_code: orderCode,
-    barcode_type: barcodeType,
-    barcode_code: barcodeCode,
     pieces_ideal: piecesIdeal,
     pieces_critical: piecesCritical,
     supplier_ids: supplierIds,
     images: images
+  }
+
+  if (barcodeType) {
+    params['barcode_type'] = barcodeType
+  }
+
+  if (barcodeCode) {
+    params['barcode_code'] = barcodeCode
   }
 
   return crud.updateRecord(id, params, true, true)
@@ -42,24 +49,27 @@ export function createProdcut({
   orderCode,
   barcodeType,
   barcodeCode,
-  price,
-  piecesPackage,
   piecesIdeal,
   piecesCritical,
   supplierIds,
   images
 }: any = {}) {
-  const params = {
+  // eslint-disable-next-line prefer-const
+  let params = {
     name: name,
     order_code: orderCode,
-    barcode_type: barcodeType,
-    barcode_code: barcodeCode,
-    price: price,
-    pieces_package: piecesPackage,
     pieces_ideal: piecesIdeal,
     pieces_critical: piecesCritical,
     supplier_ids: supplierIds,
     images: images
+  }
+
+  if (barcodeType) {
+    params['barcode_type'] = barcodeType
+  }
+
+  if (barcodeCode) {
+    params['barcode_code'] = barcodeCode
   }
 
   return crud.createRecord(params, true, true)
