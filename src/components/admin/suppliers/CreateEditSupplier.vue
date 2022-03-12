@@ -56,7 +56,7 @@ import RButton from '@/components/ui/RButton.vue'
 import RForm from '@/components/ui/RForm.vue'
 import RInput from '@/components/ui/RInput.vue'
 import RSelect from '@/components/ui/RSelect.vue'
-import { getContacts } from '@/services/ContactsService'
+import { getContactOptions } from '@/services/ContactsService'
 import { reverseGeoCode } from '@/services/MapService'
 import { createSupplier, getSupplier, updateSupplier } from '@/services/SupplierService'
 import { useMainStore } from '@/stores/mainStore'
@@ -172,11 +172,11 @@ export default defineComponent({
     async fetchContacts() {
       this.loading = true
       try {
-        const contacts = await getContacts({ perPage: 1000 }) // TODO:jf dynamic loading when paginated
-        this.contacts = contacts.data.data.map((contact) => {
+        const options = await getContactOptions()
+        this.contacts = options.data.map((option) => {
           return {
-            id: contact.id,
-            value: contact.attributes.first_name + ' ' + contact.attributes.last_name
+            id: option.id,
+            value: option.label
           }
         })
       } catch (error) {}

@@ -37,7 +37,7 @@ import RForm from '@/components/ui/RForm.vue'
 import RInput from '@/components/ui/RInput.vue'
 import RSelect from '@/components/ui/RSelect.vue'
 import { createRoom, getRoom, updateRoom } from '@/services/RoomService'
-import { getWarehouses } from '@/services/WarehouseService'
+import { getWarehouseOptions } from '@/services/WarehouseService'
 import { useMainStore } from '@/stores/mainStore'
 export default defineComponent({
   components: { RForm, RButton, RInput, RSelect, NavigationBack },
@@ -119,11 +119,11 @@ export default defineComponent({
     async fetchWarehouses() {
       this.loading = true
       try {
-        const warehouses = await getWarehouses({ perPage: 1000 }) // TODO:jf dynamic loading when paginated
-        this.warehouses = warehouses.data.data.map((warehouse) => {
+        const options = await getWarehouseOptions()
+        this.warehouses = options.data.map((option) => {
           return {
-            id: warehouse.id,
-            value: warehouse.attributes.name
+            id: option.id,
+            value: option.label
           }
         })
       } catch (error) {}

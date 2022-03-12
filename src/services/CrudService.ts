@@ -47,6 +47,9 @@ class CrudService {
   getRecord(id) {
     return securedAxiosInstance.get(this.API_PATH + '/' + id)
   }
+  getOptions() {
+    return securedAxiosInstance.get(this.API_PATH + '/select-options')
+  }
   createRecord(params, formData = false, allowEmpty = false) {
     let payload = {}
     if (formData) {

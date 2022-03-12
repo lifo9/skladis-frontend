@@ -126,7 +126,7 @@ import RForm from '@/components/ui/RForm.vue'
 import RInput from '@/components/ui/RInput.vue'
 import RSelect from '@/components/ui/RSelect.vue'
 import { createProdcut, getProduct, updateProduct } from '@/services/ProductService'
-import { getSuppliers } from '@/services/SupplierService'
+import { getSupplierOptions, getSuppliers } from '@/services/SupplierService'
 import { useMainStore } from '@/stores/mainStore'
 
 export default defineComponent({
@@ -244,11 +244,11 @@ export default defineComponent({
     async fetchSuppliers() {
       this.loading = true
       try {
-        const suppliers = await getSuppliers({ perPage: 1000 }) // TODO:jf dynamic loading when paginated
-        this.supplierOptions = suppliers.data.data.map((supplier) => {
+        const suppliers = await getSupplierOptions()
+        this.supplierOptions = suppliers.data.map((supplier) => {
           return {
             id: supplier.id,
-            label: supplier.attributes.name
+            label: supplier.label
           }
         })
       } catch (error) {}
@@ -260,11 +260,6 @@ export default defineComponent({
     validateInputs() {
       if (this.suppliers.length === 0) {
         this.eventBus.emit('alert', { level: 'alert', message: this.$t('Please, select suppliers') })
-        return false
-      }
-
-      if (!this.barcode_type || this.barcode_type === null) {
-        this.eventBus.emit('alert', { level: 'alert', message: this.$t('Please, select barcode type') })
         return false
       }
 

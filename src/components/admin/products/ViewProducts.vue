@@ -23,7 +23,7 @@ import CrudTable from '@/components/CrudTable.vue'
 import CrudText from '@/components/CrudText.vue'
 import RSpinner from '@/components/ui/RSpinner.vue'
 import { deleteProduct, getProducts } from '@/services/ProductService'
-import { getSuppliers } from '@/services/SupplierService'
+import { getSupplierOptions } from '@/services/SupplierService'
 
 export default defineComponent({
   components: { CrudTable, RSpinner },
@@ -56,15 +56,6 @@ export default defineComponent({
             attribute: 'order_code',
             sort: true,
             orderBy: 'order_code'
-          }
-        },
-        {
-          header: this.$t('barcode_code'),
-          component: shallowRef(CrudText),
-          options: {
-            attribute: 'barcode_code',
-            sort: true,
-            orderBy: 'barcode_code'
           }
         },
         {
@@ -124,9 +115,9 @@ export default defineComponent({
   },
   methods: {
     async fetchData() {
-      const suppliers = await getSuppliers({ perPage: 1000 })
-      const options = suppliers.data.data.map((supplier) => {
-        return { id: supplier.id, label: supplier.attributes.name }
+      const suppliers = await getSupplierOptions()
+      const options = suppliers.data.map((supplier) => {
+        return { id: supplier.id, label: supplier.label }
       })
 
       this.filterOptions = {
