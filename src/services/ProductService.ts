@@ -12,9 +12,28 @@ export function getProducts(params) {
   return crud.getRecords(params)
 }
 
-export function updateProduct({ id, name, supplierIds, images }: any = {}) {
+export function updateProduct({
+  id,
+  name,
+  orderCode,
+  barcodeType,
+  barcodeCode,
+  price,
+  piecesPackage,
+  piecesIdeal,
+  piecesCritical,
+  supplierIds,
+  images
+}: any = {}) {
   const params = {
     name: name,
+    order_code: orderCode,
+    barcode_type: barcodeType,
+    barcode_code: barcodeCode,
+    price: price,
+    pieces_package: piecesPackage,
+    pieces_ideal: piecesIdeal,
+    pieces_critical: piecesCritical,
     supplier_ids: supplierIds,
     images: images
   }
@@ -22,9 +41,27 @@ export function updateProduct({ id, name, supplierIds, images }: any = {}) {
   return crud.updateRecord(id, params, true, true)
 }
 
-export function createProdcut({ name, supplierIds, images }: any = {}) {
+export function createProdcut({
+  name,
+  orderCode,
+  barcodeType,
+  barcodeCode,
+  price,
+  piecesPackage,
+  piecesIdeal,
+  piecesCritical,
+  supplierIds,
+  images
+}: any = {}) {
   const params = {
     name: name,
+    order_code: orderCode,
+    barcode_type: barcodeType,
+    barcode_code: barcodeCode,
+    price: price,
+    pieces_package: piecesPackage,
+    pieces_ideal: piecesIdeal,
+    pieces_critical: piecesCritical,
     supplier_ids: supplierIds,
     images: images
   }

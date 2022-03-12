@@ -38,6 +38,52 @@
         </r-button>
       </div>
       <r-input v-model="name" :label="$t('name')" :required="true" :disabled="loading" />
+      <r-input v-model="order_code" :label="$t('order_code')" :required="true" :disabled="loading" />
+      <div class="flex flex-wrap justify-between items-center">
+        <div class="w-full md:w-1/2">
+          <r-input v-model="barcode_type" type="hidden" />
+          <r-input v-model="barcode_code" :label="$t('barcode_code')" :required="true" :disabled="loading" />
+        </div>
+        <div class="w-full md:w-1/2">
+          <barcode-scanner class="py-2 md:pl-4 md:mt-5" @input="handleBarcodeScanner" />
+        </div>
+      </div>
+      <r-input
+        v-model="price"
+        :label="$t('price') + ' (€)'"
+        :required="true"
+        :disabled="loading"
+        type="number"
+        step=".01"
+        min="0"
+      />
+      <r-input
+        v-model="pieces_package"
+        :label="$t('pieces_package')"
+        :required="true"
+        :disabled="loading"
+        type="number"
+        step="1"
+        min="0"
+      />
+      <r-input
+        v-model="pieces_ideal"
+        :label="$t('pieces_ideal')"
+        :required="true"
+        :disabled="loading"
+        type="number"
+        step="1"
+        min="0"
+      />
+      <r-input
+        v-model="pieces_critical"
+        :label="$t('pieces_critical')"
+        :required="true"
+        :disabled="loading"
+        type="number"
+        step="1"
+        min="0"
+      />
       <multiselect
         v-model="suppliers"
         :options="supplierOptions"
@@ -71,22 +117,41 @@ import { mapStores } from 'pinia'
 import { defineComponent } from 'vue'
 import Multiselect from 'vue-multiselect'
 
+import BarcodeScanner from '@/components/admin/BarcodeScanner.vue'
 import ImageSlider from '@/components/ui/ImageSlider.vue'
 import ImageUpload from '@/components/ui/ImageUpload.vue'
 import NavigationBack from '@/components/ui/NavigationBack.vue'
 import RButton from '@/components/ui/RButton.vue'
 import RForm from '@/components/ui/RForm.vue'
 import RInput from '@/components/ui/RInput.vue'
+import RSelect from '@/components/ui/RSelect.vue'
 import { createProdcut, getProduct, updateProduct } from '@/services/ProductService'
 import { getSuppliers } from '@/services/SupplierService'
 import { useMainStore } from '@/stores/mainStore'
 
 export default defineComponent({
-  components: { RForm, RButton, RInput, Multiselect, ImageUpload, ImageSlider, NavigationBack },
+  components: {
+    RForm,
+    RButton,
+    RInput,
+    Multiselect,
+    ImageUpload,
+    ImageSlider,
+    NavigationBack,
+    RSelect,
+    BarcodeScanner
+  },
   data() {
     return {
       loading: false,
       name: '',
+      order_code: '',
+      barcode_type: undefined,
+      barcode_code: '',
+      price: undefined,
+      pieces_package: undefined,
+      pieces_ideal: undefined,
+      pieces_critical: undefined,
       supplierOptions: [],
       noSuppliers: false,
       suppliers: [],
@@ -127,6 +192,13 @@ export default defineComponent({
         await endpoint({
           id: this.productId,
           name: this.name,
+          orderCode: this.order_code,
+          barcodeType: this.barcode_type,
+          barcodeCode: this.barcode_code,
+          price: this.price,
+          piecesPackage: this.pieces_package,
+          piecesIdeal: this.pieces_ideal,
+          piecesCritical: this.pieces_critical,
           supplierIds: this.suppliers.map((supplier) => supplier.id),
           images: this.images.map((image) => (image.file ? image.file : image.id))
         })
@@ -191,10 +263,22 @@ export default defineComponent({
         return false
       }
 
+      if (!this.barcode_type || this.barcode_type === null) {
+        this.eventBus.emit('alert', { level: 'alert', message: this.$t('Please, select barcode type') })
+        return false
+      }
+
       return true
     },
     resetForm() {
       this.name = ''
+      this.order_code = ''
+      this.barcode_type = undefined
+      this.barcode_code = ''
+      this.price = undefined
+      this.pieces_package = undefined
+      this.pieces_ideal = undefined
+      this.pieces_critical = undefined
       this.suppliers = undefined
       this.images = []
       this.newImage = ''
@@ -218,6 +302,11 @@ export default defineComponent({
       } else {
         this.images.splice(idx, 1)
       }
+    },
+    handleBarcodeScanner(scan) {
+      console.log(scan)
+      this.barcode_type = scan.format
+      this.barcode_code = scan.code
     },
     setTitle() {
       if (this.name) {

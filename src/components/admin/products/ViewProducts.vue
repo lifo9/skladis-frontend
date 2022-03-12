@@ -45,7 +45,63 @@ export default defineComponent({
           component: shallowRef(CrudText),
           options: {
             attribute: 'name',
-            sort: true
+            sort: true,
+            orderBy: 'name'
+          }
+        },
+        {
+          header: this.$t('order_code'),
+          component: shallowRef(CrudText),
+          options: {
+            attribute: 'order_code',
+            sort: true,
+            orderBy: 'order_code'
+          }
+        },
+        {
+          header: this.$t('barcode_code'),
+          component: shallowRef(CrudText),
+          options: {
+            attribute: 'barcode_code',
+            sort: true,
+            orderBy: 'barcode_code'
+          }
+        },
+        {
+          header: this.$t('price'),
+          component: shallowRef(CrudText),
+          options: {
+            attribute: 'price',
+            format: 'currency',
+            sort: true,
+            orderBy: 'price'
+          }
+        },
+        {
+          header: this.$t('pieces_package'),
+          component: shallowRef(CrudText),
+          options: {
+            attribute: 'pieces_package',
+            sort: true,
+            orderBy: 'pieces_package'
+          }
+        },
+        {
+          header: this.$t('pieces_ideal'),
+          component: shallowRef(CrudText),
+          options: {
+            attribute: 'pieces_ideal',
+            sort: true,
+            orderBy: 'pieces_ideal'
+          }
+        },
+        {
+          header: this.$t('pieces_critical'),
+          component: shallowRef(CrudText),
+          options: {
+            attribute: 'pieces_critical',
+            sort: true,
+            orderBy: 'pieces_critical'
           }
         },
         {

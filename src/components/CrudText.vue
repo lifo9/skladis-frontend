@@ -24,10 +24,12 @@ export default defineComponent({
 
   computed: {
     label() {
+      let label = undefined
+
       if (this.options.customCaption) {
-        return this.options.customCaption
+        label = this.options.customCaption
       } else if (!this.options.relationship) {
-        return this.row.attributes[this.options.attribute]
+        label = this.row.attributes[this.options.attribute]
       } else {
         const relatinships = this.row.relationships
         if (
@@ -43,16 +45,20 @@ export default defineComponent({
             const relationObject = this.included.filter((included) => included.type === type && included.id === id)
             if (relationObject.length === 1) {
               if (Array.isArray(this.options.attribute)) {
-                return this.options.attribute.map((attribute) => relationObject[0].attributes[attribute]).join(' ')
+                label = this.options.attribute.map((attribute) => relationObject[0].attributes[attribute]).join(' ')
               } else {
-                return relationObject[0].attributes[this.options.attribute]
+                label = relationObject[0].attributes[this.options.attribute]
               }
             }
           }
         }
       }
 
-      return undefined
+      if (this.options.format && this.options.format === 'currency') {
+        return this.$filters.formatCurrency(label)
+      } else {
+        return label
+      }
     }
   }
 })
