@@ -1,11 +1,8 @@
 <template>
   <div>
-    <router-link class="flex items-center text-blue-600" :to="{ name: 'WarehousesView' }">
-      <span class="material-icons">arrow_back</span>
-      {{ $t('Back') }}
-    </router-link>
+    <navigation-back />
     <div class="flex flex-wrap">
-      <r-form class="my-14 mx-auto w-full max-w-md xl:w-1/2" @submit.prevent="create">
+      <r-form class="my-14 mx-auto w-full max-w-3xl xl:w-1/2" @submit.prevent="create">
         <r-input v-model="name" :label="$t('name')" :required="true" :disabled="loading" />
         <r-input v-model="street_name" :label="$t('street_name')" :required="true" :disabled="loading" />
         <r-input v-model="street_number" :label="$t('street_number')" :required="true" :disabled="loading" />
@@ -30,6 +27,7 @@
 import { mapStores } from 'pinia'
 import { defineComponent } from 'vue'
 
+import NavigationBack from '@/components/ui/NavigationBack.vue'
 import RButton from '@/components/ui/RButton.vue'
 import RForm from '@/components/ui/RForm.vue'
 import RInput from '@/components/ui/RInput.vue'
@@ -37,7 +35,7 @@ import { reverseGeoCode } from '@/services/MapService'
 import { createWarehouse, getWarehouse, updateWarehouse } from '@/services/WarehouseService'
 import { useMainStore } from '@/stores/mainStore'
 export default defineComponent({
-  components: { RForm, RInput, RButton },
+  components: { RForm, RInput, RButton, NavigationBack },
   data() {
     return {
       loading: false,
@@ -73,9 +71,6 @@ export default defineComponent({
     await this.fetchData()
     await this.setTitle()
   },
-  updated() {
-    this.setTitle()
-  },
   methods: {
     async create() {
       this.loading = true
@@ -106,6 +101,7 @@ export default defineComponent({
       } catch (error) {
         this.eventBus.emit('alert', { level: 'alert', message: error })
       }
+      this.setTitle()
       this.loading = false
     },
     async fetchData() {

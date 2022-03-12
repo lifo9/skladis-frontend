@@ -40,6 +40,10 @@ export default defineComponent({
       type: String,
       default: undefined
     },
+    query: {
+      type: Object,
+      default: undefined
+    },
     params: {
       type: Object,
       default: undefined
@@ -73,7 +77,8 @@ export default defineComponent({
       if (this.$router.currentRoute.value.name !== this.routeName) {
         const route = this.$router.resolve({
           name: this.routeName,
-          params: this.params
+          params: this.params,
+          query: this.query
         })
         try {
           await this.$router.push(route.href)

@@ -1,10 +1,7 @@
 <template>
   <div>
-    <router-link class="flex items-center text-blue-600" :to="{ name: 'ContactsView' }">
-      <span class="material-icons">arrow_back</span>
-      {{ $t('Back') }}
-    </router-link>
-    <r-form class="my-14 mx-auto w-full max-w-md" @submit.prevent="create">
+    <navigation-back />
+    <r-form class="my-14 mx-auto w-full max-w-3xl" @submit.prevent="create">
       <image-upload
         :key="avatar != '' ? avatar : updated.toString()"
         :label="$t('Avatar')"
@@ -37,13 +34,14 @@ import { mapStores } from 'pinia'
 import { defineComponent } from 'vue'
 
 import ImageUpload from '@/components/ui/ImageUpload.vue'
+import NavigationBack from '@/components/ui/NavigationBack.vue'
 import RButton from '@/components/ui/RButton.vue'
 import RForm from '@/components/ui/RForm.vue'
 import RInput from '@/components/ui/RInput.vue'
 import { createContact, deleteAvatar, getContact, updateContact } from '@/services/ContactsService'
 import { useMainStore } from '@/stores/mainStore'
 export default defineComponent({
-  components: { RForm, RButton, RInput, ImageUpload },
+  components: { RForm, RButton, RInput, ImageUpload, NavigationBack },
   data() {
     return {
       loading: false,
@@ -66,9 +64,6 @@ export default defineComponent({
   async mounted() {
     await this.fetchData()
     await this.setTitle()
-  },
-  updated() {
-    this.setTitle()
   },
   methods: {
     async create() {
@@ -102,6 +97,7 @@ export default defineComponent({
       } catch (error) {
         this.eventBus.emit('alert', { level: 'alert', message: error })
       }
+      this.setTitle()
       this.loading = false
     },
     async fetchData() {

@@ -12,6 +12,10 @@ export function getWarehouses(params) {
   return crud.getRecords(params)
 }
 
+export function getWarehouseOptions() {
+  return crud.getOptions()
+}
+
 export function updateWarehouse({ id, name, streetName, streetNumber, city, zip, country, coordinates }: any = {}) {
   const params = {
     name: name,

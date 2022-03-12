@@ -15,10 +15,9 @@
 import { shallowRef } from 'vue'
 import { defineComponent } from 'vue'
 
+import CrudLink from '@/components/CrudLink.vue'
+import CrudTable from '@/components/CrudTable.vue'
 import { deleteRoom, getRooms } from '@/services/RoomService'
-
-import CrudLink from '../../CrudLink.vue'
-import CrudTable from '../../CrudTable.vue'
 
 export default defineComponent({
   components: { CrudTable },

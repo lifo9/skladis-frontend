@@ -14,12 +14,11 @@
 import { shallowRef } from 'vue'
 import { defineComponent } from 'vue'
 
+import AvatarImage from '@/components/AvatarImage.vue'
+import CrudLink from '@/components/CrudLink.vue'
+import CrudTable from '@/components/CrudTable.vue'
+import CrudText from '@/components/CrudText.vue'
 import { deleteVendor, getVendors } from '@/services/VendorService'
-
-import CrudTable from '../../../components/CrudTable.vue'
-import AvatarImage from '../../AvatarImage.vue'
-import CrudLink from '../../CrudLink.vue'
-import CrudText from '../../CrudText.vue'
 
 export default defineComponent({
   components: { CrudTable },

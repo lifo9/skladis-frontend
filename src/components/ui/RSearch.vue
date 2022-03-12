@@ -41,9 +41,34 @@ export default defineComponent({
       searchQuery: ''
     }
   },
+  watch: {
+    '$route.query': {
+      handler() {
+        this.setSearchFromQueryParams()
+      },
+      deep: true
+    }
+  },
+  mounted() {
+    this.setSearchFromQueryParams()
+  },
   methods: {
     search() {
+      let query = { ...this.$route.query }
+      if (this.searchQuery && this.searchQuery !== '') {
+        query['search'] = this.searchQuery
+      } else {
+        delete query['search']
+      }
+
+      this.$router.push({ path: this.$route.path, query: query })
       this.$emit('search', this.searchQuery)
+    },
+    setSearchFromQueryParams() {
+      const query = this.$route.query['search']
+      if (query) {
+        this.searchQuery = query
+      }
     }
   }
 })

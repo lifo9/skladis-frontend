@@ -14,10 +14,10 @@
 import { shallowRef } from 'vue'
 import { defineComponent } from 'vue'
 
+import AvatarImage from '@/components/AvatarImage.vue'
+import CrudTable from '@/components/CrudTable.vue'
 import { deleteContact, getContacts } from '@/services/ContactsService'
 
-import CrudTable from '../../../components/CrudTable.vue'
-import AvatarImage from '../../AvatarImage.vue'
 export default defineComponent({
   components: { CrudTable },
   data() {
@@ -29,7 +29,8 @@ export default defineComponent({
           header: '',
           component: shallowRef(AvatarImage),
           options: {
-            attribute: 'avatar'
+            attribute: 'avatar',
+            rounded: true
           }
         }
       ]

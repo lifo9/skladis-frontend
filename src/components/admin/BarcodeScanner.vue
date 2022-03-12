@@ -1,32 +1,15 @@
 <template>
-  <div class="p-2 w-full max-w-sm">
+  <div class="w-full">
     <div class="modal" :class="!scanning ? 'hidden' : 'flex justify-center'">
       <div id="interactive" class="viewport scanner"></div>
-      <r-button variant="danger" class="z-50 w-full" @click="finishScanning">
+      <r-button variant="danger" class="z-50 w-full" @click.prevent="finishScanning">
         <span class="mr-2 material-icons">cancel</span>
         {{ $filters.uppercase($t('Cancel')) }}
       </r-button>
       <span class="grid-x"></span>
     </div>
-    <div>
-      <div class="flex overflow-hidden flex-wrap py-2 px-1">
-        <div class="overflow-hidden w-1/4">
-          <b>{{ $t('Format') }}:</b>
-        </div>
-
-        <div class="overflow-hidden w-3/4">
-          {{ format }}
-        </div>
-
-        <div class="overflow-hidden w-1/4">
-          <b>{{ $t('Code') }}:</b>
-        </div>
-
-        <div class="overflow-hidden w-3/4">
-          {{ code }}
-        </div>
-      </div>
-      <r-button class="w-full" @click="initializeScanner">
+    <div class="flex flex-wrap justify-center items-center">
+      <r-button size="full" @click.prevent="initializeScanner">
         <span class="mr-2 material-icons">document_scanner</span>
         {{ $filters.uppercase($t('Scan')) }}
       </r-button>
@@ -35,7 +18,6 @@
 </template>
 
 <script lang="ts">
-// TODO - Refactor !
 import Quagga from 'quagga'
 import { defineComponent } from 'vue'
 
@@ -115,6 +97,7 @@ export default defineComponent({
   @apply absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full;
 }
 .modal {
+  z-index: 99999;
   @apply fixed inset-0 bg-black bg-opacity-80 overflow-y-auto h-full w-full items-end p-4;
 }
 .modal .grid-x {

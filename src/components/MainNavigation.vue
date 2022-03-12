@@ -39,13 +39,14 @@
           :only-icon="!mainStore.isMenuExpanded"
           @navigated="toggleMenu"
         />
-        <!-- <navigation-item
-          route-name="VendorsView"
-          label="Vendors"
-          icon="business_center"
+        <navigation-item
+          v-role="[constants.roles.admin, constants.roles.manager]"
+          route-name="ProductsView"
+          label="Products"
+          icon="medical_services"
           :only-icon="!mainStore.isMenuExpanded"
-          v-on:navigated="toggleMenu"
-        /> -->
+          @navigated="toggleMenu"
+        />
         <navigation-item
           v-role="[constants.roles.admin, constants.roles.manager]"
           route-name="SuppliersView"

@@ -1,9 +1,6 @@
 <template>
   <div>
-    <router-link class="flex items-center text-blue-600" :to="{ name: 'VendorsView' }">
-      <span class="material-icons">arrow_back</span>
-      {{ $t('Back') }}
-    </router-link>
+    <navigation-back />
     <r-form class="my-14 mx-auto w-full max-w-md" @submit.prevent="create">
       <image-upload
         :key="logo != '' ? logo : updated.toString()"
@@ -35,13 +32,14 @@ import { mapStores } from 'pinia'
 import { defineComponent } from 'vue'
 
 import ImageUpload from '@/components/ui/ImageUpload.vue'
+import NavigationBack from '@/components/ui/NavigationBack.vue'
 import RButton from '@/components/ui/RButton.vue'
 import RForm from '@/components/ui/RForm.vue'
 import RInput from '@/components/ui/RInput.vue'
 import { createVendor, deleteLogo, getVendor, updateVendor } from '@/services/VendorService'
 import { useMainStore } from '@/stores/mainStore'
 export default defineComponent({
-  components: { RForm, RButton, RInput, ImageUpload },
+  components: { RForm, RButton, RInput, ImageUpload, NavigationBack },
   data() {
     return {
       loading: false,
@@ -62,9 +60,6 @@ export default defineComponent({
   async mounted() {
     await this.fetchData()
     await this.setTitle()
-  },
-  updated() {
-    this.setTitle()
   },
   methods: {
     async create() {
@@ -96,6 +91,7 @@ export default defineComponent({
       } catch (error) {
         this.eventBus.emit('alert', { level: 'alert', message: error })
       }
+      this.setTitle()
       this.loading = false
     },
     async fetchData() {

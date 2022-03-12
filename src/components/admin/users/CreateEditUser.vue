@@ -1,10 +1,7 @@
 <template>
   <div>
-    <router-link class="flex items-center text-blue-600" :to="{ name: 'UsersView' }">
-      <span class="material-icons">arrow_back</span>
-      {{ $t('Back') }}
-    </router-link>
-    <r-form :error="error" class="my-14 mx-auto w-full max-w-md" @submit.prevent="create">
+    <navigation-back />
+    <r-form :error="error" class="my-14 mx-auto w-full max-w-3xl" @submit.prevent="create">
       <image-upload
         :key="avatar != '' ? avatar : updated.toString()"
         :label="$t('Avatar')"
@@ -81,6 +78,7 @@ import { defineComponent } from 'vue'
 import Multiselect from 'vue-multiselect'
 
 import ImageUpload from '@/components/ui/ImageUpload.vue'
+import NavigationBack from '@/components/ui/NavigationBack.vue'
 import RButton from '@/components/ui/RButton.vue'
 import RForm from '@/components/ui/RForm.vue'
 import RInput from '@/components/ui/RInput.vue'
@@ -88,7 +86,7 @@ import { getRoles } from '@/services/RoleService'
 import { createUser, deleteAvatar, getUser, updateUser } from '@/services/UsersService'
 import { useMainStore } from '@/stores/mainStore'
 export default defineComponent({
-  components: { RForm, RButton, RInput, Multiselect, ImageUpload },
+  components: { RForm, RButton, RInput, Multiselect, ImageUpload, NavigationBack },
   data() {
     return {
       error: '',
@@ -118,9 +116,6 @@ export default defineComponent({
   async mounted() {
     await this.fetchData()
     await this.setTitle()
-  },
-  updated() {
-    this.setTitle()
   },
   methods: {
     async fetchData() {
@@ -155,6 +150,7 @@ export default defineComponent({
           }
         }
       } catch (error) {}
+      this.setTitle()
       this.loading = false
     },
     async create() {

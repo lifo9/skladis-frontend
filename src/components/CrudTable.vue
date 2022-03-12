@@ -1,5 +1,6 @@
 <template>
   <div class="my-4">
+    <r-filter v-if="filterOptions" :options="filterOptions" @filter="handleFilter" />
     <div class="flex flex-wrap justify-start items-center my-4 sm:justify-end">
       <r-search class="m-2" @search="handleSearch" />
       <r-button
@@ -129,6 +130,7 @@
 import { defineComponent } from 'vue'
 
 import NavigationItem from '@/components/NavigationItem.vue'
+import RFilter from '@/components/RFilter.vue'
 import OrderArrow from '@/components/ui/OrderArrow.vue'
 import RButton from '@/components/ui/RButton.vue'
 import RPagination from '@/components/ui/RPagination.vue'
@@ -142,7 +144,8 @@ export default defineComponent({
     NavigationItem,
     OrderArrow,
     RPagination,
-    RSearch
+    RSearch,
+    RFilter
   },
   props: {
     getEndpoint: {
@@ -198,6 +201,10 @@ export default defineComponent({
     hideAllCols: {
       type: Boolean,
       default: false
+    },
+    filterOptions: {
+      type: Object,
+      default: undefined
     }
   },
   data() {
@@ -212,7 +219,8 @@ export default defineComponent({
       currentPage: 1,
       total: 0,
       order: 'asc',
-      orderBy: 'id'
+      orderBy: 'id',
+      filters: {}
     }
   },
   computed: {
@@ -263,7 +271,12 @@ export default defineComponent({
     }
   },
   mounted() {
-    this.fetchData()
+    this.handleSearchQuery()
+
+    // ugly hack to prevent double fetching
+    if (!this.filterOptions) {
+      this.fetchData()
+    }
   },
   methods: {
     async fetchData() {
@@ -275,7 +288,8 @@ export default defineComponent({
         perPage: this.perPage,
         searchQuery: this.searchQuery,
         order: this.order,
-        orderBy: this.orderBy
+        orderBy: this.orderBy,
+        filters: this.filters
       })
       const data = rows.data.data
       const included = rows.data.included
@@ -308,6 +322,13 @@ export default defineComponent({
     handleSearch(searchQuery) {
       this.searchQuery = searchQuery
       this.fetchData()
+    },
+    handleSearchQuery() {
+      const searchQuery = this.$route.query['search']
+
+      if (searchQuery) {
+        this.searchQuery = searchQuery
+      }
     },
     async deleteItems(id) {
       this.$vfm.show({
@@ -351,6 +372,10 @@ export default defineComponent({
     changeOrder(order) {
       this.order = order.orderBy !== this.orderBy ? this.order : order.order
       this.orderBy = order.orderBy
+      this.fetchData()
+    },
+    handleFilter(filters) {
+      this.filters = filters
       this.fetchData()
     }
   }

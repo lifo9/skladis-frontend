@@ -13,9 +13,9 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 
+import CrudTable from '@/components/CrudTable.vue'
 import { deleteWarehouse, getWarehouses } from '@/services/WarehouseService'
 
-import CrudTable from '../../../components/CrudTable.vue'
 export default defineComponent({
   components: { CrudTable },
   data() {
