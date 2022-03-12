@@ -83,17 +83,15 @@ export default defineComponent({
       Object.keys(this.$route.query).forEach((query) => {
         if (this.options[query]) {
           const option = this.options[query]
-
           selected[query] = option.options.filter((option) => {
             if (Array.isArray(this.$route.query[query])) {
-              return this.$route.query[query]?.includes(option.id)
+              return this.$route.query[query]?.includes(option.id.toString())
             } else {
-              return this.$route.query[query] === option.id
+              return this.$route.query[query] === option.id.toString()
             }
           })
         }
       })
-
       this.selected = selected
     },
     openFilter() {

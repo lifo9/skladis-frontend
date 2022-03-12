@@ -49,14 +49,6 @@
         />
         <navigation-item
           v-role="[constants.roles.admin, constants.roles.manager]"
-          route-name="ProductVariantsView"
-          label="Product Variants"
-          icon="auto_awesome_motion"
-          :only-icon="!mainStore.isMenuExpanded"
-          @navigated="toggleMenu"
-        />
-        <navigation-item
-          v-role="[constants.roles.admin, constants.roles.manager]"
           route-name="SuppliersView"
           label="Suppliers"
           icon="directions_car"

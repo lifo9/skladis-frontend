@@ -37,8 +37,8 @@
           {{ $filters.uppercase($t('Edit images')) }}
         </r-button>
       </div>
-      <r-input v-model="name" :label="$t('name')" :required="true" :disabled="loading" />
       <r-input v-model="order_code" :label="$t('order_code')" :required="true" :disabled="loading" />
+      <r-input v-model="name" :label="$t('name')" :required="true" :disabled="loading" />
       <div class="flex flex-wrap justify-between items-center">
         <div class="w-full md:w-1/2">
           <r-input v-model="barcode_type" type="hidden" />
@@ -48,24 +48,6 @@
           <barcode-scanner class="py-2 md:pl-4 md:mt-5" @input="handleBarcodeScanner" />
         </div>
       </div>
-      <r-input
-        v-model="price"
-        :label="$t('price') + ' (€)'"
-        :required="true"
-        :disabled="loading"
-        type="number"
-        step=".01"
-        min="0"
-      />
-      <r-input
-        v-model="pieces_package"
-        :label="$t('pieces_package')"
-        :required="true"
-        :disabled="loading"
-        type="number"
-        step="1"
-        min="0"
-      />
       <r-input
         v-model="pieces_ideal"
         :label="$t('pieces_ideal')"
@@ -148,8 +130,6 @@ export default defineComponent({
       order_code: '',
       barcode_type: undefined,
       barcode_code: '',
-      price: undefined,
-      pieces_package: undefined,
       pieces_ideal: undefined,
       pieces_critical: undefined,
       supplierOptions: [],
@@ -195,8 +175,6 @@ export default defineComponent({
           orderCode: this.order_code,
           barcodeType: this.barcode_type,
           barcodeCode: this.barcode_code,
-          price: this.price,
-          piecesPackage: this.pieces_package,
           piecesIdeal: this.pieces_ideal,
           piecesCritical: this.pieces_critical,
           supplierIds: this.suppliers.map((supplier) => supplier.id),
@@ -270,8 +248,6 @@ export default defineComponent({
       this.order_code = ''
       this.barcode_type = undefined
       this.barcode_code = ''
-      this.price = undefined
-      this.pieces_package = undefined
       this.pieces_ideal = undefined
       this.pieces_critical = undefined
       this.suppliers = undefined

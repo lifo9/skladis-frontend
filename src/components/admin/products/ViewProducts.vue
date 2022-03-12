@@ -41,15 +41,6 @@ export default defineComponent({
           }
         },
         {
-          header: this.$t('name'),
-          component: shallowRef(CrudText),
-          options: {
-            attribute: 'name',
-            sort: true,
-            orderBy: 'name'
-          }
-        },
-        {
           header: this.$t('order_code'),
           component: shallowRef(CrudText),
           options: {
@@ -59,22 +50,12 @@ export default defineComponent({
           }
         },
         {
-          header: this.$t('price'),
+          header: this.$t('name'),
           component: shallowRef(CrudText),
           options: {
-            attribute: 'price',
-            format: 'currency',
+            attribute: 'name',
             sort: true,
-            orderBy: 'price'
-          }
-        },
-        {
-          header: this.$t('pieces_package'),
-          component: shallowRef(CrudText),
-          options: {
-            attribute: 'pieces_package',
-            sort: true,
-            orderBy: 'pieces_package'
+            orderBy: 'name'
           }
         },
         {
@@ -115,6 +96,8 @@ export default defineComponent({
   },
   methods: {
     async fetchData() {
+      this.loading = true
+
       const suppliers = await getSupplierOptions()
       const options = suppliers.data.map((supplier) => {
         return { id: supplier.id, label: supplier.label }
