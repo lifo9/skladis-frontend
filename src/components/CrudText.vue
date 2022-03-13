@@ -1,6 +1,6 @@
 <template>
   <span v-if="label">
-    {{ label }}
+    {{ options.format ? options.format(label) : label }}
   </span>
 </template>
 

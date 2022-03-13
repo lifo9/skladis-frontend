@@ -19,7 +19,7 @@ export default defineComponent({
   },
   methods: {
     setTitle() {
-      this.mainStore.setCurrentTitle(this.$t('Orders'))
+      this.mainStore.setCurrentTitle(this.$t('Receipt of goods'))
     }
   }
 })

@@ -108,7 +108,7 @@ import RForm from '@/components/ui/RForm.vue'
 import RInput from '@/components/ui/RInput.vue'
 import RSelect from '@/components/ui/RSelect.vue'
 import { createProdcut, getProduct, updateProduct } from '@/services/ProductService'
-import { getSupplierOptions, getSuppliers } from '@/services/SupplierService'
+import { getSupplierOptions } from '@/services/SupplierService'
 import { useMainStore } from '@/stores/mainStore'
 
 export default defineComponent({

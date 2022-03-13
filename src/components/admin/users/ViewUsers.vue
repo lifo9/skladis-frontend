@@ -27,7 +27,7 @@ export default defineComponent({
     return {
       getEndpoint: getUsers,
       deleteEndpoint: deleteUser,
-      customActions: [markRaw(UserActivationToggle)],
+      customActions: [{ component: markRaw(UserActivationToggle) }],
       customCols: [
         {
           header: '',

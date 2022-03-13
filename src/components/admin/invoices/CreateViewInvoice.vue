@@ -1,4 +1,4 @@
-<template>orders</template>
+<template>test</template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'

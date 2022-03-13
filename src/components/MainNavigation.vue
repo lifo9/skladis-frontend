@@ -41,8 +41,8 @@
         />
         <navigation-item
           v-role="[constants.roles.admin, constants.roles.manager]"
-          route-name="OrdersView"
-          label="Orders"
+          route-name="InvoicesView"
+          label="Receipt of goods"
           icon="grading"
           :only-icon="menuItemShowOnlyIcon"
           @navigated="toggleMenu"
