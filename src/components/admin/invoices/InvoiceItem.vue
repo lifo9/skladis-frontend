@@ -34,15 +34,35 @@
       @select="findProducts"
       @remove="findProducts({})"
     />
-    <r-input v-model="quantity" :disabled="isLoading" custom-padding="p-2" type="number" step="1" min="0" />
-    <r-input v-model="unitPrice" :disabled="isLoading" custom-padding="p-2" type="number" step="0.01" min="0" />
-    <r-button v-if="added" size="verySmall" variant="danger" @click="removeItem">
-      <span class="material-icons">delete</span>
-    </r-button>
-    <barcode-scanner v-if="!added" variant="compact" @input="searchProduct" />
-    <r-button v-if="!added" size="verySmall" class="ml-2" @click="addItem">
-      <span class="material-icons">add</span>
-    </r-button>
+    <r-input
+      v-model="quantity"
+      class="w-full md:w-36"
+      :disabled="isLoading"
+      :placeholder="$t('quantity')"
+      custom-padding="p-2"
+      type="number"
+      step="1"
+      min="1"
+    />
+    <r-input
+      v-model="unitPrice"
+      class="w-full md:w-36"
+      :disabled="isLoading"
+      :placeholder="$t('unit_price')"
+      custom-padding="p-2"
+      type="number"
+      step="0.01"
+      min="0"
+    />
+    <div class="flex w-full md:w-80">
+      <r-button v-if="added" size="verySmall" variant="danger" @click="removeItem">
+        <span class="material-icons">delete</span>
+      </r-button>
+      <barcode-scanner v-if="!added" variant="compact" @input="searchProduct" />
+      <r-button v-if="!added" size="verySmall" class="ml-2" @click="addItem">
+        <span class="material-icons">add</span>
+      </r-button>
+    </div>
   </div>
 </template>
 
@@ -69,10 +89,10 @@ export default defineComponent({
     },
     initialQuantity: {
       type: Number,
-      default: 1
+      default: undefined
     },
     initialUnitPrice: {
-      type: Number,
+      type: String,
       default: undefined
     },
     productOptions: {
@@ -93,7 +113,7 @@ export default defineComponent({
     return {
       product: undefined,
       supplier: undefined,
-      quantity: 1,
+      quantity: undefined,
       unitPrice: undefined,
       products: [],
       suppliers: [],
@@ -231,18 +251,26 @@ export default defineComponent({
         }
       }
     },
-    addItem() {
+    async addItem() {
       if (!this.validate()) {
         return
       }
       this.$emit('addInvoiceItem', this.item)
+
+      this.product = undefined
+      this.supplier = undefined
+      this.quantity = 1
+      this.unitPrice = undefined
+
+      await this.findSuppliers()
+      await this.findProducts()
     },
     removeItem() {
       if (!this.validate()) {
         return
       }
 
-      this.$emit('removeInvoiceItem', this.item)
+      this.$emit('removeInvoiceItem')
     }
   }
 })

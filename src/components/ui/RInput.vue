@@ -7,7 +7,7 @@
 
     <div class="relative">
       <input
-        class="block text-base text-gray-900 placeholder:text-gray-400 bg-gray-50 rounded-md border border-gray-300 focus:border-blue-600 focus:outline-none transition duration-500 ease-in-out"
+        class="block text-base placeholder:text-sm text-gray-900 placeholder:text-gray-400 bg-gray-50 rounded-md border border-gray-300 focus:border-blue-600 focus:outline-none transition duration-500 ease-in-out"
         :class="[
           {
             'border-red-500': error,
