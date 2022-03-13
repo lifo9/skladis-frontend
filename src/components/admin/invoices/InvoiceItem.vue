@@ -7,6 +7,7 @@
       :options="products"
       :searchable="true"
       :loading="isLoading"
+      :disabled="added"
       :internal-search="false"
       :placeholder="$t('Product')"
       :select-label="$t('select')"
@@ -24,6 +25,7 @@
       :options="suppliers"
       :searchable="true"
       :loading="isLoading"
+      :disabled="added"
       :internal-search="false"
       :placeholder="$t('Supplier')"
       :select-label="$t('select')"
@@ -37,7 +39,7 @@
     <r-input
       v-model="quantity"
       class="w-full md:w-36"
-      :disabled="isLoading"
+      :disabled="isLoading || added"
       :placeholder="$t('quantity')"
       custom-padding="p-2"
       type="number"
@@ -47,7 +49,7 @@
     <r-input
       v-model="unitPrice"
       class="w-full md:w-36"
-      :disabled="isLoading"
+      :disabled="isLoading || added"
       :placeholder="$t('unit_price')"
       custom-padding="p-2"
       type="number"

@@ -1,5 +1,5 @@
 <template>
-  <div class="divide-y-[1px] divide-gray-300 md:divide-y-0">
+  <div class="my-14 mx-auto w-full max-w-5xl divide-y-[1px] divide-gray-300 md:divide-y-0">
     <h2>{{ $t('Invoice items') }}</h2>
     <invoice-item
       v-for="(invoiceItem, idx) in invoiceItems"
