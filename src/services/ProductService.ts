@@ -12,6 +12,10 @@ export function getProducts(params) {
   return crud.getRecords(params)
 }
 
+export function getProductOptions(params) {
+  return crud.getOptions(params)
+}
+
 export function updateProduct({
   id,
   name,

@@ -7,8 +7,16 @@
 
     <div class="relative">
       <input
-        class="block py-3 px-5 text-base text-gray-900 placeholder:text-gray-400 bg-gray-50 rounded-md border border-gray-300 focus:border-blue-600 focus:outline-none transition duration-500 ease-in-out"
-        :class="[{ 'border-red-500': error, 'w-auto': oneLine, 'w-full': !oneLine }]"
+        class="block text-base text-gray-900 placeholder:text-gray-400 bg-gray-50 rounded-md border border-gray-300 focus:border-blue-600 focus:outline-none transition duration-500 ease-in-out"
+        :class="[
+          {
+            'border-red-500': error,
+            'w-auto': oneLine,
+            'w-full': !oneLine,
+            'py-3 px-5': !customPadding
+          },
+          customPadding
+        ]"
         :type="type === 'password' && showPassword ? 'text' : type"
         :value="modelValue"
         :required="required"
@@ -72,6 +80,10 @@ export default defineComponent({
     oneLine: {
       type: Boolean,
       default: false
+    },
+    customPadding: {
+      type: String,
+      default: ''
     }
   },
   emits: ['update:modelValue'],

@@ -275,7 +275,6 @@ export default defineComponent({
       }
     },
     handleBarcodeScanner(scan) {
-      console.log(scan)
       this.barcode_type = scan.format
       this.barcode_code = scan.code
     },
