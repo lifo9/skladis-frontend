@@ -10,7 +10,7 @@
   </div>
   <div v-else>
     <div v-for="label in labels" :key="label.id">
-      <a :href="link" :target="options.newTab ? '_blank' : ''">
+      <a v-if="link" :href="link" :target="options.newTab ? '_blank' : ''">
         <span>
           {{ label.label }}
         </span>

@@ -11,3 +11,7 @@ export function getInvoice(id) {
 export function getInvoices(params) {
   return crud.getRecords(params)
 }
+
+export function deleteInvoice(id) {
+  return crud.deleteRecord(id)
+}

@@ -3,7 +3,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import ActivateUser from '@/components/ActivateUser.vue'
 import CreateEditContact from '@/components/admin/contacts/CreateEditContact.vue'
 import ViewContacts from '@/components/admin/contacts/ViewContacts.vue'
-import CreateViewInvoice from '@/components/admin/invoices/CreateViewInvoice.vue'
+import CreateEditInvoice from '@/components/admin/invoices/CreateEditInvoice.vue'
 import ViewInvoices from '@/components/admin/invoices/ViewInvoices.vue'
 import MyProfile from '@/components/admin/MyProfile.vue'
 import CreateEditProduct from '@/components/admin/products/CreateEditProduct.vue'
@@ -237,12 +237,12 @@ const routes: Array<RouteRecordRaw> = [
           {
             path: 'create',
             name: 'InvoiceCreate',
-            component: CreateViewInvoice
+            component: CreateEditInvoice
           },
           {
-            path: 'view/:id',
-            name: 'InvoiceView',
-            component: CreateViewInvoice
+            path: 'edit/:id',
+            name: 'InvoiceEdit',
+            component: CreateEditInvoice
           }
         ]
       }

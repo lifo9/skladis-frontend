@@ -1,12 +1,12 @@
 <template>
   <crud-table
     :get-endpoint="getEndpoint"
-    :bulk-select="false"
-    :enable-default-actions="false"
+    :delete-endpoint="deleteEndpoint"
+    create-route-name="InvoiceCreate"
+    edit-route-name="InvoiceEdit"
+    :bulk-select="true"
     :hide-all-cols="true"
     :custom-cols-before="customCols"
-    :custom-global-actions="customGlobalActions"
-    :custom-actions="customActions"
   />
 </template>
 
@@ -18,13 +18,14 @@ import CrudLink from '@/components/CrudLink.vue'
 import CrudTable from '@/components/CrudTable.vue'
 import CrudText from '@/components/CrudText.vue'
 import CrudViewButton from '@/components/CrudViewButton.vue'
-import { getInvoices } from '@/services/InvoiceService'
+import { deleteInvoice, getInvoices } from '@/services/InvoiceService'
 
 export default defineComponent({
   components: { CrudTable },
   data() {
     return {
       getEndpoint: getInvoices,
+      deleteEndpoint: deleteInvoice,
       customCols: [
         {
           header: this.$t('invoice_code'),
