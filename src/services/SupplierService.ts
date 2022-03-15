@@ -12,8 +12,8 @@ export function getSuppliers(params) {
   return crud.getRecords(params)
 }
 
-export function getSupplierOptions() {
-  return crud.getOptions()
+export function getSupplierOptions(params) {
+  return crud.getOptions(params)
 }
 
 export function updateSupplier({

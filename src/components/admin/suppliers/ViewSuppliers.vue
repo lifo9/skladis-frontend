@@ -28,7 +28,7 @@ export default defineComponent({
     return {
       getEndpoint: getSuppliers,
       deleteEndpoint: deleteSupplier,
-      customActions: [markRaw(ViewSupplierProducts)],
+      customActions: [{ component: markRaw(ViewSupplierProducts) }],
       relationshipCols: [
         {
           relationship: 'address',

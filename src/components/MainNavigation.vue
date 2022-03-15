@@ -1,8 +1,8 @@
 <template>
   <div class="md:border-t">
     <a
-      v-if="type === 'mobile'"
-      class="flex justify-center items-center w-8 h-full text-2xl text-center text-white select-none material-icons-sharp"
+      class="text-2xl text-white transition ease-in-out select-none material-icons-sharp"
+      :class="isOpen ? 'transform rotate-90 transition ease-in-out' : ''"
       href="javascript:"
       @click="toggleMenu()"
     >
@@ -10,7 +10,7 @@
     </a>
     <div
       v-if="isOpen || type === 'desktop'"
-      class="absolute top-16 left-0 z-50 px-0 w-full min-h-screen bg-gray-900 md:fixed md:z-auto"
+      class="absolute top-16 left-0 z-50 px-0 w-full min-h-screen bg-gray-900 transition ease-in-out md:fixed md:z-auto"
       :class="!mainStore.isMenuExpanded ? 'md:w-16' : 'md:w-64'"
     >
       <ul class="overflow-y-auto h-screen">
@@ -36,7 +36,15 @@
           route-name="Home"
           label="Home"
           icon="home"
-          :only-icon="!mainStore.isMenuExpanded"
+          :only-icon="menuItemShowOnlyIcon"
+          @navigated="toggleMenu"
+        />
+        <navigation-item
+          v-role="[constants.roles.admin, constants.roles.manager]"
+          route-name="InvoicesView"
+          label="Receipt of goods"
+          icon="grading"
+          :only-icon="menuItemShowOnlyIcon"
           @navigated="toggleMenu"
         />
         <navigation-item
@@ -44,7 +52,7 @@
           route-name="ProductsView"
           label="Products"
           icon="medical_services"
-          :only-icon="!mainStore.isMenuExpanded"
+          :only-icon="menuItemShowOnlyIcon"
           @navigated="toggleMenu"
         />
         <navigation-item
@@ -52,7 +60,7 @@
           route-name="SuppliersView"
           label="Suppliers"
           icon="directions_car"
-          :only-icon="!mainStore.isMenuExpanded"
+          :only-icon="menuItemShowOnlyIcon"
           @navigated="toggleMenu"
         />
         <navigation-item
@@ -60,7 +68,7 @@
           route-name="WarehousesView"
           label="Warehouses"
           icon="warehouse"
-          :only-icon="!mainStore.isMenuExpanded"
+          :only-icon="menuItemShowOnlyIcon"
           @navigated="toggleMenu"
         />
         <navigation-item
@@ -68,14 +76,14 @@
           route-name="RoomsView"
           label="Rooms"
           icon="meeting_room"
-          :only-icon="!mainStore.isMenuExpanded"
+          :only-icon="menuItemShowOnlyIcon"
           @navigated="toggleMenu"
         />
         <navigation-item
           route-name="ContactsView"
           label="Contacts"
           icon="contacts"
-          :only-icon="!mainStore.isMenuExpanded"
+          :only-icon="menuItemShowOnlyIcon"
           @navigated="toggleMenu"
         />
         <navigation-item
@@ -83,7 +91,7 @@
           route-name="UsersView"
           label="Users"
           icon="person"
-          :only-icon="!mainStore.isMenuExpanded"
+          :only-icon="menuItemShowOnlyIcon"
           @navigated="toggleMenu"
         />
       </ul>
@@ -112,6 +120,9 @@ export default defineComponent({
     }
   },
   computed: {
+    menuItemShowOnlyIcon() {
+      return !this.mainStore.isMenuExpanded && this.type !== 'mobile'
+    },
     ...mapStores(useMainStore)
   },
   methods: {

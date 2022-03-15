@@ -3,6 +3,9 @@
     <r-filter v-if="filterOptions" :options="filterOptions" @filter="handleFilter" />
     <div class="flex flex-wrap justify-start items-center my-4 sm:justify-end">
       <r-search class="m-2" @search="handleSearch" />
+      <div v-for="(customGlobalAction, idx) in customGlobalActions" :key="'customGlobalAction_' + idx">
+        <component :is="customGlobalAction.component" v-bind="customGlobalAction.props" />
+      </div>
       <r-button
         v-if="enableDefaultActions"
         class="m-2"
@@ -49,7 +52,7 @@
       >
         <template #customActions="{ row }">
           <div v-for="(customAction, idx) in customActions" :key="'customAction_' + idx">
-            <component :is="customAction" :row="row" :included="included" />
+            <component :is="customAction.component" :row="row" :included="included" :options="customAction.options" />
           </div>
         </template>
         <template #customColsBeforeHeaders>
@@ -160,11 +163,11 @@ export default defineComponent({
     },
     createRouteName: {
       type: String,
-      required: true
+      default: undefined
     },
     editRouteName: {
       type: String,
-      required: true
+      default: undefined
     },
     bulkSelect: {
       type: Boolean,
@@ -175,6 +178,10 @@ export default defineComponent({
       default: 20
     },
     customActions: {
+      type: Array,
+      default: undefined
+    },
+    customGlobalActions: {
       type: Array,
       default: undefined
     },

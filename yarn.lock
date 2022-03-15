@@ -791,6 +791,11 @@ data-uri-to-buffer@0.0.3:
   resolved "https://registry.yarnpkg.com/data-uri-to-buffer/-/data-uri-to-buffer-0.0.3.tgz#18ae979a6a0ca994b0625853916d2662bbae0b1a"
   integrity sha1-GK6XmmoMqZSwYlhTkW0mYruuCxo=
 
+dayjs@^1.10.8:
+  version "1.10.8"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.10.8.tgz#267df4bc6276fcb33c04a6735287e3f429abec41"
+  integrity sha512-wbNwDfBHHur9UOzNUjeKUOJ0fCb0a52Wx0xInmQ7Y8FstyajiV1NmK1e00cxsr9YrE9r7yAChE0VvpuY5Rnlow==
+
 debug@^4.1.1, debug@^4.3.2:
   version "4.3.3"
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.3.tgz#04266e0b70a98d4462e6e288e38259213332b664"
@@ -1291,6 +1296,11 @@ flat-cache@^3.0.4:
   dependencies:
     flatted "^3.1.0"
     rimraf "^3.0.2"
+
+flatpickr@^4.6.9:
+  version "4.6.11"
+  resolved "https://registry.yarnpkg.com/flatpickr/-/flatpickr-4.6.11.tgz#c92f5108269c551c6b5069ecd754be610574574c"
+  integrity sha512-/rnbE/hu5I5zndLEyYfYvqE4vPDvI5At0lFcQA5eOPfjquZLcQ0HMKTL7rv5/+DvbPM3/vJcXpXjB/DjBh+1jw==
 
 flatted@^3.1.0:
   version "3.2.5"
@@ -2685,6 +2695,13 @@ vue-final-modal@^3.4.3:
   version "3.4.3"
   resolved "https://registry.yarnpkg.com/vue-final-modal/-/vue-final-modal-3.4.3.tgz#8fdf56da8a03cdf9e54bcaeb8293a93f88758915"
   integrity sha512-sp6M09oXGcRM3d3Jr80UywWx4C9I18nH/549fgNrs8qbCcw+DJc8QSUFkJ91lqWndGQ1q5rYen4i4IIrpHPVYA==
+
+vue-flatpickr-component@^9:
+  version "9.0.5"
+  resolved "https://registry.yarnpkg.com/vue-flatpickr-component/-/vue-flatpickr-component-9.0.5.tgz#350ec73b7f3d7f80b050c170c088234f9c3bd14c"
+  integrity sha512-fKuz/D4ePQKi+jPo4xjYRgBCLTWrTsCoKbx8nam63x4kTDtSqvFOjNwLvy0QgwC0lC+aFpUWa1dNYTH0hgUcCA==
+  dependencies:
+    flatpickr "^4.6.9"
 
 vue-i18n@9:
   version "9.1.9"

@@ -2,16 +2,16 @@
   <div>
     <navigation-back />
     <r-form :error="error" class="my-14 mx-auto w-full max-w-3xl" @submit.prevent="create">
-      <image-upload
+      <file-upload
         :key="avatar != '' ? avatar : updated.toString()"
         :label="$t('Avatar')"
         :disabled="loading"
         @change="handleAvatarChange"
       >
-        <template v-if="avatar" #image>
+        <template v-if="avatar" #file>
           <img :src="avatar" class="object-contain w-64 max-h-48 text-center" />
         </template>
-      </image-upload>
+      </file-upload>
       <r-input v-model="email" type="email" :label="$t('email')" :required="true" :disabled="loading" />
       <r-input v-model="first_name" :label="$t('first_name')" :required="true" :disabled="loading" />
       <r-input v-model="last_name" :label="$t('last_name')" :required="true" :disabled="loading" />
@@ -77,7 +77,7 @@ import { mapStores } from 'pinia'
 import { defineComponent } from 'vue'
 import Multiselect from 'vue-multiselect'
 
-import ImageUpload from '@/components/ui/ImageUpload.vue'
+import FileUpload from '@/components/ui/FileUpload.vue'
 import NavigationBack from '@/components/ui/NavigationBack.vue'
 import RButton from '@/components/ui/RButton.vue'
 import RForm from '@/components/ui/RForm.vue'
@@ -86,7 +86,7 @@ import { getRoles } from '@/services/RoleService'
 import { createUser, deleteAvatar, getUser, updateUser } from '@/services/UsersService'
 import { useMainStore } from '@/stores/mainStore'
 export default defineComponent({
-  components: { RForm, RButton, RInput, Multiselect, ImageUpload, NavigationBack },
+  components: { RForm, RButton, RInput, Multiselect, FileUpload, NavigationBack },
   data() {
     return {
       error: '',
