@@ -50,7 +50,7 @@ export default defineComponent({
           header: this.$t('invoice'),
           component: shallowRef(CrudLink),
           options: {
-            customCaption: this.$t('invoice'),
+            attribute: 'invoice_code',
             linkAttribute: 'invoice_file',
             newTab: true,
             sort: false

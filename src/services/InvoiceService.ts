@@ -2,8 +2,11 @@ import { securedAxiosInstance } from '@/services/ApiService'
 import CrudService from '@/services/CrudService'
 
 const API_PATH = '/invoices'
+const API_PATH_ITEMS = '/invoice-items'
 const TYPE = 'invoice'
+const TYPE_ITEM = 'invoice_item'
 const crud = new CrudService(API_PATH, TYPE)
+const crudItems = new CrudService(API_PATH_ITEMS, TYPE_ITEM)
 
 export function getInvoice(id) {
   return crud.getRecord(id)
@@ -45,6 +48,18 @@ export function createInvoice({ invoiceCode, invoiceDate, invoiceFile, invoiceIt
   }
 
   return crud.createRecord(params, true)
+}
+
+export function createInvoiceItem({ invoice_id, product_id, supplier_id, quantity, unit_price }: any = {}) {
+  const params = {
+    invoice_id: invoice_id,
+    product_id: product_id,
+    supplier_id: supplier_id,
+    quantity: quantity,
+    unit_price: unit_price
+  }
+
+  return crudItems.createRecord(params)
 }
 
 export function deleteInvoice(id) {

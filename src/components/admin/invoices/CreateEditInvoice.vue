@@ -28,7 +28,7 @@
         />
       </div>
       <file-upload
-        :key="invoice_file"
+        :key="fileKey"
         :disabled="loading"
         :label="$t('Attachment')"
         label-style="text-lg mb-1"
@@ -82,7 +82,13 @@ import FileUpload from '@/components/ui/FileUpload.vue'
 import NavigationBack from '@/components/ui/NavigationBack.vue'
 import RButton from '@/components/ui/RButton.vue'
 import RInput from '@/components/ui/RInput.vue'
-import { createInvoice, deleteInvoiceAttachment, getInvoice, updateInvoice } from '@/services/InvoiceService'
+import {
+  createInvoice,
+  createInvoiceItem,
+  deleteInvoiceAttachment,
+  getInvoice,
+  updateInvoice
+} from '@/services/InvoiceService'
 import { getProductOptions } from '@/services/ProductService'
 import { getSupplierOptions } from '@/services/SupplierService'
 import { useMainStore } from '@/stores/mainStore'
@@ -109,6 +115,13 @@ export default defineComponent({
     invoiceItemsApi() {
       return undefined
     },
+    fileKey() {
+      if (this.invoice_file) {
+        return this.invoice_file
+      } else {
+        return undefined
+      }
+    },
     lastSupplier() {
       if (this.invoiceItems && this.invoiceItems.length > 0) {
         return this.invoiceItems[this.invoiceItems.length - 1]['supplier_id']
@@ -122,9 +135,9 @@ export default defineComponent({
     this.fetchProductOptions()
     this.fetchSupplierOptions()
   },
-  mounted() {
-    this.fetchData()
-    this.setTitle()
+  async mounted() {
+    await this.fetchData()
+    await this.setTitle()
   },
   methods: {
     handleAddInvoiceItem(item) {
@@ -150,7 +163,7 @@ export default defineComponent({
       this.loading = true
       const endpoint = this.invoiceId ? updateInvoice : createInvoice
       try {
-        await endpoint({
+        const invoice = await endpoint({
           id: this.invoiceId,
           invoiceCode: this.invoice_code,
           invoiceDate: this.invoice_date,
@@ -164,8 +177,24 @@ export default defineComponent({
             : this.$t('Invoice was successfully created')
         })
 
-        if (this.invoiceId && this.deleteAttachment) {
-          await deleteInvoiceAttachment(this.invoiceId)
+        if (invoice.data && invoice.data.data && invoice.data.data.id && this.deleteAttachment) {
+          await deleteInvoiceAttachment(invoice.data.data.id)
+        }
+        if (invoice.data && invoice.data.data && invoice.data.data.id && this.invoiceItems.length > 0) {
+          Promise.all(
+            this.invoiceItems.map((item) => {
+              createInvoiceItem({
+                invoice_id: invoice.data.data.id,
+                ...item
+              })
+            })
+          )
+            .then((results) => {
+              // pass
+            })
+            .catch((error) => {
+              this.eventBus.emit('alert', { level: 'alert', message: error })
+            })
         }
 
         if (!this.invoiceId) {
@@ -187,6 +216,10 @@ export default defineComponent({
         this.eventBus.emit('alert', { level: 'alert', message: this.$t('Please, fill the invoice date') })
         return false
       }
+      if (this.invoiceItems.length === 0) {
+        this.eventBus.emit('alert', { level: 'alert', message: this.$t('Please, add invoice items') })
+        return false
+      }
       return true
     },
     resetForm() {
@@ -194,6 +227,7 @@ export default defineComponent({
       this.invoice_date = undefined
       this.invoiceItems = []
       this.invoice_file = undefined
+      this.attachmentFile = undefined
       this.deleteAttachment = false
     },
     async fetchData() {
@@ -203,9 +237,25 @@ export default defineComponent({
         try {
           const product = await getInvoice(this.invoiceId)
           const data = product.data.data.attributes
+          const items = product.data.included
+
           for (let [key, value] of Object.entries(data)) {
             this[key] = value
           }
+
+          this.invoiceItems = items.map((item) => {
+            const productId = parseInt(item.relationships['product'].data.id)
+            const supplierId = parseInt(item.relationships['supplier'].data.id)
+            const quantity = item.attributes.quantity
+            const unitPrice = item.attributes.unit_price
+
+            return {
+              product_id: productId,
+              supplier_id: supplierId,
+              quantity: quantity,
+              unit_price: unitPrice
+            }
+          })
         } catch (error) {}
       }
 
