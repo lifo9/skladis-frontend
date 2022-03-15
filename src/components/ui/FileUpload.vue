@@ -1,12 +1,12 @@
 <template>
   <div>
-    <label v-if="label" class="block mb-1 text-sm font-medium text-gray-800">
+    <label v-if="label" class="block text-gray-800" :class="labelStyle ? labelStyle : 'text-sm font-medium'">
       {{ label }}
       <span v-if="required" class="text-red-500">*</span>
     </label>
     <div class="relative" @dragover.prevent @drop.stop.prevent="dragFile">
       <div
-        v-if="showImage && (hasImageInSlot || (deleteImage && image))"
+        v-if="showImage && (hasFileInSlot || (deleteImage && image))"
         class="flex absolute top-0 right-2 justify-center items-center w-7 h-7 text-gray-300 hover:text-red-500 bg-white rounded-full border-2 border-gray-300 hover:border-red-500 cursor-pointer"
         @click="clearFile"
       >
@@ -14,20 +14,31 @@
       </div>
       <div
         class="flex flex-wrap justify-center items-center py-3 px-5 w-full cursor-pointer"
-        :class="!hasImageInSlot && !(deleteImage && image) ? 'rounded-sm' : 'rounded-md'"
+        :class="!hasFileInSlot && !(deleteImage && image) ? 'rounded-sm' : 'rounded-md'"
       >
         <label
           class="flex flex-col w-64 cursor-pointer"
           :class="
-            (!hasImageInSlot && !(deleteImage && image)) || !showImage
+            (!hasFileInSlot && !(deleteImage && image)) || !showImage
               ? 'w-full border-4 border-gray-300 border-dashed hover:bg-gray-50 rounded-sm'
               : 'border-4 border-white hover:border-blue-600 rounded-md'
           "
         >
-          <slot v-if="!image && !deleteImage" name="image" />
-          <img v-if="showImage && (hasImageInSlot || image)" class="object-contain max-h-48" :src="image" />
+          <slot v-if="!image && !deleteImage" name="file" />
+          <img
+            v-if="showImage && fileType !== 'document' && (hasFileInSlot || image)"
+            class="object-contain max-h-48"
+            :src="image"
+          />
           <div
-            v-if="(!hasImageInSlot && !(deleteImage && image)) || !showImage"
+            v-if="fileType === 'document' && fileName && image"
+            class="flex flex-wrap justify-center items-center p-4 space-x-4"
+          >
+            <span class="material-icons">insert_drive_file</span>
+            <a :href="image" target="_blank" class="hover:underline">{{ fileName }}</a>
+          </div>
+          <div
+            v-if="(!hasFileInSlot && !(deleteImage && image)) || !showImage"
             class="pt-2 w-full h-full tracking-wider text-center text-gray-400 group-hover:text-gray-600 hover:text-blue-600 cursor-pointer"
           >
             <span class="text-5xl text-inherit material-icons">cloud_upload</span>
@@ -38,7 +49,7 @@
             ref="inputFile"
             type="file"
             class="w-0 h-0 opacity-0"
-            accept=".jpg,.jpeg,.png"
+            :accept="acceptFormats"
             :value="value"
             :required="required"
             :disabled="disabled"
@@ -77,21 +88,34 @@ export default defineComponent({
       type: Boolean,
       default: true
     },
+    fileType: {
+      type: String,
+      default: 'image'
+    },
     error: {
       type: String,
       default: ''
+    },
+    acceptFormats: {
+      type: String,
+      default: '.jpg,.jpeg,.png'
+    },
+    labelStyle: {
+      type: String,
+      default: undefined
     }
   },
   emits: ['change'],
   data() {
     return {
       image: undefined,
+      fileName: undefined,
       deleteImage: false
     }
   },
   computed: {
-    hasImageInSlot() {
-      return (!!this.$slots.image || this.image) && !this.deleteImage
+    hasFileInSlot() {
+      return (!!Object.keys(this.$slots).includes('file') || this.image) && !this.deleteImage
     }
   },
   methods: {
@@ -100,10 +124,12 @@ export default defineComponent({
       this.handleFileChange(undefined, e.dataTransfer.files[0])
     },
     handleFileChange(e, fileAttr = undefined) {
+      this.fileName = undefined
       let file = fileAttr
       if (!fileAttr) {
         file = e.target.files[0]
       }
+      this.fileName = file.name
 
       if (this.showImage) {
         this.image = URL.createObjectURL(file)

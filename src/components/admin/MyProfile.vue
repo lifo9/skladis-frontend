@@ -4,11 +4,11 @@
       {{ $t('My profile') }}
     </h1>
     <r-form :error="error" class="my-14 mx-auto w-full max-w-md" @submit.prevent="update">
-      <image-upload :key="avatar" :label="$t('Avatar')" :disabled="loading" @change="handleAvatarChange">
-        <template v-if="avatar" #image>
+      <file-upload :key="avatar" :label="$t('Avatar')" :disabled="loading" @change="handleAvatarChange">
+        <template v-if="avatar" #file>
           <img :src="avatar" class="object-contain w-64 max-h-48 text-center" />
         </template>
-      </image-upload>
+      </file-upload>
       <r-input v-model="email" type="email" :label="$t('email')" :required="true" :disabled="loading" />
       <r-input v-model="first_name" :label="$t('first_name')" :required="true" :disabled="loading" />
       <r-input v-model="last_name" :label="$t('last_name')" :required="true" :disabled="loading" />
@@ -47,14 +47,14 @@
 import { mapStores } from 'pinia'
 import { defineComponent } from 'vue'
 
-import ImageUpload from '@/components/ui/ImageUpload.vue'
+import FileUpload from '@/components/ui/FileUpload.vue'
 import RButton from '@/components/ui/RButton.vue'
 import RForm from '@/components/ui/RForm.vue'
 import RInput from '@/components/ui/RInput.vue'
 import { deleteAvatar, getMyProfile, updateMyProfile } from '@/services/MyProfileService'
 import { useMainStore } from '@/stores/mainStore'
 export default defineComponent({
-  components: { RForm, RButton, RInput, ImageUpload },
+  components: { RForm, RButton, RInput, FileUpload },
   data() {
     return {
       error: '',

@@ -2,16 +2,16 @@
   <div>
     <navigation-back />
     <r-form class="my-14 mx-auto w-full max-w-md" @submit.prevent="create">
-      <image-upload
+      <file-upload
         :key="logo != '' ? logo : updated.toString()"
         :label="$t('Logo')"
         :disabled="loading"
         @change="handleLogoChange"
       >
-        <template v-if="logo" #image>
+        <template v-if="logo" #file>
           <img :src="logo" class="object-contain w-64 max-h-48 text-center" />
         </template>
-      </image-upload>
+      </file-upload>
       <r-input v-model="name" :label="$t('name')" :required="true" :disabled="loading" />
       <r-input v-model="url" :label="$t('url')" :required="true" :disabled="loading" />
 
@@ -31,7 +31,7 @@
 import { mapStores } from 'pinia'
 import { defineComponent } from 'vue'
 
-import ImageUpload from '@/components/ui/ImageUpload.vue'
+import FileUpload from '@/components/ui/FileUpload.vue'
 import NavigationBack from '@/components/ui/NavigationBack.vue'
 import RButton from '@/components/ui/RButton.vue'
 import RForm from '@/components/ui/RForm.vue'
@@ -39,7 +39,7 @@ import RInput from '@/components/ui/RInput.vue'
 import { createVendor, deleteLogo, getVendor, updateVendor } from '@/services/VendorService'
 import { useMainStore } from '@/stores/mainStore'
 export default defineComponent({
-  components: { RForm, RButton, RInput, ImageUpload, NavigationBack },
+  components: { RForm, RButton, RInput, FileUpload, NavigationBack },
   data() {
     return {
       loading: false,

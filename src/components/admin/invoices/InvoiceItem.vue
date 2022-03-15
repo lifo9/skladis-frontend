@@ -13,6 +13,7 @@
       :select-label="$t('select')"
       :selected-label="$t('deselect')"
       :deselect-label="$t('deselect')"
+      :show-no-results="false"
       open-direction="bottom"
       @search-change="findProducts"
       @select="findSuppliers"
@@ -31,6 +32,7 @@
       :select-label="$t('select')"
       :selected-label="$t('deselect')"
       :deselect-label="$t('deselect')"
+      :show-no-results="false"
       open-direction="bottom"
       @search-change="findSuppliers"
       @select="findProducts"
@@ -133,7 +135,7 @@ export default defineComponent({
     }
   },
   async mounted() {
-    if (!this.productOptions) {
+    if (!this.productOptions || (this.initialSupplier && !this.initialProduct)) {
       let query
       if (this.initialSupplier) {
         query = { id: this.initialSupplier }
@@ -264,8 +266,10 @@ export default defineComponent({
       this.quantity = 1
       this.unitPrice = undefined
 
-      await this.findSuppliers()
-      await this.findProducts()
+      if (this.added) {
+        await this.findSuppliers()
+        await this.findProducts()
+      }
     },
     removeItem() {
       if (!this.validate()) {

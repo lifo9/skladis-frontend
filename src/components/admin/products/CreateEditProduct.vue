@@ -14,18 +14,18 @@
             </r-button>
           </div>
           <div v-for="(image, idx) in images" :key="`image_${idx}`" class="flex flex-wrap">
-            <image-upload
+            <file-upload
               :key="image != '' ? image : `image_${idx}`"
               :disabled="loading"
               @change="handleImageChange($event, idx)"
             >
-              <template v-if="image" #image>
+              <template v-if="image" #file>
                 <img v-if="image.blob" :src="image.blob" class="object-contain w-64 max-h-48 text-center" />
                 <img v-else-if="image.url" :src="image.url" class="object-contain w-64 max-h-48 text-center" />
               </template>
-            </image-upload>
+            </file-upload>
           </div>
-          <image-upload :disabled="loading" :show-image="false" class="w-full" @change="handleImageChange" />
+          <file-upload :disabled="loading" :show-image="false" class="w-full" @change="handleImageChange" />
           <r-button variant="success" class="mx-auto mt-10 w-full" @click="showImageUploadModal = false">
             {{ $t('OK') }}
           </r-button>
@@ -100,13 +100,12 @@ import { defineComponent } from 'vue'
 import Multiselect from 'vue-multiselect'
 
 import BarcodeScanner from '@/components/admin/BarcodeScanner.vue'
+import FileUpload from '@/components/ui/FileUpload.vue'
 import ImageSlider from '@/components/ui/ImageSlider.vue'
-import ImageUpload from '@/components/ui/ImageUpload.vue'
 import NavigationBack from '@/components/ui/NavigationBack.vue'
 import RButton from '@/components/ui/RButton.vue'
 import RForm from '@/components/ui/RForm.vue'
 import RInput from '@/components/ui/RInput.vue'
-import RSelect from '@/components/ui/RSelect.vue'
 import { createProdcut, getProduct, updateProduct } from '@/services/ProductService'
 import { getSupplierOptions } from '@/services/SupplierService'
 import { useMainStore } from '@/stores/mainStore'
@@ -117,10 +116,9 @@ export default defineComponent({
     RButton,
     RInput,
     Multiselect,
-    ImageUpload,
+    FileUpload,
     ImageSlider,
     NavigationBack,
-    RSelect,
     BarcodeScanner
   },
   data() {
