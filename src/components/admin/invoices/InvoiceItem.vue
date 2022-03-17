@@ -300,4 +300,12 @@ export default defineComponent({
     @apply left-0 my-2 rounded-md border-l-gray-300 border-r-gray-300 border-t-gray-300 border-b-gray-300 border-t border-b border-l border-r border-solid z-50;
   }
 }
+
+>>> .multiselect--disabled.multiselect {
+  opacity: 1 !important;
+}
+>>> .multiselect--disabled.multiselect .multiselect__single {
+  @apply text-base;
+  color: rgb(17 24 39) !important;
+}
 </style>
