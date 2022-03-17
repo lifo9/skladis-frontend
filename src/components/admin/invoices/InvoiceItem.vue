@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-wrap items-center space-y-2 md:flex-nowrap md:space-y-0 md:space-x-2">
+  <div class="flex relative flex-wrap items-center space-y-2 md:flex-nowrap md:space-y-0 md:space-x-2">
     <multiselect
       v-model="product"
       track-by="id"
@@ -14,7 +14,6 @@
       :selected-label="$t('deselect')"
       :deselect-label="$t('deselect')"
       :show-no-results="false"
-      open-direction="bottom"
       @search-change="findProducts"
       @select="findSuppliers"
       @remove="findSuppliers({})"
@@ -33,7 +32,6 @@
       :selected-label="$t('deselect')"
       :deselect-label="$t('deselect')"
       :show-no-results="false"
-      open-direction="bottom"
       @search-change="findSuppliers"
       @select="findProducts"
       @remove="findProducts({})"
@@ -283,3 +281,23 @@ export default defineComponent({
 </script>
 
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>
+
+<style lang="postcss" scoped>
+@screen md {
+  >>> .multiselect.multiselect--active {
+    position: initial !important;
+    @apply border-blue-600 border rounded-md;
+  }
+  >>> .multiselect.multiselect--active .multiselect__tags {
+    @apply rounded-md;
+  }
+  >>> .multiselect__select,
+  .multiselect__tags .multiselect__spinner {
+    @apply hidden;
+  }
+
+  >>> .multiselect__content-wrapper {
+    @apply left-0 my-2 rounded-md border-l-gray-300 border-r-gray-300 border-t-gray-300 border-b-gray-300 border-t border-b border-l border-r border-solid z-50;
+  }
+}
+</style>
