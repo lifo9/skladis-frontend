@@ -21,6 +21,10 @@ export default defineComponent({
       type: Object,
       required: true
     },
+    relationships: {
+      type: Array,
+      default: undefined
+    },
     included: {
       type: Array,
       default: undefined
@@ -29,20 +33,39 @@ export default defineComponent({
   computed: {
     imageSource() {
       const attribute = this.row.attributes[this.options.attribute]
-      if (attribute) {
-        if (Array.isArray(attribute)) {
-          if (attribute.length > 0) {
-            if (this.options.subAttribute) {
-              return attribute[0][this.options.subAttribute]
-            } else {
-              return attribute[0]
-            }
+      const relationships = this.row.relationships
+
+      if (
+        relationships &&
+        relationships[this.options.relationship] &&
+        relationships[this.options.relationship].data &&
+        this.included &&
+        this.included.length > 0
+      ) {
+        const id = relationships[this.options.relationship].data.id
+        const type = relationships[this.options.relationship].data.type
+        if (id) {
+          const relationObject = this.included.filter((included) => included.type === type && included.id === id)
+          if (relationObject.length === 1) {
+            return relationObject[0].attributes[this.options.attribute]
           }
-        } else {
-          if (this.options.subAttribute) {
-            return attribute[this.options.subAttribute]
+        }
+      } else {
+        if (attribute) {
+          if (Array.isArray(attribute)) {
+            if (attribute.length > 0) {
+              if (this.options.subAttribute) {
+                return attribute[0][this.options.subAttribute]
+              } else {
+                return attribute[0]
+              }
+            }
           } else {
-            return attribute
+            if (this.options.subAttribute) {
+              return attribute[this.options.subAttribute]
+            } else {
+              return attribute
+            }
           }
         }
       }

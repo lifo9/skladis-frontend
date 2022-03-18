@@ -3,7 +3,7 @@
     <div v-for="label in labels" :key="label.id">
       <a href="#" @click.prevent="handleNavigation(label.id)">
         <span>
-          {{ label.label }}
+          {{ options.format ? options.format(label.label) : label.label }}
         </span>
       </a>
     </div>
@@ -12,7 +12,7 @@
     <div v-for="label in labels" :key="label.id">
       <a v-if="link" :href="link" :target="options.newTab ? '_blank' : ''">
         <span>
-          {{ label.label }}
+          {{ options.format ? options.format(label.label) : label.label }}
         </span>
       </a>
     </div>
@@ -43,7 +43,29 @@ export default defineComponent({
       if (this.options.customCaption) {
         return [{ id: this.options.customCaption, label: this.options.customCaption }]
       } else if (!this.options.relationship) {
-        return [{ id: this.row.attributes[this.options.attribute], label: this.row.attributes[this.options.attribute] }]
+        if (this.options.editLinkIdColumn) {
+          let label = ''
+          if (this.options.translate) {
+            label = this.$t(this.row.attributes[this.options.attribute])
+          } else {
+            label = this.row.attributes[this.options.attribute]
+          }
+
+          return [
+            {
+              id: this.row.attributes[this.options.editLinkIdColumn],
+              label: label
+            }
+          ]
+        } else {
+          let label = ''
+          if (this.options.translate) {
+            label = this.$t(this.row.attributes[this.options.attribute])
+          } else {
+            label = this.row.attributes[this.options.attribute]
+          }
+          return [{ id: this.row.attributes[this.options.attribute], label: label }]
+        }
       } else {
         const relatinships = this.row.relationships
         if (
@@ -83,16 +105,27 @@ export default defineComponent({
       }
 
       return '#'
+    },
+    editRouteName() {
+      if (this.options.dynamicEditRoute) {
+        return this.row.attributes[this.options.dynamicEditRoute] + 'Edit'
+      } else {
+        return this.options.editRouteName
+      }
     }
   },
 
   methods: {
     async handleNavigation(id) {
       if (this.options.editLink) {
-        const route = this.$router.resolve({
-          name: this.options.editRouteName,
-          params: { id: id }
-        })
+        let route = undefined
+
+        try {
+          route = this.$router.resolve({
+            name: this.editRouteName,
+            params: { id: id }
+          })
+        } catch (error) {}
 
         if (route) {
           try {
@@ -118,7 +151,11 @@ export default defineComponent({
         if (Array.isArray(this.options.attribute)) {
           return this.options.attribute.map((attribute) => attributes[attribute]).join(' ')
         } else {
-          return attributes[this.options.attribute]
+          if (this.options.translate) {
+            return this.$t(attributes[this.options.attribute])
+          } else {
+            return attributes[this.options.attribute]
+          }
         }
       }
 

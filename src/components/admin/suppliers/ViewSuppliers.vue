@@ -87,7 +87,7 @@ export default defineComponent({
             relationship: 'contact',
             attribute: ['first_name', 'last_name'],
             editLink: true,
-            editRouteName: 'ContactsEdit'
+            editRouteName: 'ContactEdit'
           }
         },
         {
