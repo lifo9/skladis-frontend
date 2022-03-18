@@ -1,4 +1,5 @@
-import { formatDate } from '@/utils/filters/dateFilters'
+import { formatAuditChanges } from '@/utils/filters/auditChangesFilter'
+import { formatDate, formatDateTime } from '@/utils/filters/dateFilters'
 import { arrayToString, capitalize, formatCurrency, uppercase } from '@/utils/filters/textFilters'
 
 export default {
@@ -6,5 +7,7 @@ export default {
   arrayToString,
   capitalize,
   formatCurrency,
-  formatDate
+  formatDate,
+  formatDateTime,
+  formatAuditChanges
 }

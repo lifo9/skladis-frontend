@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 
 import ActivateUser from '@/components/ActivateUser.vue'
+import ViewAudits from '@/components/admin/audits/ViewAudits.vue'
 import CreateEditContact from '@/components/admin/contacts/CreateEditContact.vue'
 import ViewContacts from '@/components/admin/contacts/ViewContacts.vue'
 import CreateEditInvoice from '@/components/admin/invoices/CreateEditInvoice.vue'
@@ -23,6 +24,7 @@ import { useMainStore } from '@/stores/mainStore'
 import { isCurrentUserInRoles } from '@/utils/directives/role'
 import GuestMainView from '@/views/guest/GuestMainView.vue'
 import UsersView from '@/views/logged/admin/UsersView.vue'
+import AuditView from '@/views/logged/AuditView.vue'
 import ContactsView from '@/views/logged/ContactsView.vue'
 import HomeView from '@/views/logged/HomeView.vue'
 import InvoicesView from '@/views/logged/InvoicesView.vue'
@@ -80,7 +82,7 @@ const routes: Array<RouteRecordRaw> = [
           },
           {
             path: 'edit/:id',
-            name: 'ContactsEdit',
+            name: 'ContactEdit',
             component: CreateEditContact
           }
         ]
@@ -136,7 +138,7 @@ const routes: Array<RouteRecordRaw> = [
           },
           {
             path: 'edit/:id',
-            name: 'VendorsEdit',
+            name: 'VendorEdit',
             component: CreateEditVendor
           }
         ]
@@ -243,6 +245,17 @@ const routes: Array<RouteRecordRaw> = [
             path: 'edit/:id',
             name: 'InvoiceEdit',
             component: CreateEditInvoice
+          }
+        ]
+      },
+      {
+        path: 'audits',
+        component: AuditView,
+        children: [
+          {
+            path: '',
+            name: 'AuditsView',
+            component: ViewAudits
           }
         ]
       }

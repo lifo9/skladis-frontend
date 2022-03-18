@@ -1,6 +1,7 @@
 <template>
   <span v-if="label">
-    {{ options.format ? options.format(label) : label }}
+    <pre v-if="options.json">{{ options.format ? options.format(label) : label }}</pre>
+    <span v-else>{{ options.format ? options.format(label) : label }}</span>
   </span>
 </template>
 
@@ -57,7 +58,11 @@ export default defineComponent({
       if (this.options.format && this.options.format === 'currency') {
         return this.$filters.formatCurrency(label)
       } else {
-        return label
+        if (this.options.translate) {
+          return this.$t(label)
+        } else {
+          return label
+        }
       }
     }
   }

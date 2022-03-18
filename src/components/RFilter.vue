@@ -7,8 +7,8 @@
       </span>
     </div>
     <div v-if="opened" class="md:p-2">
-      <div v-for="(option, key) in options" :key="key">
-        <p class="text-sm select-none">
+      <div v-for="(option, key) in options" :key="key" class="py-2">
+        <p class="mb-1 text-sm select-none">
           <b>{{ option.label }}</b>
         </p>
         <multiselect
@@ -19,8 +19,8 @@
           :searchable="true"
           track-by="id"
           label="label"
-          :placeholder="$t('Suppliers')"
-          :tag-placeholder="$t('Suppliers')"
+          :placeholder="placeholder"
+          :tag-placeholder="placeholder"
           :select-label="$t('select')"
           :selected-label="$t('deselect')"
           :deselect-label="$t('deselect')"
@@ -39,6 +39,10 @@ export default defineComponent({
   props: {
     options: {
       type: Object,
+      required: true
+    },
+    placeholder: {
+      type: String,
       required: true
     }
   },

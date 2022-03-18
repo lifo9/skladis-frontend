@@ -3,7 +3,7 @@
     :get-endpoint="getEndpoint"
     :delete-endpoint="deleteEndpoint"
     create-route-name="VendorsCreate"
-    edit-route-name="VendorsEdit"
+    edit-route-name="VendorEdit"
     :bulk-select="true"
     :custom-cols-before="customCols"
     :hide-all-cols="true"

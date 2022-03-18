@@ -94,6 +94,14 @@
           :only-icon="menuItemShowOnlyIcon"
           @navigated="toggleMenu"
         />
+        <navigation-item
+          v-role="constants.roles.admin"
+          route-name="AuditsView"
+          label="Audit"
+          icon="bug_report"
+          :only-icon="menuItemShowOnlyIcon"
+          @navigated="toggleMenu"
+        />
       </ul>
     </div>
   </div>

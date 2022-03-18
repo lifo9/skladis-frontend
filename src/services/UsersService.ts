@@ -13,6 +13,10 @@ export function getUsers(params) {
   return crud.getRecords(params)
 }
 
+export function getUserOptions(params) {
+  return crud.getOptions(params)
+}
+
 export function updateUser({ id, firstName, lastName, email, phone, active, roles, password, avatar }: any = {}) {
   let params = {
     first_name: firstName,

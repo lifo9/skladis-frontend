@@ -1,8 +1,8 @@
 <template>
   <div class="my-4">
-    <r-filter v-if="filterOptions" :options="filterOptions" @filter="handleFilter" />
+    <r-filter v-if="filterOptions" :options="filterOptions" :placeholder="filterPlaceholder" @filter="handleFilter" />
     <div class="flex flex-wrap justify-start items-center my-4 sm:justify-end">
-      <r-search class="m-2" @search="handleSearch" />
+      <r-search v-if="searchEnabled" class="m-2" @search="handleSearch" />
       <div v-for="(customGlobalAction, idx) in customGlobalActions" :key="'customGlobalAction_' + idx">
         <component :is="customGlobalAction.component" v-bind="customGlobalAction.props" />
       </div>
@@ -212,6 +212,14 @@ export default defineComponent({
     filterOptions: {
       type: Object,
       default: undefined
+    },
+    filterPlaceholder: {
+      type: String,
+      default: ''
+    },
+    searchEnabled: {
+      type: Boolean,
+      default: true
     }
   },
   data() {

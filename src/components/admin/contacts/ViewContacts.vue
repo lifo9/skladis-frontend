@@ -3,7 +3,7 @@
     :get-endpoint="getEndpoint"
     :delete-endpoint="deleteEndpoint"
     create-route-name="ContactsCreate"
-    edit-route-name="ContactsEdit"
+    edit-route-name="ContactEdit"
     :bulk-select="true"
     :custom-cols-before="customCols"
     :hidden-cols="['avatar']"
