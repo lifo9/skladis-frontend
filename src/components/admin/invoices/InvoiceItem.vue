@@ -284,27 +284,27 @@ export default defineComponent({
 
 <style lang="postcss" scoped>
 @screen md {
-  >>> .multiselect.multiselect--active {
+  :deep(.multiselect.multiselect--active) {
     position: initial !important;
     @apply border-blue-600 border rounded-md;
   }
-  >>> .multiselect.multiselect--active .multiselect__tags {
+  :deep(.multiselect.multiselect--active .multiselect__tags) {
     @apply rounded-md;
   }
-  >>> .multiselect__select,
+  :deep(.multiselect__select),
   .multiselect__tags .multiselect__spinner {
     @apply hidden;
   }
 
-  >>> .multiselect__content-wrapper {
+  :deep(.multiselect__content-wrapper) {
     @apply left-0 my-2 rounded-md border-l-gray-300 border-r-gray-300 border-t-gray-300 border-b-gray-300 border-t border-b border-l border-r border-solid z-50;
   }
 }
 
->>> .multiselect--disabled.multiselect {
+:deep(.multiselect--disabled.multiselect) {
   opacity: 1 !important;
 }
->>> .multiselect--disabled.multiselect .multiselect__single {
+:deep(.multiselect--disabled.multiselect .multiselect__single) {
   @apply text-base;
   color: rgb(17 24 39) !important;
 }
