@@ -50,13 +50,13 @@
               />
             </svg>
           </a>
-          <div v-if="totalPages < 6">
+          <div v-if="totalPages < 6" class="flex">
             <div v-for="page in totalPages" :key="page">
               <pagination-number :current="current" :page="page" @change="changePage" />
               <span />
             </div>
           </div>
-          <div v-else>
+          <div v-else class="flex">
             <pagination-number :current="current" :page="1" @change="changePage" />
             <span
               v-if="current > 3"
