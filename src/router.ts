@@ -12,6 +12,8 @@ import ViewProductPriceHistory from '@/components/admin/products/ViewProductPric
 import ViewProducts from '@/components/admin/products/ViewProducts.vue'
 import CreateEditRoom from '@/components/admin/rooms/CreateEditRoom.vue'
 import ViewRooms from '@/components/admin/rooms/ViewRooms.vue'
+import CreateEditStock from '@/components/admin/stocks/CreateEditStock.vue'
+import ViewStocks from '@/components/admin/stocks/ViewStocks.vue'
 import CreateEditSupplier from '@/components/admin/suppliers/CreateEditSupplier.vue'
 import ViewSuppliers from '@/components/admin/suppliers/ViewSuppliers.vue'
 import CreateEditUser from '@/components/admin/users/CreateEditUser.vue'
@@ -32,6 +34,7 @@ import InvoicesView from '@/views/logged/InvoicesView.vue'
 import LoggedMainView from '@/views/logged/LoggedMainView.vue'
 import ProductsView from '@/views/logged/ProductsView.vue'
 import RoomsView from '@/views/logged/RoomsView.vue'
+import StockView from '@/views/logged/StockView.vue'
 import SuppliersView from '@/views/logged/SuppliersView.vue'
 import VendorsView from '@/views/logged/VendorsView.vue'
 import WarehousesView from '@/views/logged/WarehousesView.vue'
@@ -262,6 +265,27 @@ const routes: Array<RouteRecordRaw> = [
             path: '',
             name: 'AuditsView',
             component: ViewAudits
+          }
+        ]
+      },
+      {
+        path: 'stocks',
+        component: StockView,
+        children: [
+          {
+            path: '',
+            name: 'StockView',
+            component: ViewStocks
+          },
+          {
+            path: 'create',
+            name: 'StockCreate',
+            component: CreateEditStock
+          },
+          {
+            path: 'edit/:id',
+            name: 'StockEdit',
+            component: CreateEditStock
           }
         ]
       }

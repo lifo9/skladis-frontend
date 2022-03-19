@@ -40,6 +40,13 @@
           @navigated="toggleMenu"
         />
         <navigation-item
+          route-name="StockView"
+          label="Delivery of goods"
+          icon="compare_arrows"
+          :only-icon="menuItemShowOnlyIcon"
+          @navigated="toggleMenu"
+        />
+        <navigation-item
           v-role="[constants.roles.admin, constants.roles.manager]"
           route-name="InvoicesView"
           label="Receipt of goods"
