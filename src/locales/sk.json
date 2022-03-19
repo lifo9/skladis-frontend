@@ -152,6 +152,7 @@
   "view": "zobraziť",
   "Warehouse was successfully created": "Sklad bol úspešne vytvorený",
   "Warehouse was successfully updated": "Sklad bol úspešne aktualizovaný",
+  "warehouse_id": "ID Skladu",
   "warehouse": "Sklad",
   "Warehouse": "Sklad",
   "Warehouses": "Sklady",

@@ -456,8 +456,10 @@ export default defineComponent({
     handleFilter(filters) {
       this.filters = filters
 
-      if (this.currentPage !== 1) {
-        this.currentPage = 1
+      if (Object.keys(filters).length > 0) {
+        if (this.currentPage !== 1) {
+          this.currentPage = 1
+        }
       }
 
       this.fetchData()

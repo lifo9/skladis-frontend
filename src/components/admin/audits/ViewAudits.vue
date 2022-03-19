@@ -11,6 +11,7 @@
     :filter-options="filterOptions"
     :initial-order="initialOrder"
     :initial-order-by="initialOrderBy"
+    :per-page="50"
   />
   <r-spinner v-else class="mr-3 ml-1 w-4 h-4 text-white" />
 </template>
