@@ -1,9 +1,10 @@
 import { i18n } from '@/plugins/i18n'
+import { capitalize } from '@/utils/filters/textFilters'
 
 const { t } = i18n.global
 
 export function formatAuditChanges(changes) {
-  return renameKeys(changes, Object.fromEntries(Object.keys(changes).map((key) => [key, t(key)])))
+  return renameKeys(changes, Object.fromEntries(Object.keys(changes).map((key) => [key, capitalize(t(key))])))
 }
 
 function renameKeys(obj, newKeys) {

@@ -1,6 +1,6 @@
 <template>
   <div class="my-4">
-    <r-filter v-if="filterOptions" :options="filterOptions" :placeholder="filterPlaceholder" @filter="handleFilter" />
+    <r-filter v-if="filterOptions" :options="filterOptions" @filter="handleFilter" />
     <div class="flex flex-wrap justify-start items-center my-4 sm:justify-end">
       <r-search v-if="searchEnabled" class="m-2" @search="handleSearch" />
       <div v-for="(customGlobalAction, idx) in customGlobalActions" :key="'customGlobalAction_' + idx">
@@ -213,13 +213,17 @@ export default defineComponent({
       type: Object,
       default: undefined
     },
-    filterPlaceholder: {
-      type: String,
-      default: ''
-    },
     searchEnabled: {
       type: Boolean,
       default: true
+    },
+    initialOrder: {
+      type: String,
+      default: undefined
+    },
+    initialOrderBy: {
+      type: String,
+      default: undefined
     }
   },
   data() {
@@ -286,7 +290,9 @@ export default defineComponent({
     }
   },
   mounted() {
+    this.handlePageQuery()
     this.handleSearchQuery()
+    this.handleOrderQuery()
 
     // ugly hack to prevent double fetching
     if (!this.filterOptions) {
@@ -325,6 +331,11 @@ export default defineComponent({
       this.loading = false
     },
     changePage(page) {
+      let query = { ...this.$route.query }
+      query['page'] = page
+
+      this.$router.push({ path: this.$route.path, query: query })
+
       this.currentPage = page
       this.fetchData()
     },
@@ -336,6 +347,11 @@ export default defineComponent({
     },
     handleSearch(searchQuery) {
       this.searchQuery = searchQuery
+
+      if (this.currentPage !== 1) {
+        this.currentPage = 1
+      }
+
       this.fetchData()
     },
     handleSearchQuery() {
@@ -343,6 +359,47 @@ export default defineComponent({
 
       if (searchQuery) {
         this.searchQuery = searchQuery
+
+        if (this.currentPage !== 1) {
+          this.currentPage = 1
+        }
+      }
+    },
+    handlePageQuery() {
+      const pageQuery = this.$route.query['page']
+
+      if (pageQuery) {
+        this.currentPage = parseInt(pageQuery)
+      }
+    },
+    handleOrderQuery() {
+      const orderByQuery = this.$route.query['order_by']
+      const orderQuery = this.$route.query['order']
+
+      if (orderByQuery || orderQuery) {
+        if (orderByQuery) {
+          this.orderBy = orderByQuery
+        }
+
+        if (orderQuery) {
+          this.order = orderQuery
+        }
+
+        if (this.currentPage !== 1) {
+          this.currentPage = 1
+        }
+      } else if (this.initialOrder || this.initialOrderBy) {
+        if (this.initialOrderBy) {
+          this.orderBy = this.initialOrderBy
+        }
+
+        if (this.initialOrder) {
+          this.order = this.initialOrder
+        }
+
+        if (this.currentPage !== 1) {
+          this.currentPage = 1
+        }
       }
     },
     async deleteItems(id) {
@@ -387,10 +444,22 @@ export default defineComponent({
     changeOrder(order) {
       this.order = order.orderBy !== this.orderBy ? this.order : order.order
       this.orderBy = order.orderBy
+
+      let query = { ...this.$route.query }
+      query['order'] = this.order
+      query['order_by'] = this.orderBy
+
+      this.$router.push({ path: this.$route.path, query: query })
+
       this.fetchData()
     },
     handleFilter(filters) {
       this.filters = filters
+
+      if (this.currentPage !== 1) {
+        this.currentPage = 1
+      }
+
       this.fetchData()
     }
   }

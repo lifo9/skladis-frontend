@@ -19,8 +19,8 @@
           :searchable="true"
           track-by="id"
           label="label"
-          :placeholder="placeholder"
-          :tag-placeholder="placeholder"
+          :placeholder="option.label"
+          :tag-placeholder="option.label"
           :select-label="$t('select')"
           :selected-label="$t('deselect')"
           :deselect-label="$t('deselect')"
@@ -39,10 +39,6 @@ export default defineComponent({
   props: {
     options: {
       type: Object,
-      required: true
-    },
-    placeholder: {
-      type: String,
       required: true
     }
   },

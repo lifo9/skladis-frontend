@@ -7,9 +7,10 @@
     :hide-all-cols="true"
     :custom-cols-before="customCols"
     :bulk-select="false"
-    :search-enabled="false"
+    :search-enabled="true"
     :filter-options="filterOptions"
-    :filter-placeholder="$t('item_type')"
+    :initial-order="initialOrder"
+    :initial-order-by="initialOrderBy"
   />
   <r-spinner v-else class="mr-3 ml-1 w-4 h-4 text-white" />
 </template>
@@ -21,11 +22,12 @@ import AvatarImage from '@/components/AvatarImage.vue'
 import CrudLink from '@/components/CrudLink.vue'
 import CrudTable from '@/components/CrudTable.vue'
 import CrudText from '@/components/CrudText.vue'
+import RSpinner from '@/components/ui/RSpinner.vue'
 import { getAuditOptions, getAudits } from '@/services/AuditsService'
 import { getUserOptions } from '@/services/UsersService'
 
 export default defineComponent({
-  components: { CrudTable },
+  components: { CrudTable, RSpinner },
   data() {
     return {
       loading: false,
@@ -94,7 +96,9 @@ export default defineComponent({
           }
         }
       ],
-      filterOptions: undefined
+      filterOptions: undefined,
+      initialOrder: 'desc',
+      initialOrderBy: 'created_at'
     }
   },
   mounted() {
@@ -105,13 +109,13 @@ export default defineComponent({
       this.loading = true
 
       const types = await getAuditOptions()
-      const typeOptions = types.data.map((supplier) => {
-        return { id: supplier.id, label: this.$t(supplier.label) }
+      const typeOptions = types.data.map((type) => {
+        return { id: type.id, label: this.$t(type.label) }
       })
 
       const users = await getUserOptions()
-      const userOptions = users.data.map((supplier) => {
-        return { id: supplier.id, label: this.$t(supplier.label) }
+      const userOptions = users.data.map((user) => {
+        return { id: user.id, label: user.label }
       })
 
       const events = ['create', 'update', 'destroy'].map((event) => {

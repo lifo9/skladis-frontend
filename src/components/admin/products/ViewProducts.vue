@@ -9,7 +9,6 @@
     :custom-cols-before="customCols"
     :hide-all-cols="true"
     :filter-options="filterOptions"
-    :filter-placeholder="$t('Suppliers')"
   />
   <r-spinner v-else class="mr-3 ml-1 w-4 h-4 text-white" />
 </template>
