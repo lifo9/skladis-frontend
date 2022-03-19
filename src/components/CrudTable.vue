@@ -224,6 +224,10 @@ export default defineComponent({
     initialOrderBy: {
       type: String,
       default: undefined
+    },
+    itemId: {
+      type: Number,
+      default: undefined
     }
   },
   data() {
@@ -304,14 +308,20 @@ export default defineComponent({
       this.loading = true
       this.notFound = false
 
-      const rows = await this.getEndpoint({
+      let params = {
         page: this.currentPage,
         perPage: this.perPage,
         searchQuery: this.searchQuery,
         order: this.order,
         orderBy: this.orderBy,
         filters: this.filters
-      })
+      }
+
+      if (this.itemId) {
+        params['id'] = this.itemId
+      }
+
+      const rows = await this.getEndpoint(params)
       const data = rows.data.data
       const included = rows.data.included
       const headers = rows.headers

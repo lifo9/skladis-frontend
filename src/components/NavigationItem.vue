@@ -16,6 +16,7 @@
     <span v-if="!onlyIcon">{{ label }}</span>
   </r-button>
   <p v-else-if="type === 'plain'" :size="size ? size : ''" @click="navigate">
+    <slot />
     <span v-if="!onlyIcon">{{ label }}</span>
   </p>
   <li v-else-if="type === 'list-custom'" class="navigation-menu-item" :class="{ isMenuExpanded: 'justify-center' }">

@@ -7,6 +7,7 @@
     edit-route-name="ProductEdit"
     :bulk-select="true"
     :custom-cols-before="customCols"
+    :custom-actions="customActions"
     :hide-all-cols="true"
     :filter-options="filterOptions"
   />
@@ -14,13 +15,14 @@
 </template>
 
 <script lang="ts">
-import { shallowRef } from 'vue'
+import { markRaw, shallowRef } from 'vue'
 import { defineComponent } from 'vue'
 
 import AvatarImage from '@/components/AvatarImage.vue'
 import CrudLink from '@/components/CrudLink.vue'
 import CrudTable from '@/components/CrudTable.vue'
 import CrudText from '@/components/CrudText.vue'
+import CrudViewButtonVue from '@/components/CrudViewButton.vue'
 import RSpinner from '@/components/ui/RSpinner.vue'
 import { deleteProduct, getProducts } from '@/services/ProductService'
 import { getSupplierOptions } from '@/services/SupplierService'
@@ -31,6 +33,16 @@ export default defineComponent({
     return {
       getEndpoint: getProducts,
       deleteEndpoint: deleteProduct,
+      customActions: [
+        {
+          component: markRaw(CrudViewButtonVue),
+          options: {
+            route: 'ProductPriceHistory',
+            label: this.$filters.uppercase(this.$t('Price history')),
+            customClass: 'bg-green-600'
+          }
+        }
+      ],
       customCols: [
         {
           header: '',
