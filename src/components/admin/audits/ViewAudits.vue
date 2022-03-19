@@ -7,7 +7,7 @@
     :hide-all-cols="true"
     :custom-cols-before="customCols"
     :bulk-select="false"
-    :search-enabled="true"
+    :search-enabled="false"
     :filter-options="filterOptions"
     :initial-order="initialOrder"
     :initial-order-by="initialOrderBy"
