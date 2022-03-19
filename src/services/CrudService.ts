@@ -8,7 +8,7 @@ class CrudService {
     this.TYPE = TYPE
   }
 
-  getRecords({ page, perPage, searchQuery, order, orderBy, filters }: any = {}) {
+  getRecords({ page, perPage, searchQuery, order, orderBy, filters }: any = {}, id, subPath) {
     // eslint-disable-next-line prefer-const
     let params = {} as { page; per_page; search; order; order_by; filters }
 
@@ -42,7 +42,16 @@ class CrudService {
       params = { ...params, ...filters }
     }
 
-    return securedAxiosInstance.get(this.API_PATH, { params: params })
+    let path = this.API_PATH
+
+    if (id) {
+      path += `/${id}`
+    }
+    if (subPath) {
+      path += `/${subPath}`
+    }
+
+    return securedAxiosInstance.get(path, { params: params })
   }
   getRecord(id) {
     return securedAxiosInstance.get(this.API_PATH + '/' + id)

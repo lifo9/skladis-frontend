@@ -8,6 +8,7 @@ import CreateEditInvoice from '@/components/admin/invoices/CreateEditInvoice.vue
 import ViewInvoices from '@/components/admin/invoices/ViewInvoices.vue'
 import MyProfile from '@/components/admin/MyProfile.vue'
 import CreateEditProduct from '@/components/admin/products/CreateEditProduct.vue'
+import ViewProductPriceHistory from '@/components/admin/products/ViewProductPriceHistory.vue'
 import ViewProducts from '@/components/admin/products/ViewProducts.vue'
 import CreateEditRoom from '@/components/admin/rooms/CreateEditRoom.vue'
 import ViewRooms from '@/components/admin/rooms/ViewRooms.vue'
@@ -224,6 +225,11 @@ const routes: Array<RouteRecordRaw> = [
             path: 'edit/:id',
             name: 'ProductEdit',
             component: CreateEditProduct
+          },
+          {
+            path: 'price-history/:id',
+            name: 'ProductPriceHistory',
+            component: ViewProductPriceHistory
           }
         ]
       },

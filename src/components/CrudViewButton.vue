@@ -2,8 +2,9 @@
   <navigation-item
     :route-name="options.route"
     :params="{ id: row.id }"
-    :label="$filters.uppercase($t('view'))"
+    :label="options.label || $filters.uppercase($t('view'))"
     class="m-1 text-white"
+    :class="options.customClass || ''"
     icon="remove_red_eye"
     type="button"
     size="verySmall"

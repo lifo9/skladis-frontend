@@ -16,6 +16,13 @@ export function getProductOptions(params) {
   return crud.getOptions(params)
 }
 
+export function getProductPriceHistory(params) {
+  const id = params['id']
+  delete params['id']
+
+  return crud.getRecords(params, id, 'price-history')
+}
+
 export function updateProduct({
   id,
   name,
