@@ -1,5 +1,6 @@
 <template>
   <crud-table
+    v-if="!loading"
     :get-endpoint="getEndpoint"
     :delete-endpoint="deleteEndpoint"
     create-route-name="InvoiceCreate"
@@ -7,7 +8,9 @@
     :bulk-select="true"
     :hide-all-cols="true"
     :custom-cols-before="customCols"
+    :filter-options="filterOptions"
   />
+  <r-spinner v-else class="mr-3 ml-1 w-4 h-4 text-white" />
 </template>
 
 <script lang="ts">
@@ -18,14 +21,17 @@ import CrudLink from '@/components/CrudLink.vue'
 import CrudTable from '@/components/CrudTable.vue'
 import CrudText from '@/components/CrudText.vue'
 import CrudViewButton from '@/components/CrudViewButton.vue'
-import { deleteInvoice, getInvoices } from '@/services/InvoiceService'
+import RSpinner from '@/components/ui/RSpinner.vue'
+import { deleteInvoice, getInvoices, getInvoicesDateRange } from '@/services/InvoiceService'
 
 export default defineComponent({
-  components: { CrudTable },
+  components: { CrudTable, RSpinner },
   data() {
     return {
+      loading: false,
       getEndpoint: getInvoices,
       deleteEndpoint: deleteInvoice,
+      fitlerOptions: undefined,
       customCols: [
         {
           header: this.$t('invoice_code'),
@@ -59,6 +65,26 @@ export default defineComponent({
       ],
       customGlobalActions: [{ component: markRaw(CrudCreateButton), props: { routeName: 'InvoiceCreate' } }],
       customActions: [{ component: markRaw(CrudViewButton), options: { route: 'InvoiceView' } }]
+    }
+  },
+  mounted() {
+    this.fetchData()
+  },
+  methods: {
+    async fetchData() {
+      this.loading = true
+
+      const invoicesRange = await getInvoicesDateRange()
+
+      this.filterOptions = {
+        'invoice_invoice_date': {
+          label: this.$filters.capitalize(this.$t('created_at')),
+          options: invoicesRange.data,
+          type: 'date-range'
+        }
+      }
+
+      this.loading = false
     }
   }
 })

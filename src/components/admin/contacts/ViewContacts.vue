@@ -7,15 +7,17 @@
     :bulk-select="true"
     :custom-cols-before="customCols"
     :hidden-cols="['avatar']"
+    :custom-actions="customActions"
   />
 </template>
 
 <script lang="ts">
-import { shallowRef } from 'vue'
+import { markRaw, shallowRef } from 'vue'
 import { defineComponent } from 'vue'
 
 import AvatarImage from '@/components/AvatarImage.vue'
 import CrudTable from '@/components/CrudTable.vue'
+import CrudViewButton from '@/components/CrudViewButton.vue'
 import { deleteContact, getContacts } from '@/services/ContactsService'
 
 export default defineComponent({
@@ -24,6 +26,17 @@ export default defineComponent({
     return {
       getEndpoint: getContacts,
       deleteEndpoint: deleteContact,
+      customActions: [
+        {
+          component: markRaw(CrudViewButton),
+          options: {
+            route: 'SuppliersView',
+            label: this.$filters.uppercase(this.$t('Suppliers')),
+            customClass: 'bg-green-600 hover:bg-green-500 focus:border-green-700 active:bg-green-400',
+            query: 'contact_id[]'
+          }
+        }
+      ],
       customCols: [
         {
           header: '',

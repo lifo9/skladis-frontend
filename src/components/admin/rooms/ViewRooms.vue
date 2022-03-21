@@ -7,16 +7,18 @@
     :bulk-select="true"
     :relationship-cols="relationshipCols"
     :hidden-cols="['warehouse']"
+    :custom-actions="customActions"
     :custom-cols-after="customCols"
   ></crud-table>
 </template>
 
 <script lang="ts">
-import { shallowRef } from 'vue'
+import { markRaw, shallowRef } from 'vue'
 import { defineComponent } from 'vue'
 
 import CrudLink from '@/components/CrudLink.vue'
 import CrudTable from '@/components/CrudTable.vue'
+import CrudViewButton from '@/components/CrudViewButton.vue'
 import { deleteRoom, getRooms } from '@/services/RoomService'
 
 export default defineComponent({
@@ -25,6 +27,17 @@ export default defineComponent({
     return {
       getEndpoint: getRooms,
       deleteEndpoint: deleteRoom,
+      customActions: [
+        {
+          component: markRaw(CrudViewButton),
+          options: {
+            route: 'StockView',
+            label: this.$filters.uppercase(this.$t('stocks')),
+            customClass: 'bg-green-600 hover:bg-green-500 focus:border-green-700 active:bg-green-400',
+            query: 'room_id[]'
+          }
+        }
+      ],
       relationshipCols: [
         {
           relationship: 'warehouse',

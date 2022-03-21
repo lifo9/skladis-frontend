@@ -17,6 +17,7 @@
 <script lang="ts">
 import { defineComponent, shallowRef } from 'vue'
 
+import AvatarImage from '@/components/AvatarImage.vue'
 import CrudLink from '@/components/CrudLink.vue'
 import CrudTable from '@/components/CrudTable.vue'
 import CrudText from '@/components/CrudText.vue'
@@ -24,6 +25,7 @@ import RSpinner from '@/components/ui/RSpinner.vue'
 import { getProductOptions } from '@/services/ProductService'
 import { getRoomOptions } from '@/services/RoomService'
 import { getExpirationRange, getStocks } from '@/services/StockService'
+import { getWarehouseOptions } from '@/services/WarehouseService'
 
 export default defineComponent({
   components: { CrudTable, RSpinner },
@@ -35,6 +37,15 @@ export default defineComponent({
       initialOrder: 'asc',
       filterOptions: undefined,
       customCols: [
+        {
+          header: '',
+          component: shallowRef(AvatarImage),
+          options: {
+            relationship: 'product',
+            attribute: 'images',
+            subAttribute: 'url'
+          }
+        },
         {
           header: this.$t('Product'),
           component: shallowRef(CrudLink),
@@ -91,6 +102,11 @@ export default defineComponent({
         return { id: product.id, label: product.label }
       })
 
+      const warehouses = await getWarehouseOptions()
+      const warehouseOptions = warehouses.data.map((warehouse) => {
+        return { id: warehouse.id, label: warehouse.label }
+      })
+
       const rooms = await getRoomOptions()
       const roomOptions = rooms.data.map((room) => {
         return { id: room.id, label: room.label }
@@ -102,6 +118,10 @@ export default defineComponent({
         'product_id[]': {
           label: this.$t('Product'),
           options: productOptions
+        },
+        'warehouse_id[]': {
+          label: this.$t('Warehouse'),
+          options: warehouseOptions
         },
         'room_id[]': {
           label: this.$t('Room'),

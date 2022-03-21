@@ -16,6 +16,10 @@ export function getInvoices(params) {
   return crud.getRecords(params)
 }
 
+export function getInvoicesDateRange() {
+  return crud.getRecords(undefined, undefined, 'invoice-date-range')
+}
+
 export function updateInvoice({ id, invoiceCode, invoiceDate, invoiceFile, invoiceItems }: any = {}) {
   let params = {
     invoice_code: invoiceCode,

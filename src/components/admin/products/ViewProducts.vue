@@ -41,6 +41,15 @@ export default defineComponent({
             label: this.$filters.uppercase(this.$t('Price history')),
             customClass: 'bg-green-600 hover:bg-green-500 focus:border-green-700 active:bg-green-400'
           }
+        },
+        {
+          component: markRaw(CrudViewButton),
+          options: {
+            route: 'StockView',
+            label: this.$filters.uppercase(this.$t('stocks')),
+            customClass: 'bg-yellow-600 hover:bg-yellow-500 focus:border-yellow-700 active:bg-yellow-400',
+            query: 'product_id[]'
+          }
         }
       ],
       customCols: [
