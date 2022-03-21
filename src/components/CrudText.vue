@@ -1,7 +1,12 @@
 <template>
   <span v-if="label">
-    <pre v-if="options.json">{{ options.format ? options.format(label) : label }}</pre>
-    <span v-else>{{ options.format ? options.format(label) : label }}</span>
+    <div v-if="options.json" class="block relative p-2 h-20 cursor-pointer" @click="showInfoModal">
+      <div class="absolute top-0 right-0 px-8"><span class="text-blue-600 material-icons">search</span></div>
+      <div class="overflow-auto h-16">
+        <pre>{{ formattedLabel }}</pre>
+      </div>
+    </div>
+    <span v-else>{{ formattedLabel }}</span>
   </span>
 </template>
 
@@ -64,6 +69,19 @@ export default defineComponent({
           return label
         }
       }
+    },
+    formattedLabel() {
+      return this.options.format ? this.options.format(this.label) : this.label
+    }
+  },
+  methods: {
+    showInfoModal() {
+      this.$vfm.show(
+        {
+          component: 'PlainModal'
+        },
+        { text: this.formattedLabel, json: this.options.json }
+      )
     }
   }
 })

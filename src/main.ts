@@ -7,6 +7,7 @@ import vfmPlugin from 'vue-final-modal'
 
 import App from '@/App.vue'
 import ConfirmationModal from '@/components/ui/ConfirmationModal.vue'
+import PlainModal from '@/components/ui/PlainModal.vue'
 import { CONSTANTS } from '@/plugins/constants'
 import filters from '@/plugins/filters'
 import { i18n } from '@/plugins/i18n'
@@ -23,6 +24,7 @@ app.config.globalProperties.$filters = filters
 app.provide('constants', CONSTANTS)
 
 app.component('ConfirmationModal', ConfirmationModal)
+app.component('PlainModal', PlainModal)
 
 app.use(pinia)
 app.use(router)
