@@ -11,7 +11,26 @@
         <p class="mb-1 text-sm select-none">
           <b>{{ option.label }}</b>
         </p>
+        <div v-if="option.type === 'date-range'" class="grid space-y-2 md:grid-cols-2 md:space-y-0 md:space-x-2">
+          <r-input
+            v-model="dateFrom"
+            :label="$t('date_from')"
+            label-style="text-sm mb-1"
+            type="date"
+            :date-config="{ minDate: option.options.min, maxDate: dateToDate }"
+            @change="handleDateRangeChange(key, 'from', $event.target.value)"
+          />
+          <r-input
+            v-model="dateTo"
+            :label="$t('date_to')"
+            label-style="text-sm mb-1"
+            type="date"
+            :date-config="{ minDate: dateFromDate, maxDate: option.options.max }"
+            @change="handleDateRangeChange(key, 'to', $event.target.value)"
+          />
+        </div>
         <multiselect
+          v-else
           v-model="selected[key]"
           :options="option.options"
           :multiple="true"
@@ -34,8 +53,10 @@
 import { defineComponent } from 'vue'
 import Multiselect from 'vue-multiselect'
 
+import RInput from '@/components/ui/RInput.vue'
+
 export default defineComponent({
-  components: { Multiselect },
+  components: { Multiselect, RInput },
   props: {
     options: {
       type: Object,
@@ -46,7 +67,17 @@ export default defineComponent({
   data() {
     return {
       selected: {},
+      dateFrom: undefined,
+      dateTo: undefined,
       opened: false
+    }
+  },
+  computed: {
+    dateFromDate() {
+      return this.dateFrom
+    },
+    dateToDate() {
+      return this.dateTo
     }
   },
   watch: {
@@ -78,6 +109,17 @@ export default defineComponent({
       this.$router.push({ path: this.$route.path, query: query })
       this.$emit('filter', filters)
     },
+    handleDateRangeChange(key, type, date) {
+      if (!this.selected[`${key}-${type}`]) {
+        this.selected[`${key}-${type}`] = []
+      }
+
+      if (date) {
+        this.selected[`${key}-${type}`] = [{ id: date, label: date }]
+      } else {
+        this.selected[`${key}-${type}`] = []
+      }
+    },
     selectFilterOptions() {
       let selected = {}
       Object.keys(this.$route.query).forEach((query) => {
@@ -90,8 +132,23 @@ export default defineComponent({
               return this.$route.query[query] === option.id.toString()
             }
           })
+        } else {
+          const splittedQuery = query.split('-')
+
+          if (splittedQuery.length === 2 && this.options[splittedQuery[0]]) {
+            const option = this.options[splittedQuery[0]]
+            if (option && option.type === 'date-range') {
+              if (query.includes('-from')) {
+                this.dateFrom = this.$route.query[query]
+              } else if (query.includes('-to')) {
+                this.dateTo = this.$route.query[query]
+              }
+              selected[query] = [{ id: this.$route.query[query], label: this.$route.query[query] }]
+            }
+          }
         }
       })
+
       this.selected = selected
     },
     openFilter() {

@@ -12,7 +12,7 @@ export function getProducts(params) {
   return crud.getRecords(params)
 }
 
-export function getProductOptions(params) {
+export function getProductOptions(params = undefined) {
   return crud.getOptions(params)
 }
 
