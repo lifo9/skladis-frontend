@@ -6,11 +6,25 @@
 </template>
 
 <script lang="ts">
+import { mapStores } from 'pinia'
 import { defineComponent } from 'vue'
 
 import NavigationBack from '@/components/ui/NavigationBack.vue'
+import { useMainStore } from '@/stores/mainStore'
 
 export default defineComponent({
-  components: { NavigationBack }
+  components: { NavigationBack },
+  computed: {
+    ...mapStores(useMainStore)
+  },
+  mounted() {
+    this.setTitle()
+  },
+  methods: {
+    setTitle() {
+      this.mainStore.setCurrentTitle(this.$t('Delivery of goods'))
+      this.mainStore.setCurrentSubtitle(this.$t('Stocks in'))
+    }
+  }
 })
 </script>

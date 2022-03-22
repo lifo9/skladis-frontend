@@ -81,7 +81,7 @@
           </td>
           <slot :row="getUnfilteredRowById(row.id)" name="customColsAfter" />
           <td v-if="enableDefaultActions || enableCustomActions" :data-title="$t('Actions')" class="actions">
-            <div class="flex flex-wrap justify-start items-center w-max">
+            <div class="flex flex-wrap justify-start items-center w-max max-w-xs">
               <slot :row="getUnfilteredRowById(row.id)" name="customActions" />
               <navigation-item
                 v-if="enableDefaultActions"

@@ -43,7 +43,7 @@ export default defineComponent({
           component: markRaw(NavigationItem),
           props: {
             routeName: 'StocksIn',
-            label: this.$t('Stocks in'),
+            label: this.$filters.uppercase(this.$t('Stocks in')),
             icon: 'add',
             type: 'button',
             size: 'small',
@@ -54,7 +54,7 @@ export default defineComponent({
           component: markRaw(NavigationItem),
           props: {
             routeName: 'StocksOut',
-            label: this.$t('Stocks out'),
+            label: this.$filters.uppercase(this.$t('Stocks out')),
             icon: 'remove',
             type: 'button',
             size: 'small',
@@ -65,8 +65,19 @@ export default defineComponent({
           component: markRaw(NavigationItem),
           props: {
             routeName: 'StocksTransfer',
-            label: this.$t('Stocks transfer'),
+            label: this.$filters.uppercase(this.$t('Stocks transfer')),
             icon: 'compare_arrows',
+            type: 'button',
+            size: 'small',
+            class: 'mx-2 bg-yellow-600 hover:bg-yellow-500 focus:border-yellow-700 active:bg-yellow-400'
+          }
+        },
+        {
+          component: markRaw(NavigationItem),
+          props: {
+            routeName: 'StockTransactions',
+            label: this.$filters.uppercase(this.$t('Stocks transactions')),
+            icon: 'bug_report',
             type: 'button',
             size: 'small',
             class: 'mx-2'

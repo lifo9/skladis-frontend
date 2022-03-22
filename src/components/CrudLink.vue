@@ -91,11 +91,19 @@ export default defineComponent({
             })
             return labels
           } else {
-            const id = relatinships[this.options.relationship].data.id
-            const type = relatinships[this.options.relationship].data.type
-            const attributes = this.extractRelationshipObjectAttributes(id, type)
+            if (this.options.meta) {
+              const id = relatinships[this.options.relationship]['meta'][this.options.meta].id
+              const type = relatinships[this.options.relationship]['meta'][this.options.meta].type
+              const attributes = this.extractRelationshipObjectAttributes(id, type)
 
-            return [{ id: id, label: this.extractAttributeLabelFromRelationObject(attributes) }]
+              return [{ id: id, label: this.extractAttributeLabelFromRelationObject(attributes) }]
+            } else {
+              const id = relatinships[this.options.relationship].data.id
+              const type = relatinships[this.options.relationship].data.type
+              const attributes = this.extractRelationshipObjectAttributes(id, type)
+
+              return [{ id: id, label: this.extractAttributeLabelFromRelationObject(attributes) }]
+            }
           }
         }
       }
@@ -142,7 +150,9 @@ export default defineComponent({
     },
     extractRelationshipObjectAttributes(id, type) {
       if (id && type && this.included) {
-        const relationObject = this.included.filter((included) => included.type === type && included.id === id)
+        const relationObject = this.included.filter(
+          (included) => included.type.toString() === type.toString() && included.id.toString() === id.toString()
+        )
 
         if (relationObject.length === 1) {
           return relationObject[0].attributes

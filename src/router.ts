@@ -16,6 +16,7 @@ import StocksIn from '@/components/admin/stocks/StocksIn.vue'
 import StocksOut from '@/components/admin/stocks/StocksOut.vue'
 import StocksTransfer from '@/components/admin/stocks/StocksTransfer.vue'
 import ViewStocks from '@/components/admin/stocks/ViewStocks.vue'
+import ViewStockTransactions from '@/components/admin/stocks/ViewStockTransactions.vue'
 import CreateEditSupplier from '@/components/admin/suppliers/CreateEditSupplier.vue'
 import ViewSuppliers from '@/components/admin/suppliers/ViewSuppliers.vue'
 import CreateEditUser from '@/components/admin/users/CreateEditUser.vue'
@@ -278,6 +279,11 @@ const routes: Array<RouteRecordRaw> = [
             path: '',
             name: 'StockView',
             component: ViewStocks
+          },
+          {
+            path: 'transactions',
+            name: 'StockTransactions',
+            component: ViewStockTransactions
           },
           {
             path: 'in',
