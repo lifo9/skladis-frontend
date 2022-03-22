@@ -3,6 +3,7 @@
     :route-name="options.route"
     :params="{ id: row.id }"
     :label="options.label || $filters.uppercase($t('view'))"
+    :query="query"
     class="m-1 text-white"
     :class="options.customClass || ''"
     icon="remove_red_eye"
@@ -29,6 +30,15 @@ export default defineComponent({
     included: {
       type: Array,
       default: undefined
+    }
+  },
+  computed: {
+    query() {
+      if (this.options.query) {
+        return { [this.options.query]: [this.row.id] }
+      } else {
+        return {}
+      }
     }
   }
 })

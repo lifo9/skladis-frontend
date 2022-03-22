@@ -47,7 +47,25 @@ export default defineComponent({
         if (id) {
           const relationObject = this.included.filter((included) => included.type === type && included.id === id)
           if (relationObject.length === 1) {
-            return relationObject[0].attributes[this.options.attribute]
+            const image = relationObject[0].attributes[this.options.attribute]
+
+            if (image) {
+              if (Array.isArray(image)) {
+                if (image.length > 0) {
+                  if (this.options.subAttribute) {
+                    return image[0][this.options.subAttribute]
+                  } else {
+                    return image[0]
+                  }
+                }
+              } else {
+                if (this.options.subAttribute) {
+                  return image[this.options.subAttribute]
+                } else {
+                  return image
+                }
+              }
+            }
           }
         }
       } else {

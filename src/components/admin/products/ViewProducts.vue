@@ -22,7 +22,7 @@ import AvatarImage from '@/components/AvatarImage.vue'
 import CrudLink from '@/components/CrudLink.vue'
 import CrudTable from '@/components/CrudTable.vue'
 import CrudText from '@/components/CrudText.vue'
-import CrudViewButtonVue from '@/components/CrudViewButton.vue'
+import CrudViewButton from '@/components/CrudViewButton.vue'
 import RSpinner from '@/components/ui/RSpinner.vue'
 import { deleteProduct, getProducts } from '@/services/ProductService'
 import { getSupplierOptions } from '@/services/SupplierService'
@@ -35,11 +35,20 @@ export default defineComponent({
       deleteEndpoint: deleteProduct,
       customActions: [
         {
-          component: markRaw(CrudViewButtonVue),
+          component: markRaw(CrudViewButton),
           options: {
             route: 'ProductPriceHistory',
             label: this.$filters.uppercase(this.$t('Price history')),
-            customClass: 'bg-green-600'
+            customClass: 'bg-green-600 hover:bg-green-500 focus:border-green-700 active:bg-green-400'
+          }
+        },
+        {
+          component: markRaw(CrudViewButton),
+          options: {
+            route: 'StockView',
+            label: this.$filters.uppercase(this.$t('stocks')),
+            customClass: 'bg-yellow-600 hover:bg-yellow-500 focus:border-yellow-700 active:bg-yellow-400',
+            query: 'product_id[]'
           }
         }
       ],

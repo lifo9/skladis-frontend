@@ -8,7 +8,7 @@
       :enable-default-actions="false"
       :enable-global-actions="false"
       :bulk-select="false"
-      :search-enabled="true"
+      :search-enabled="false"
       :per-page="50"
       :initial-order="initialOrder"
       :initial-order-by="initialOrderBy"

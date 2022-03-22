@@ -12,6 +12,7 @@
     <div class="relative">
       <div v-if="type === 'date'">
         <flat-pickr
+          ref="datePickerWrap"
           :model-value="modelValue"
           class="block text-base placeholder:text-sm text-gray-900 placeholder:text-gray-400 bg-gray-50 rounded-md border border-gray-300 focus:border-blue-600 focus:outline-none transition duration-500 ease-in-out"
           :class="[
@@ -26,6 +27,15 @@
           :config="extendedDateConfig"
           @input="handleInputChange"
         />
+        <r-button
+          v-if="modelValue"
+          size="min"
+          variant="plain"
+          class="absolute top-1/2 right-0 px-2 -translate-y-1/2 cursor-pointer"
+          @click="clearDate()"
+        >
+          <span class="font-bold text-red-600 material-icons">close</span>
+        </r-button>
       </div>
       <input
         v-else
@@ -70,11 +80,13 @@ import { mapState } from 'pinia'
 import { defineComponent } from 'vue'
 import FlatPickr from 'vue-flatpickr-component'
 
+import RButton from '@/components/ui/RButton.vue'
 import { useMainStore } from '@/stores/mainStore'
 
 export default defineComponent({
   components: {
-    FlatPickr
+    FlatPickr,
+    RButton
   },
   props: {
     type: {
@@ -142,7 +154,7 @@ export default defineComponent({
         config['locale'] = this.dateLocalization
       }
 
-      config['dateFormat'] = 'd. M Y'
+      config['dateFormat'] = 'j. n. Y'
 
       if (this.dateConfig) {
         config = { ...config, ...this.dateConfig }
@@ -160,6 +172,9 @@ export default defineComponent({
   methods: {
     handleInputChange(event) {
       this.$emit('update:modelValue', this.type === 'checkbox' ? event.target.checked : event.target.value)
+    },
+    clearDate() {
+      this.$refs.datePickerWrap.fp.clear()
     }
   }
 })

@@ -1,5 +1,6 @@
 <template>
   <crud-table
+    v-if="!loading"
     :get-endpoint="getEndpoint"
     :delete-endpoint="deleteEndpoint"
     create-route-name="SupplierCreate"
@@ -9,26 +10,42 @@
     :relationship-cols="relationshipCols"
     :custom-cols-after="customCols"
     :custom-actions="customActions"
+    :filter-options="filterOptions"
   />
+  <r-spinner v-else class="mr-3 ml-1 w-4 h-4 text-white" />
 </template>
 
 <script lang="ts">
 import { markRaw, shallowRef } from 'vue'
 import { defineComponent } from 'vue'
 
-import ViewSupplierProducts from '@/components/admin/suppliers/ViewSupplierProducts.vue'
 import CrudLink from '@/components/CrudLink.vue'
 import CrudTable from '@/components/CrudTable.vue'
 import CrudText from '@/components/CrudText.vue'
+import CrudViewButton from '@/components/CrudViewButton.vue'
+import RSpinner from '@/components/ui/RSpinner.vue'
+import { getContactOptions } from '@/services/ContactsService'
 import { deleteSupplier, getSuppliers } from '@/services/SupplierService'
 
 export default defineComponent({
-  components: { CrudTable },
+  components: { CrudTable, RSpinner },
   data() {
     return {
+      loading: false,
       getEndpoint: getSuppliers,
       deleteEndpoint: deleteSupplier,
-      customActions: [{ component: markRaw(ViewSupplierProducts) }],
+      filterOptions: undefined,
+      customActions: [
+        {
+          component: markRaw(CrudViewButton),
+          options: {
+            route: 'ProductsView',
+            label: this.$filters.uppercase(this.$t('Products')),
+            customClass: 'bg-green-600 hover:bg-green-500 focus:border-green-700 active:bg-green-400',
+            query: 'suppliers_id[]'
+          }
+        }
+      ],
       relationshipCols: [
         {
           relationship: 'address',
@@ -131,6 +148,28 @@ export default defineComponent({
           }
         }
       ]
+    }
+  },
+  mounted() {
+    this.fetchData()
+  },
+  methods: {
+    async fetchData() {
+      this.loading = true
+
+      const contacts = await getContactOptions()
+      const contactOptions = contacts.data.map((contact) => {
+        return { id: contact.id, label: contact.label }
+      })
+
+      this.filterOptions = {
+        'contact_id[]': {
+          label: this.$t('Contact'),
+          options: contactOptions
+        }
+      }
+
+      this.loading = false
     }
   }
 })

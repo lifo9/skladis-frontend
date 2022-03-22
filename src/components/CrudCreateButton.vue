@@ -2,7 +2,8 @@
   <navigation-item
     :route-name="routeName"
     class="m-2"
-    :label="$filters.uppercase($t('Create'))"
+    :class="customClass || ''"
+    :label="label || $filters.uppercase($t('Create'))"
     icon="add"
     type="button"
     size="small"
@@ -19,6 +20,14 @@ export default defineComponent({
     routeName: {
       type: String,
       required: true
+    },
+    customClass: {
+      type: String,
+      default: undefined
+    },
+    label: {
+      type: String,
+      default: undefined
     }
   }
 })

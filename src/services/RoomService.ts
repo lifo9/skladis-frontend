@@ -12,6 +12,9 @@ export function getRooms(params) {
   return crud.getRecords(params)
 }
 
+export function getRoomOptions(params = undefined) {
+  return crud.getOptions(params)
+}
 export function updateRoom({ id, name, warehouseId }: any = {}) {
   const params = {
     name: name,
