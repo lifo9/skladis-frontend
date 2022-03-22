@@ -50,6 +50,15 @@ export default defineComponent({
             customClass: 'bg-yellow-600 hover:bg-yellow-500 focus:border-yellow-700 active:bg-yellow-400',
             query: 'product_id[]'
           }
+        },
+        {
+          component: markRaw(CrudViewButton),
+          options: {
+            route: 'StockTransactions',
+            label: this.$filters.uppercase(this.$t('Stocks transactions')),
+            customClass: 'bg-orange-600 hover:bg-orange-500 focus:border-orange-700 active:bg-orange-400',
+            query: 'product_id[]'
+          }
         }
       ],
       customCols: [
@@ -95,6 +104,14 @@ export default defineComponent({
             attribute: 'pieces_critical',
             sort: true,
             orderBy: 'pieces_critical'
+          }
+        },
+        {
+          header: this.$t('in_stock'),
+          component: shallowRef(CrudText),
+          options: {
+            attribute: 'in_stock',
+            bold: true
           }
         },
         {

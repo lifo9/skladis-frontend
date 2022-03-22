@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="message !== null"
-    class="flex fixed top-16 right-0 z-50 p-2 py-3 px-4 m-4 max-w-sm text-xl leading-none rounded-md cursor-pointer"
+    class="flex fixed top-16 right-0 z-[9999] p-2 py-3 px-4 m-4 max-w-sm text-xl leading-none rounded-md cursor-pointer"
     :class="{
       info: level === 'info',
       success: level === 'success',

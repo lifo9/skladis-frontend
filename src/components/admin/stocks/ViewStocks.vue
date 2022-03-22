@@ -10,6 +10,7 @@
     :filter-options="filterOptions"
     :initial-order="initialOrder"
     :initial-order-by="initialOrderBy"
+    :custom-actions="customActions"
     :custom-global-actions="customGlobalActions"
   />
   <r-spinner v-else class="mr-3 ml-1 w-4 h-4 text-white" />
@@ -18,11 +19,13 @@
 <script lang="ts">
 import { defineComponent, markRaw, shallowRef } from 'vue'
 
+import StockOutModal from '@/components/admin/stocks/StockOutModal.vue'
+import StockOutScan from '@/components/admin/stocks/StockOutScan.vue'
 import AvatarImage from '@/components/AvatarImage.vue'
-import CrudCreateButton from '@/components/CrudCreateButton.vue'
 import CrudLink from '@/components/CrudLink.vue'
 import CrudTable from '@/components/CrudTable.vue'
 import CrudText from '@/components/CrudText.vue'
+import NavigationItem from '@/components/NavigationItem.vue'
 import RSpinner from '@/components/ui/RSpinner.vue'
 import { getProductOptions } from '@/services/ProductService'
 import { getRoomOptions } from '@/services/RoomService'
@@ -33,14 +36,39 @@ export default defineComponent({
   components: { CrudTable, RSpinner },
   data() {
     return {
-      loading: false,
+      loading: true,
       getEndpoint: getStocks,
       initialOrderBy: 'expiration',
       initialOrder: 'asc',
       filterOptions: undefined,
       customGlobalActions: [
-        { component: markRaw(CrudCreateButton), props: { routeName: 'StockCreate', label: this.$t('Add stocks') } }
+        {
+          component: markRaw(NavigationItem),
+          props: {
+            routeName: 'StocksIn',
+            label: this.$filters.uppercase(this.$t('Stocks in')),
+            icon: 'add',
+            type: 'button',
+            size: 'small',
+            class: 'mx-2 bg-green-600 hover:bg-green-500 focus:border-green-700 active:bg-green-400'
+          }
+        },
+        {
+          component: markRaw(StockOutScan)
+        },
+        {
+          component: markRaw(NavigationItem),
+          props: {
+            routeName: 'StockTransactions',
+            label: this.$filters.uppercase(this.$t('Stocks transactions')),
+            icon: 'bug_report',
+            type: 'button',
+            size: 'small',
+            class: 'mx-2'
+          }
+        }
       ],
+      customActions: [{ component: markRaw(StockOutModal) }],
       customCols: [
         {
           header: '',
@@ -81,26 +109,6 @@ export default defineComponent({
             sort: true,
             orderBy: 'expiration',
             format: this.$filters.formatDate
-          }
-        },
-        {
-          header: this.$t('pieces_critical'),
-          component: shallowRef(CrudText),
-          options: {
-            relationship: 'product',
-            attribute: 'pieces_critical',
-            sort: true,
-            orderBy: 'products.pieces_critical'
-          }
-        },
-        {
-          header: this.$t('pieces_ideal'),
-          component: shallowRef(CrudText),
-          options: {
-            relationship: 'product',
-            attribute: 'pieces_ideal',
-            sort: true,
-            orderBy: 'products.pieces_ideal'
           }
         },
         {

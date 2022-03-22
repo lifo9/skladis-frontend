@@ -43,6 +43,7 @@
           :select-label="$t('select')"
           :selected-label="$t('deselect')"
           :deselect-label="$t('deselect')"
+          :no-options="$t('Not found')"
         />
       </div>
     </div>

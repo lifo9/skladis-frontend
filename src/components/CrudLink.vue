@@ -1,20 +1,25 @@
 <template>
-  <div v-if="options.editLink">
-    <div v-for="label in labels" :key="label.id">
-      <a href="#" @click.prevent="handleNavigation(label.id)">
-        <span>
-          {{ options.format ? options.format(label.label) : label.label }}
-        </span>
-      </a>
-    </div>
+  <div v-if="!link || !labels">
+    <span>-</span>
   </div>
   <div v-else>
-    <div v-for="label in labels" :key="label.id">
-      <a v-if="link" :href="link" :target="options.newTab ? '_blank' : ''">
-        <span>
-          {{ options.format ? options.format(label.label) : label.label }}
-        </span>
-      </a>
+    <div v-if="options.editLink">
+      <div v-for="label in labels" :key="label.id">
+        <a href="#" @click.prevent="handleNavigation(label.id)">
+          <span>
+            {{ options.format ? options.format(label.label) : label.label }}
+          </span>
+        </a>
+      </div>
+    </div>
+    <div v-else>
+      <div v-for="label in labels" :key="label.id">
+        <a v-if="link" :href="link" :target="options.newTab ? '_blank' : ''">
+          <span>
+            {{ options.format ? options.format(label.label) : label.label }}
+          </span>
+        </a>
+      </div>
     </div>
   </div>
 </template>
@@ -86,11 +91,19 @@ export default defineComponent({
             })
             return labels
           } else {
-            const id = relatinships[this.options.relationship].data.id
-            const type = relatinships[this.options.relationship].data.type
-            const attributes = this.extractRelationshipObjectAttributes(id, type)
+            if (this.options.meta) {
+              const id = relatinships[this.options.relationship]['meta'][this.options.meta].id
+              const type = relatinships[this.options.relationship]['meta'][this.options.meta].type
+              const attributes = this.extractRelationshipObjectAttributes(id, type)
 
-            return [{ id: id, label: this.extractAttributeLabelFromRelationObject(attributes) }]
+              return [{ id: id, label: this.extractAttributeLabelFromRelationObject(attributes) }]
+            } else {
+              const id = relatinships[this.options.relationship].data.id
+              const type = relatinships[this.options.relationship].data.type
+              const attributes = this.extractRelationshipObjectAttributes(id, type)
+
+              return [{ id: id, label: this.extractAttributeLabelFromRelationObject(attributes) }]
+            }
           }
         }
       }
@@ -137,7 +150,9 @@ export default defineComponent({
     },
     extractRelationshipObjectAttributes(id, type) {
       if (id && type && this.included) {
-        const relationObject = this.included.filter((included) => included.type === type && included.id === id)
+        const relationObject = this.included.filter(
+          (included) => included.type.toString() === type.toString() && included.id.toString() === id.toString()
+        )
 
         if (relationObject.length === 1) {
           return relationObject[0].attributes

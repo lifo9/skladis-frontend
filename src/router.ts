@@ -12,8 +12,11 @@ import ViewProductPriceHistory from '@/components/admin/products/ViewProductPric
 import ViewProducts from '@/components/admin/products/ViewProducts.vue'
 import CreateEditRoom from '@/components/admin/rooms/CreateEditRoom.vue'
 import ViewRooms from '@/components/admin/rooms/ViewRooms.vue'
-import CreateEditStock from '@/components/admin/stocks/CreateEditStock.vue'
+import StocksIn from '@/components/admin/stocks/StocksIn.vue'
+import StocksOut from '@/components/admin/stocks/StocksOut.vue'
+import StocksTransfer from '@/components/admin/stocks/StocksTransfer.vue'
 import ViewStocks from '@/components/admin/stocks/ViewStocks.vue'
+import ViewStockTransactions from '@/components/admin/stocks/ViewStockTransactions.vue'
 import CreateEditSupplier from '@/components/admin/suppliers/CreateEditSupplier.vue'
 import ViewSuppliers from '@/components/admin/suppliers/ViewSuppliers.vue'
 import CreateEditUser from '@/components/admin/users/CreateEditUser.vue'
@@ -278,14 +281,24 @@ const routes: Array<RouteRecordRaw> = [
             component: ViewStocks
           },
           {
-            path: 'create',
-            name: 'StockCreate',
-            component: CreateEditStock
+            path: 'transactions',
+            name: 'StockTransactions',
+            component: ViewStockTransactions
           },
           {
-            path: 'edit/:id',
-            name: 'StockEdit',
-            component: CreateEditStock
+            path: 'in',
+            name: 'StocksIn',
+            component: StocksIn
+          },
+          {
+            path: 'out',
+            name: 'StocksOut',
+            component: StocksOut
+          },
+          {
+            path: 'transfer',
+            name: 'StocksTransfer',
+            component: StocksTransfer
           }
         ]
       }
@@ -313,7 +326,8 @@ const routes: Array<RouteRecordRaw> = [
         component: ActivateUser
       }
     ]
-  }
+  },
+  { path: '/:pathMatch(.*)*', redirect: { name: 'Home' } }
 ]
 
 const router = createRouter({
