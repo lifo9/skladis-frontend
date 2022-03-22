@@ -44,11 +44,20 @@
         </template>
       </file-upload>
       <div>
-        <span class="text-lg">{{ $t('Invoice items') }}</span>
+        <span class="text-lg font-semibold">{{ $t('Invoice items') }}</span>
+        <div
+          class="hidden relative items-start pb-2 mt-2 space-y-2 text-sm font-semibold border-b md:grid md:grid-cols-7 md:space-y-0 md:space-x-2"
+        >
+          <div class="col-span-2">{{ $filters.uppercase($t('Product')) }}</div>
+          <div class="col-span-2">{{ $filters.uppercase($t('Supplier')) }}</div>
+          <div class="text-center">{{ $filters.uppercase($t('quantity')) }}</div>
+          <div class="text-center">{{ $filters.uppercase($t('unit_price')) }}</div>
+        </div>
         <invoice-item
           v-for="(invoiceItem, idx) in invoiceItems"
           :key="JSON.stringify(invoiceItem)"
           class="py-2"
+          :class="idx < invoiceItems.length - 1 ? 'border-b' : ''"
           :initial-product="invoiceItem.product_id"
           :initial-supplier="invoiceItem.supplier_id"
           :initial-quantity="parseInt(invoiceItem.quantity)"
