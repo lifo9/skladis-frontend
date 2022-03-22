@@ -1,4 +1,4 @@
-<template>CREATE EDIT STOCK</template>
+<template>STOCKS IN</template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'

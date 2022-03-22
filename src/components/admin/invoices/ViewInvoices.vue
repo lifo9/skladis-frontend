@@ -14,13 +14,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, markRaw, shallowRef } from 'vue'
+import { defineComponent, shallowRef } from 'vue'
 
-import CrudCreateButton from '@/components/CrudCreateButton.vue'
 import CrudLink from '@/components/CrudLink.vue'
 import CrudTable from '@/components/CrudTable.vue'
 import CrudText from '@/components/CrudText.vue'
-import CrudViewButton from '@/components/CrudViewButton.vue'
 import RSpinner from '@/components/ui/RSpinner.vue'
 import { deleteInvoice, getInvoices, getInvoicesDateRange } from '@/services/InvoiceService'
 
@@ -62,9 +60,7 @@ export default defineComponent({
             sort: false
           }
         }
-      ],
-      customGlobalActions: [{ component: markRaw(CrudCreateButton), props: { routeName: 'InvoiceCreate' } }],
-      customActions: [{ component: markRaw(CrudViewButton), options: { route: 'InvoiceView' } }]
+      ]
     }
   },
   mounted() {

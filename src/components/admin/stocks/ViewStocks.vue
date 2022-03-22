@@ -19,10 +19,10 @@
 import { defineComponent, markRaw, shallowRef } from 'vue'
 
 import AvatarImage from '@/components/AvatarImage.vue'
-import CrudCreateButton from '@/components/CrudCreateButton.vue'
 import CrudLink from '@/components/CrudLink.vue'
 import CrudTable from '@/components/CrudTable.vue'
 import CrudText from '@/components/CrudText.vue'
+import NavigationItem from '@/components/NavigationItem.vue'
 import RSpinner from '@/components/ui/RSpinner.vue'
 import { getProductOptions } from '@/services/ProductService'
 import { getRoomOptions } from '@/services/RoomService'
@@ -39,7 +39,39 @@ export default defineComponent({
       initialOrder: 'asc',
       filterOptions: undefined,
       customGlobalActions: [
-        { component: markRaw(CrudCreateButton), props: { routeName: 'StockCreate', label: this.$t('Add stocks') } }
+        {
+          component: markRaw(NavigationItem),
+          props: {
+            routeName: 'StocksIn',
+            label: this.$t('Stocks in'),
+            icon: 'add',
+            type: 'button',
+            size: 'small',
+            class: 'mx-2 bg-green-600 hover:bg-green-500 focus:border-green-700 active:bg-green-400'
+          }
+        },
+        {
+          component: markRaw(NavigationItem),
+          props: {
+            routeName: 'StocksOut',
+            label: this.$t('Stocks out'),
+            icon: 'remove',
+            type: 'button',
+            size: 'small',
+            class: 'mx-2 bg-red-600 hover:bg-red-500 focus:border-red-700 active:bg-red-400'
+          }
+        },
+        {
+          component: markRaw(NavigationItem),
+          props: {
+            routeName: 'StocksTransfer',
+            label: this.$t('Stocks transfer'),
+            icon: 'compare_arrows',
+            type: 'button',
+            size: 'small',
+            class: 'mx-2'
+          }
+        }
       ],
       customCols: [
         {
@@ -81,26 +113,6 @@ export default defineComponent({
             sort: true,
             orderBy: 'expiration',
             format: this.$filters.formatDate
-          }
-        },
-        {
-          header: this.$t('pieces_critical'),
-          component: shallowRef(CrudText),
-          options: {
-            relationship: 'product',
-            attribute: 'pieces_critical',
-            sort: true,
-            orderBy: 'products.pieces_critical'
-          }
-        },
-        {
-          header: this.$t('pieces_ideal'),
-          component: shallowRef(CrudText),
-          options: {
-            relationship: 'product',
-            attribute: 'pieces_ideal',
-            sort: true,
-            orderBy: 'products.pieces_ideal'
           }
         },
         {
