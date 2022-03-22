@@ -10,14 +10,16 @@
     :filter-options="filterOptions"
     :initial-order="initialOrder"
     :initial-order-by="initialOrderBy"
+    :custom-global-actions="customGlobalActions"
   />
   <r-spinner v-else class="mr-3 ml-1 w-4 h-4 text-white" />
 </template>
 
 <script lang="ts">
-import { defineComponent, shallowRef } from 'vue'
+import { defineComponent, markRaw, shallowRef } from 'vue'
 
 import AvatarImage from '@/components/AvatarImage.vue'
+import CrudCreateButton from '@/components/CrudCreateButton.vue'
 import CrudLink from '@/components/CrudLink.vue'
 import CrudTable from '@/components/CrudTable.vue'
 import CrudText from '@/components/CrudText.vue'
@@ -36,6 +38,9 @@ export default defineComponent({
       initialOrderBy: 'expiration',
       initialOrder: 'asc',
       filterOptions: undefined,
+      customGlobalActions: [
+        { component: markRaw(CrudCreateButton), props: { routeName: 'StockCreate', label: this.$t('Add stocks') } }
+      ],
       customCols: [
         {
           header: '',
@@ -79,12 +84,33 @@ export default defineComponent({
           }
         },
         {
-          header: this.$t('quantity'),
+          header: this.$t('pieces_critical'),
+          component: shallowRef(CrudText),
+          options: {
+            relationship: 'product',
+            attribute: 'pieces_critical',
+            sort: true,
+            orderBy: 'products.pieces_critical'
+          }
+        },
+        {
+          header: this.$t('pieces_ideal'),
+          component: shallowRef(CrudText),
+          options: {
+            relationship: 'product',
+            attribute: 'pieces_ideal',
+            sort: true,
+            orderBy: 'products.pieces_ideal'
+          }
+        },
+        {
+          header: this.$t('in_stock'),
           component: shallowRef(CrudText),
           options: {
             attribute: 'pieces',
             sort: true,
-            orderBy: 'pieces'
+            orderBy: 'pieces',
+            bold: true
           }
         }
       ]

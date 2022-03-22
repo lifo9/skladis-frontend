@@ -6,7 +6,12 @@
         <pre>{{ formattedLabel }}</pre>
       </div>
     </div>
-    <span v-else>{{ formattedLabel }}</span>
+    <span v-else-if="options.bold">
+      <b>{{ formattedLabel }}</b>
+    </span>
+    <span v-else>
+      {{ formattedLabel }}
+    </span>
   </span>
 </template>
 

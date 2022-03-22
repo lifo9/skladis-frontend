@@ -31,7 +31,7 @@ export default defineComponent({
       loading: false,
       getEndpoint: getInvoices,
       deleteEndpoint: deleteInvoice,
-      fitlerOptions: undefined,
+      filterOptions: undefined,
       customCols: [
         {
           header: this.$t('invoice_code'),
