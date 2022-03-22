@@ -32,6 +32,7 @@ import RSpinner from '@/components/ui/RSpinner.vue'
 import { getProductOptions } from '@/services/ProductService'
 import { getRoomOptions } from '@/services/RoomService'
 import { getCreatedAtRange, getStockTransactions } from '@/services/StockTransactionService'
+import { getUserOptions } from '@/services/UsersService'
 import { getWarehouseOptions } from '@/services/WarehouseService'
 import { useMainStore } from '@/stores/mainStore'
 
@@ -154,10 +155,19 @@ export default defineComponent({
         return { id: room.id, label: room.label }
       })
 
+      const users = await getUserOptions()
+      const userOptions = users.data.map((user) => {
+        return { id: user.id, label: user.label }
+      })
+
       this.filterOptions = {
         'stocktransaction_action[]': {
           label: this.$t('event'),
           options: events
+        },
+        'user_id[]': {
+          label: this.$t('User'),
+          options: userOptions
         },
         'product_id[]': {
           label: this.$t('Product'),
