@@ -1,20 +1,25 @@
 <template>
-  <div v-if="options.editLink">
-    <div v-for="label in labels" :key="label.id">
-      <a href="#" @click.prevent="handleNavigation(label.id)">
-        <span>
-          {{ options.format ? options.format(label.label) : label.label }}
-        </span>
-      </a>
-    </div>
+  <div v-if="!link || !labels">
+    <span>-</span>
   </div>
   <div v-else>
-    <div v-for="label in labels" :key="label.id">
-      <a v-if="link" :href="link" :target="options.newTab ? '_blank' : ''">
-        <span>
-          {{ options.format ? options.format(label.label) : label.label }}
-        </span>
-      </a>
+    <div v-if="options.editLink">
+      <div v-for="label in labels" :key="label.id">
+        <a href="#" @click.prevent="handleNavigation(label.id)">
+          <span>
+            {{ options.format ? options.format(label.label) : label.label }}
+          </span>
+        </a>
+      </div>
+    </div>
+    <div v-else>
+      <div v-for="label in labels" :key="label.id">
+        <a v-if="link" :href="link" :target="options.newTab ? '_blank' : ''">
+          <span>
+            {{ options.format ? options.format(label.label) : label.label }}
+          </span>
+        </a>
+      </div>
     </div>
   </div>
 </template>

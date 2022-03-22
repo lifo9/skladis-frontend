@@ -98,6 +98,14 @@ export default defineComponent({
           }
         },
         {
+          header: this.$t('in_stock'),
+          component: shallowRef(CrudText),
+          options: {
+            attribute: 'in_stock',
+            bold: true
+          }
+        },
+        {
           header: this.$t('Suppliers'),
           component: shallowRef(CrudLink),
           options: {

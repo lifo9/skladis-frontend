@@ -77,7 +77,7 @@
             >
               {{ col ? 'check' : 'close' }}
             </span>
-            <span v-else>{{ $filters.arrayToString(col) }}</span>
+            <span v-else>{{ $filters.arrayToString(col) || '-' }}</span>
           </td>
           <slot :row="getUnfilteredRowById(row.id)" name="customColsAfter" />
           <td v-if="enableDefaultActions || enableCustomActions" :data-title="$t('Actions')" class="actions">

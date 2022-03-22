@@ -1,5 +1,5 @@
 <template>
-  <span v-if="label">
+  <span v-if="label || label === 0">
     <div v-if="options.json" class="block relative p-2 h-20 cursor-pointer" @click="showInfoModal">
       <div class="absolute top-0 right-0 px-8"><span class="text-blue-600 material-icons">search</span></div>
       <div class="overflow-auto h-16">
@@ -13,6 +13,7 @@
       {{ formattedLabel }}
     </span>
   </span>
+  <span v-else>-</span>
 </template>
 
 <script lang="ts">
