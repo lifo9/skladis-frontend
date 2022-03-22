@@ -25,6 +25,7 @@
             customPadding
           ]"
           :config="extendedDateConfig"
+          v-bind="$attrs"
           @input="handleInputChange"
         />
         <r-button

@@ -26,7 +26,7 @@ export default defineComponent({
   components: { CrudTable, RSpinner },
   data() {
     return {
-      loading: false,
+      loading: true,
       getEndpoint: getInvoices,
       deleteEndpoint: deleteInvoice,
       filterOptions: undefined,

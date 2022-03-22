@@ -20,6 +20,9 @@ export default defineComponent({
   mounted() {
     this.setTitle()
   },
+  updated() {
+    this.setTitle()
+  },
   methods: {
     setTitle() {
       this.mainStore.setCurrentTitle(this.$t('Delivery of goods'))

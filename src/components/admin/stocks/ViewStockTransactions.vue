@@ -40,7 +40,7 @@ export default defineComponent({
   components: { CrudTable, RSpinner, NavigationBack },
   data() {
     return {
-      loading: false,
+      loading: true,
       getEndpoint: getStockTransactions,
       customCols: [
         {
@@ -130,6 +130,9 @@ export default defineComponent({
   mounted() {
     this.setTitle()
     this.fetchData()
+  },
+  updated() {
+    this.setTitle()
   },
   methods: {
     async fetchData() {

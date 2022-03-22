@@ -63,7 +63,7 @@ class CrudService {
       return securedAxiosInstance.get(this.API_PATH + '/select-options')
     }
   }
-  createRecord(params, formData = false, allowEmpty = false) {
+  createRecord(params, formData = false, allowEmpty = false, customPath = undefined) {
     let payload = {}
     if (formData) {
       payload = this._buildFormData(params, allowEmpty)
@@ -71,7 +71,11 @@ class CrudService {
       payload[this.TYPE] = params
     }
 
-    return securedAxiosInstance.post(this.API_PATH, payload)
+    let path = this.API_PATH
+    if (customPath) {
+      path += `/${customPath}`
+    }
+    return securedAxiosInstance.post(path, payload)
   }
   updateRecord(id, params, formData = false, allowEmpty = false) {
     let payload = {}

@@ -10,6 +10,7 @@
     :filter-options="filterOptions"
     :initial-order="initialOrder"
     :initial-order-by="initialOrderBy"
+    :custom-actions="customActions"
     :custom-global-actions="customGlobalActions"
   />
   <r-spinner v-else class="mr-3 ml-1 w-4 h-4 text-white" />
@@ -18,6 +19,8 @@
 <script lang="ts">
 import { defineComponent, markRaw, shallowRef } from 'vue'
 
+import StockOutModal from '@/components/admin/stocks/StockOutModal.vue'
+import StockOutScan from '@/components/admin/stocks/StockOutScan.vue'
 import AvatarImage from '@/components/AvatarImage.vue'
 import CrudLink from '@/components/CrudLink.vue'
 import CrudTable from '@/components/CrudTable.vue'
@@ -33,7 +36,7 @@ export default defineComponent({
   components: { CrudTable, RSpinner },
   data() {
     return {
-      loading: false,
+      loading: true,
       getEndpoint: getStocks,
       initialOrderBy: 'expiration',
       initialOrder: 'asc',
@@ -51,26 +54,7 @@ export default defineComponent({
           }
         },
         {
-          component: markRaw(NavigationItem),
-          props: {
-            routeName: 'StocksOut',
-            label: this.$filters.uppercase(this.$t('Stocks out')),
-            icon: 'remove',
-            type: 'button',
-            size: 'small',
-            class: 'mx-2 bg-red-600 hover:bg-red-500 focus:border-red-700 active:bg-red-400'
-          }
-        },
-        {
-          component: markRaw(NavigationItem),
-          props: {
-            routeName: 'StocksTransfer',
-            label: this.$filters.uppercase(this.$t('Stocks transfer')),
-            icon: 'compare_arrows',
-            type: 'button',
-            size: 'small',
-            class: 'mx-2 bg-yellow-600 hover:bg-yellow-500 focus:border-yellow-700 active:bg-yellow-400'
-          }
+          component: markRaw(StockOutScan)
         },
         {
           component: markRaw(NavigationItem),
@@ -84,6 +68,7 @@ export default defineComponent({
           }
         }
       ],
+      customActions: [{ component: markRaw(StockOutModal) }],
       customCols: [
         {
           header: '',

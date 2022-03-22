@@ -302,6 +302,14 @@ export default defineComponent({
     if (!this.filterOptions) {
       this.fetchData()
     }
+
+    this.eventBus.on('filter', (filter) => {
+      this.handleFilter(filter)
+    })
+
+    this.eventBus.on('reloadCrudTable', () => {
+      this.fetchData()
+    })
   },
   methods: {
     async fetchData() {

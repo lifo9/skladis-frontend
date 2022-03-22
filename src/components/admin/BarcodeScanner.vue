@@ -19,8 +19,15 @@
       </div>
     </div>
     <div class="flex flex-wrap justify-center items-center">
-      <r-button v-if="variant === 'compact'" size="verySmall" variant="success" @click.prevent="initializeScanner">
+      <r-button
+        v-if="variant === 'compact'"
+        size="verySmall"
+        variant="success"
+        v-bind="$attrs"
+        @click.prevent="initializeScanner"
+      >
         <span class="material-icons">document_scanner</span>
+        <slot />
       </r-button>
       <r-button v-else size="full" @click.prevent="initializeScanner">
         <span class="mr-2 material-icons">document_scanner</span>
