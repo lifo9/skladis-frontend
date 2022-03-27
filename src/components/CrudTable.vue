@@ -45,6 +45,7 @@
         :hidden-cols="hiddenCols"
         :custom-ordering-options="customOrderingOptions"
         :hide-all-cols="hideAllCols"
+        :show-id="showId"
         @add-selected="handleAddSelected"
         @remove-selected="handleRemoveSelected"
         @delete-item="deleteItems"
@@ -228,6 +229,10 @@ export default defineComponent({
     itemId: {
       type: Number,
       default: undefined
+    },
+    showId: {
+      type: Boolean,
+      default: false
     }
   },
   data() {

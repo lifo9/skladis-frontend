@@ -111,7 +111,9 @@ export default defineComponent({
           component: shallowRef(CrudText),
           options: {
             attribute: 'in_stock',
-            bold: true
+            bold: true,
+            sort: true,
+            orderBy: 'in_stock'
           }
         },
         {

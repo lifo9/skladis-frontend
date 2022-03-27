@@ -10,7 +10,7 @@
     </a>
     <div
       v-if="isOpen || type === 'desktop'"
-      class="absolute top-16 left-0 z-50 px-0 w-full min-h-screen bg-gray-900 transition ease-in-out md:fixed md:z-auto"
+      class="absolute top-16 left-0 z-[9999] px-0 w-full min-h-screen bg-gray-900 transition ease-in-out md:fixed md:z-[9999]"
       :class="!mainStore.isMenuExpanded ? 'md:w-16' : 'md:w-64'"
     >
       <ul class="overflow-y-auto h-screen">

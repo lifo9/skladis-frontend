@@ -26,7 +26,7 @@
               @change="selectAll"
             />
           </th>
-          <th v-if="rows.length > 0 && rows[0].id" class="cursor-pointer" @click="changeOrder('id')">
+          <th v-if="rows.length > 0 && rows[0].id && showId" class="cursor-pointer" @click="changeOrder('id')">
             <div class="flex justify-start items-center">
               <span>ID</span>
               <order-arrow v-if="orderBy === 'id'" :order="order" />
@@ -65,7 +65,7 @@
               @change="select(row.id, $event.target.checked)"
             />
           </td>
-          <td v-if="row.id" :data-title="$t('ID')" class="has-title">
+          <td v-if="row.id && showId" :data-title="$t('ID')" class="has-title">
             {{ row.id }}
           </td>
           <slot :row="getUnfilteredRowById(row.id)" name="customColsBefore" />
@@ -192,6 +192,10 @@ export default defineComponent({
     customOrderingOptions: {
       type: Array,
       default: undefined
+    },
+    showId: {
+      type: Boolean,
+      default: true
     }
   },
   emits: ['addSelected', 'removeSelected', 'deleteItem', 'order'],
