@@ -8,14 +8,16 @@
     :bulk-select="true"
     :hide-all-cols="true"
     :custom-cols-before="customCols"
+    :custom-actions="customActions"
     :filter-options="filterOptions"
   />
   <r-spinner v-else class="mr-3 ml-1 w-4 h-4 text-white" />
 </template>
 
 <script lang="ts">
-import { defineComponent, shallowRef } from 'vue'
+import { defineComponent, markRaw, shallowRef } from 'vue'
 
+import InvoiceToStock from '@/components/admin/invoices/InvoiceToStock.vue'
 import CrudLink from '@/components/CrudLink.vue'
 import CrudTable from '@/components/CrudTable.vue'
 import CrudText from '@/components/CrudText.vue'
@@ -30,6 +32,7 @@ export default defineComponent({
       getEndpoint: getInvoices,
       deleteEndpoint: deleteInvoice,
       filterOptions: undefined,
+      customActions: [{ component: markRaw(InvoiceToStock) }],
       customCols: [
         {
           header: this.$t('invoice_code'),
