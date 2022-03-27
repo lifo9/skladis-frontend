@@ -37,6 +37,10 @@ export function updateInvoice({ id, invoiceCode, invoiceDate, invoiceFile, invoi
   return crud.updateRecord(id, params, true)
 }
 
+export function updateStockedIn(id) {
+  return securedAxiosInstance.patch(`${API_PATH}/${id}/stocked-in`, { stocked_in: true })
+}
+
 export function createInvoice({ invoiceCode, invoiceDate, invoiceFile, invoiceItems }: any = {}) {
   let params = {
     invoice_code: invoiceCode,

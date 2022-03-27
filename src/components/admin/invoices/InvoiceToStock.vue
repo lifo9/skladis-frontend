@@ -1,5 +1,12 @@
 <template>
-  <r-button class="mx-2" variant="success" size="verySmall" :loading="loading" @click="showModal = true">
+  <r-button
+    v-if="!row.attributes.stocked_in"
+    class="mx-2"
+    variant="success"
+    size="verySmall"
+    :loading="loading"
+    @click="showModal = true"
+  >
     <span class="mr-2 material-icons">add</span>
     {{ $filters.uppercase($t('InvoiceToStock')) }}
   </r-button>
@@ -52,7 +59,7 @@ import { defineComponent } from 'vue'
 import InvoiceToStockItem from '@/components/admin/invoices/InvoiceToStockItem.vue'
 import RButton from '@/components/ui/RButton.vue'
 import RSpinner from '@/components/ui/RSpinner.vue'
-import { getInvoice } from '@/services/InvoiceService'
+import { getInvoice, updateStockedIn } from '@/services/InvoiceService'
 import { getRoomOptions } from '@/services/RoomService'
 import { stockIn } from '@/services/StockService'
 
@@ -149,7 +156,7 @@ export default defineComponent({
         }
       })
     },
-    invoiceItemsToStock() {
+    async invoiceItemsToStock() {
       if (!this.validate()) {
         return
       }
@@ -166,6 +173,8 @@ export default defineComponent({
       )
         .then(() => {
           this.eventBus.emit('alert', { level: 'success', message: this.$t('Items were successfully stocked in') })
+          updateStockedIn(this.invoiceId)
+          this.row.attributes.stocked_in = true
         })
         .catch((error) => {
           this.eventBus.emit('alert', { level: 'alert', message: error })
