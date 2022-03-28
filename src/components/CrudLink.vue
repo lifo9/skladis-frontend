@@ -58,7 +58,10 @@ export default defineComponent({
 
           return [
             {
-              id: this.row.attributes[this.options.editLinkIdColumn],
+              id:
+                this.options.editLinkIdColumn === 'id'
+                  ? this.row.id
+                  : this.row.attributes[this.options.editLinkIdColumn],
               label: label
             }
           ]

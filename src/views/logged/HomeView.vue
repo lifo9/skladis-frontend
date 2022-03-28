@@ -77,11 +77,13 @@ export default defineComponent({
         },
         {
           header: this.$t('name'),
-          component: shallowRef(CrudText),
+          component: shallowRef(CrudLink),
           options: {
             attribute: 'name',
-            sort: true,
-            orderBy: 'name'
+            editLinkIdColumn: 'id',
+            editLink: true,
+            editRouteName: 'ProductEdit',
+            sort: false
           }
         },
         {
