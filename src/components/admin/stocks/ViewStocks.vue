@@ -21,6 +21,7 @@ import { defineComponent, markRaw, shallowRef } from 'vue'
 
 import StockOutModal from '@/components/admin/stocks/StockOutModal.vue'
 import StockOutScan from '@/components/admin/stocks/StockOutScan.vue'
+import StockTransferModal from '@/components/admin/stocks/StockTransferModal.vue'
 import AvatarImage from '@/components/AvatarImage.vue'
 import CrudLink from '@/components/CrudLink.vue'
 import CrudTable from '@/components/CrudTable.vue'
@@ -68,7 +69,7 @@ export default defineComponent({
           }
         }
       ],
-      customActions: [{ component: markRaw(StockOutModal) }],
+      customActions: [{ component: markRaw(StockOutModal) }, { component: markRaw(StockTransferModal) }],
       customCols: [
         {
           header: '',

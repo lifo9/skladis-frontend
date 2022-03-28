@@ -34,6 +34,18 @@ export function stockOut({ productId, roomId, expiration, quantity }: any = {}) 
   return crud.createRecord(params, false, false, 'out')
 }
 
+export function stockTransfer({ productId, roomFromId, roomToId, expiration, quantity }: any = {}) {
+  const params = {
+    product_id: productId,
+    room_from_id: roomFromId,
+    room_to_id: roomToId,
+    expiration: expiration,
+    quantity: quantity
+  }
+
+  return crud.createRecord(params, false, false, 'transfer')
+}
+
 export function getExpirationRange() {
   return crud.getRecords(undefined, undefined, 'expiration-range')
 }
