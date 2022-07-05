@@ -4,7 +4,7 @@ import { createI18n } from 'vue-i18n'
 import { getStartingLocale } from '@/services/LanguageService'
 import StorageService from '@/services/StorageService'
 
-const localeFiles = import.meta.glob('../locales/*.json')
+const localeFiles = import.meta.globEager('/src/locales/*.json')
 
 // Transforms `path/to/locale.json` to `locale`
 const getLocaleFromPath = (path: string) => path.split('/').pop().split('.')[0]
