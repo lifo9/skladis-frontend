@@ -3,11 +3,12 @@
     <navigation-back />
     <div class="flex flex-wrap">
       <r-form class="my-14 mx-auto w-full max-w-3xl xl:w-2/3" @submit.prevent="create">
-        <div class="flex flex-wrap justify-center items-stretch space-y-6 xl:flex-nowrap xl:space-y-0 xl:space-x-4">
-          <div class="space-y-6 w-full xl:space-y-2 xl:w-1/2">
+        <div class="flex flex-wrap items-stretch justify-center space-y-6 xl:flex-nowrap xl:space-y-0 xl:space-x-4">
+          <div class="w-full space-y-6 xl:w-1/2 xl:space-y-2">
             <r-input v-model="name" :label="$t('name')" :required="true" :disabled="loading" />
             <r-input v-model="url" :label="$t('url')" :required="true" :disabled="loading" />
             <r-input v-model="ico" :label="$t('ico')" :required="true" :disabled="loading" />
+            <r-input v-model="ic_dph" :label="$t('ic_dph')" :disabled="loading" />
             <r-input v-model="dic" :label="$t('dic')" :disabled="loading" />
             <r-input
               v-model="free_delivery_from"
@@ -26,7 +27,7 @@
               :value="contact_id"
             />
           </div>
-          <div class="space-y-6 w-full xl:space-y-2 xl:w-1/2">
+          <div class="w-full space-y-6 xl:w-1/2 xl:space-y-2">
             <r-input v-model="street_name" :label="$t('street_name')" :required="true" :disabled="loading" />
             <r-input v-model="street_number" :label="$t('street_number')" :required="true" :disabled="loading" />
             <r-input v-model="city" :label="$t('city')" :required="true" :disabled="loading" />
@@ -69,6 +70,7 @@ export default defineComponent({
       url: '',
       ico: '',
       dic: '',
+      ic_dph: '',
       free_delivery_from: undefined,
       contacts: [],
       contact_id: undefined,
@@ -119,6 +121,7 @@ export default defineComponent({
           url: this.url,
           ico: this.ico,
           dic: this.dic,
+          ic_dph: this.ic_dph,
           contactId: this.contact_id,
           freeDeliveryFrom: this.free_delivery_from,
           streetName: this.street_name,
@@ -187,6 +190,7 @@ export default defineComponent({
       this.url = ''
       this.ico = ''
       this.dic = ''
+      this.ic_dph = ''
       this.free_delivery_from = undefined
       this.contact_id = undefined
       this.street_name = ''
