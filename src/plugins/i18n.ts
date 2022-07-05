@@ -14,7 +14,7 @@ function loadMessages() {
   return Object.entries(localeFiles).reduce(
     (acc, [path, content]) => ({
       ...acc,
-      [getLocaleFromPath(path)]: content
+      [getLocaleFromPath(path)]: content.default
     }),
     {}
   )
@@ -30,16 +30,5 @@ const i18n = createI18n({
   fallbackLocale: 'en',
   messages
 })
-
-// Hot updates
-if (import.meta.hot) {
-  import.meta.hot.accept('/src/locales/*.json', () => {
-    const newMessages = loadMessages()
-
-    for (const locale in newMessages) {
-      i18n.global.setLocaleMessage(locale, newMessages[locale])
-    }
-  })
-}
 
 export { i18n }
