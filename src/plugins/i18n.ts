@@ -4,17 +4,20 @@ import { createI18n } from 'vue-i18n'
 import { getStartingLocale } from '@/services/LanguageService'
 import StorageService from '@/services/StorageService'
 
+const localeFiles = import.meta.globEager('../locales/*.json')
+
+// Transforms `path/to/locale.json` to `locale`
+const getLocaleFromPath = (path: string) => path.split('/').pop().split('.')[0]
+
 // Load all locales and remember context
 function loadMessages() {
-  let messages = {}
-  const languageFiles = import.meta.glob('/src/locales/*.json', { as: 'raw' })
-  for (const filePath in languageFiles) {
-    const fileName = filePath.replace(/^.*[\\/]/, '')
-    const locale = fileName.replace(/\.[^/.]+$/, '')
-    messages[locale] = JSON.parse(languageFiles[filePath])
-  }
-
-  return messages
+  return Object.entries(localeFiles).reduce(
+    (acc, [path, content]) => ({
+      ...acc,
+      [getLocaleFromPath(path)]: content
+    }),
+    {}
+  )
 }
 
 const messages = loadMessages()
