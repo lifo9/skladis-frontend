@@ -7,7 +7,7 @@ import StorageService from '@/services/StorageService'
 // Load all locales and remember context
 function loadMessages() {
   let messages = {}
-  const languageFiles = import.meta.globEager('/src/locales/*.json', { as: 'raw' })
+  const languageFiles = import.meta.glob('/src/locales/*.json', { as: 'raw' })
   for (const filePath in languageFiles) {
     const fileName = filePath.replace(/^.*[\\/]/, '')
     const locale = fileName.replace(/\.[^/.]+$/, '')
