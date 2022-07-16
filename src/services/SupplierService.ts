@@ -30,7 +30,8 @@ export function updateSupplier({
   zip,
   country,
   coordinates,
-  contactId
+  contactId,
+  addressId
 }: any = {}) {
   const params = {
     name: name,
@@ -40,12 +41,15 @@ export function updateSupplier({
     url: url,
     free_delivery_from: freeDeliveryFrom,
     contact_id: contactId,
-    street_name: streetName,
-    street_number: streetNumber,
-    city: city,
-    zip: zip,
-    country: country,
-    coordinates: coordinates
+    address_attributes: {
+      id: addressId,
+      street_name: streetName,
+      street_number: streetNumber,
+      city: city,
+      zip: zip,
+      country: country,
+      coordinates: coordinates && coordinates.length > 0 ? coordinates : null
+    }
   }
 
   return crud.updateRecord(id, params)
@@ -63,7 +67,8 @@ export function createSupplier({
   zip,
   country,
   coordinates,
-  contactId
+  contactId,
+  addressId
 }: any = {}) {
   const params = {
     name: name,
@@ -72,12 +77,15 @@ export function createSupplier({
     url: url,
     free_delivery_from: freeDeliveryFrom,
     contact_id: contactId,
-    street_name: streetName,
-    street_number: streetNumber,
-    city: city,
-    zip: zip,
-    country: country,
-    coordinates: coordinates
+    address_attributes: {
+      id: addressId,
+      street_name: streetName,
+      street_number: streetNumber,
+      city: city,
+      zip: zip,
+      country: country,
+      coordinates: coordinates && coordinates.length > 0 ? coordinates : null
+    }
   }
 
   return crud.createRecord(params)

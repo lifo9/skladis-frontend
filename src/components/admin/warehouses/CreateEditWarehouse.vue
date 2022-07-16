@@ -40,6 +40,7 @@ export default defineComponent({
     return {
       loading: false,
       name: '',
+      address_id: undefined,
       street_name: '',
       street_number: '',
       city: '',
@@ -81,6 +82,7 @@ export default defineComponent({
         await endpoint({
           id: this.warehouseId,
           name: this.name,
+          addressId: this.address_id,
           streetName: this.street_name,
           streetNumber: this.street_number,
           city: this.city,
@@ -114,6 +116,7 @@ export default defineComponent({
           let addressAttributes = {}
           if (address) {
             const addressId = address.data.id
+            this.address_id = addressId
             const included = warehouse.data.included.filter((inc) => inc.type === 'address' && inc.id === addressId)
             if (included && included.length === 1) {
               addressAttributes = included[0].attributes
@@ -131,6 +134,7 @@ export default defineComponent({
     },
     resetForm() {
       this.name = ''
+      this.address_id = undefined
       this.street_name = ''
       this.street_number = ''
       this.city = ''

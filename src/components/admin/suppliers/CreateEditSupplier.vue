@@ -74,6 +74,7 @@ export default defineComponent({
       free_delivery_from: undefined,
       contacts: [],
       contact_id: undefined,
+      address_id: undefined,
       street_name: '',
       street_number: '',
       city: '',
@@ -123,6 +124,7 @@ export default defineComponent({
           dic: this.dic,
           ic_dph: this.ic_dph,
           contactId: this.contact_id,
+          addressId: this.address_id,
           freeDeliveryFrom: this.free_delivery_from,
           streetName: this.street_name,
           streetNumber: this.street_number,
@@ -157,6 +159,7 @@ export default defineComponent({
           let addressAttributes = {}
           if (address) {
             const addressId = address.data.id
+            this.address_id = addressId
             const included = supplier.data.included.filter((inc) => inc.type === 'address' && inc.id === addressId)
             if (included && included.length === 1) {
               addressAttributes = included[0].attributes
@@ -193,6 +196,7 @@ export default defineComponent({
       this.ic_dph = ''
       this.free_delivery_from = undefined
       this.contact_id = undefined
+      this.address_id = undefined
       this.street_name = ''
       this.street_number = ''
       this.city = ''

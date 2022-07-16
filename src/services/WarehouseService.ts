@@ -16,29 +16,54 @@ export function getWarehouseOptions() {
   return crud.getOptions()
 }
 
-export function updateWarehouse({ id, name, streetName, streetNumber, city, zip, country, coordinates }: any = {}) {
+export function updateWarehouse({
+  id,
+  name,
+  addressId,
+  streetName,
+  streetNumber,
+  city,
+  zip,
+  country,
+  coordinates
+}: any = {}) {
   const params = {
     name: name,
-    street_name: streetName,
-    street_number: streetNumber,
-    city: city,
-    zip: zip,
-    country: country,
-    coordinates: coordinates
+    address_attributes: {
+      id: addressId,
+      street_name: streetName,
+      street_number: streetNumber,
+      city: city,
+      zip: zip,
+      country: country,
+      coordinates: coordinates && coordinates.length > 0 ? coordinates : null
+    }
   }
 
   return crud.updateRecord(id, params)
 }
 
-export function createWarehouse({ name, streetName, streetNumber, city, zip, country, coordinates }: any = {}) {
+export function createWarehouse({
+  name,
+  addressId,
+  streetName,
+  streetNumber,
+  city,
+  zip,
+  country,
+  coordinates
+}: any = {}) {
   const params = {
     name: name,
-    street_name: streetName,
-    street_number: streetNumber,
-    city: city,
-    zip: zip,
-    country: country,
-    coordinates: coordinates
+    address_attributes: {
+      id: addressId,
+      street_name: streetName,
+      street_number: streetNumber,
+      city: city,
+      zip: zip,
+      country: country,
+      coordinates: coordinates && coordinates.length > 0 ? coordinates : null
+    }
   }
 
   return crud.createRecord(params)
