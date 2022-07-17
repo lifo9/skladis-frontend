@@ -2,14 +2,7 @@
   <div>
     <navigation-back />
     <div v-if="!loading" class="my-14 mx-auto w-full max-w-5xl space-y-6">
-      <stock-in-item
-        :products="products"
-        :rooms="rooms"
-        :locations="locations"
-        :initial-item="initialItem"
-        @room-change="handleRoomChange"
-        @location-change="handleLocationChange"
-      />
+      <stock-in-item :products="products" :rooms="rooms" :locations="locations" />
     </div>
     <r-spinner v-else class="mr-3 ml-1 h-4 w-4 text-white" />
   </div>
@@ -34,8 +27,7 @@ export default defineComponent({
       loading: false,
       products: [],
       rooms: [],
-      locations: [],
-      initialItem: undefined
+      locations: []
     }
   },
   computed: {
@@ -54,17 +46,17 @@ export default defineComponent({
     async findProducts() {
       await this.findAsync('products', getProductOptions)
     },
-    async findRooms(locationId) {
-      await this.findAsync('rooms', getRoomOptions, { locations_id: locationId })
+    async findRooms() {
+      await this.findAsync('rooms', getRoomOptions)
     },
-    async findLocations(roomId) {
-      await this.findAsync('locations', getLocationOptions, { room_id: roomId })
+    async findLocations() {
+      await this.findAsync('locations', getLocationOptions)
     },
-    async findAsync(dataKey, findMethod, filter) {
+    async findAsync(dataKey, findMethod) {
       this.loading = true
 
       try {
-        const data = await findMethod(filter)
+        const data = await findMethod()
 
         if (data.data) {
           this[dataKey] = data.data
@@ -74,14 +66,6 @@ export default defineComponent({
       }
 
       this.loading = false
-    },
-    handleRoomChange(initialItem) {
-      this.initialItem = initialItem
-      this.findLocations(initialItem.roomId)
-    },
-    handleLocationChange(initialItem) {
-      this.initialItem = initialItem
-      this.findRooms(initialItem.locationId)
     },
     setTitle() {
       this.mainStore.setCurrentTitle(this.$t('Delivery of goods'))

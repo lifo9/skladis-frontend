@@ -21,7 +21,7 @@
         v-model="room"
         track-by="id"
         label="label"
-        :options="rooms"
+        :options="filteredRoomOptions"
         :searchable="true"
         :loading="loading"
         :placeholder="$t('Room')"
@@ -30,8 +30,6 @@
         :deselect-label="$t('deselect')"
         :no-options="$t('Not found')"
         :show-no-results="false"
-        @update:modelValue="$emit('roomChange', stockItem)"
-        @remove="$emit('roomChange', stockItem)"
       />
     </div>
     <div class="col-span-2 md:col-span-1 md:ml-4">
@@ -39,7 +37,7 @@
         v-model="location"
         track-by="id"
         label="label"
-        :options="locations"
+        :options="filteredLocationOptions"
         :searchable="true"
         :loading="loading"
         :placeholder="$t('location')"
@@ -48,8 +46,6 @@
         :deselect-label="$t('deselect')"
         :no-options="$t('Not found')"
         :show-no-results="false"
-        @update:modelValue="$emit('locationChange', stockItem)"
-        @remove="$emit('locationChange', stockItem)"
       />
     </div>
     <r-input
@@ -119,22 +115,33 @@ export default defineComponent({
     }
   },
   computed: {
-    stockItem() {
-      return {
-        productId: this.product?.id,
-        roomId: this.room?.id,
-        locationId: this.location?.id,
-        expiration: this.expiration,
-        quantity: parseInt(this.quantity)
+    filteredRoomOptions() {
+      const rooms = this.rooms
+      const selectedLocation = this.location
+      if (selectedLocation) {
+        const filteredRooms = rooms.filter((room) => room.location_ids.includes(selectedLocation.id))
+        if (filteredRooms.length === 1) {
+          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+          this.room = filteredRooms[0]
+        }
+        return filteredRooms
+      } else {
+        return rooms
       }
-    }
-  },
-  mounted() {
-    if (this.initialItem) {
-      this.product = this.products.filter((product) => product.id == this.initialItem.productId).pop()
-      this.room = this.rooms.filter((room) => room.id == this.initialItem.roomId).pop()
-      this.location = this.locations.filter((location) => location.id == this.initialItem.locationId).pop()
-      this.quantity = this.initialItem.quantity
+    },
+    filteredLocationOptions() {
+      const locations = this.locations
+      const selectedRoom = this.room
+      if (selectedRoom) {
+        const filteredLocations = locations.filter((location) => selectedRoom.location_ids.includes(location.id))
+        if (filteredLocations.length === 1) {
+          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+          this.location = filteredLocations[0]
+        }
+        return filteredLocations
+      } else {
+        return locations
+      }
     }
   },
   methods: {
