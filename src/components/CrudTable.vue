@@ -1,7 +1,7 @@
 <template>
   <div class="my-4">
     <r-filter v-if="filterOptions" :options="filterOptions" @filter="handleFilter" />
-    <div class="flex flex-wrap justify-start items-center my-4 sm:justify-end">
+    <div class="my-4 flex flex-wrap items-center justify-start sm:justify-end">
       <r-search v-if="searchEnabled" class="m-2" @search="handleSearch" />
       <div v-for="(customGlobalAction, idx) in customGlobalActions" :key="'customGlobalAction_' + idx">
         <component :is="customGlobalAction.component" v-bind="customGlobalAction.props" />
@@ -46,6 +46,7 @@
         :custom-ordering-options="customOrderingOptions"
         :hide-all-cols="hideAllCols"
         :show-id="showId"
+        :id-param-name="idParamName"
         @add-selected="handleAddSelected"
         @remove-selected="handleRemoveSelected"
         @delete-item="deleteItems"
@@ -63,7 +64,7 @@
             :class="customCol.options && customCol.options.sort && customCol.options.orderBy ? 'cursor-pointer' : ''"
             @click="customColChangeOrder(customCol)"
           >
-            <div class="flex justify-start items-center">
+            <div class="flex items-center justify-start">
               <span>{{ customCol.header }}</span>
               <order-arrow
                 v-if="
@@ -94,7 +95,7 @@
             :class="customCol.options && customCol.options.sort && customCol.options.orderBy ? 'cursor-pointer' : ''"
             @click="customColChangeOrder(customCol)"
           >
-            <div class="flex justify-start items-center">
+            <div class="flex items-center justify-start">
               <span>{{ customCol.header }}</span>
               <order-arrow
                 v-if="
@@ -233,6 +234,10 @@ export default defineComponent({
     showId: {
       type: Boolean,
       default: false
+    },
+    idParamName: {
+      type: String,
+      default: 'id'
     }
   },
   data() {

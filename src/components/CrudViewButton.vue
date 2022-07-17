@@ -6,7 +6,7 @@
     :query="query"
     class="m-1 text-white"
     :class="options.customClass || ''"
-    icon="remove_red_eye"
+    :icon="options.icon || 'remove_red_eye'"
     type="button"
     size="verySmall"
   />

@@ -1,5 +1,5 @@
 <template>
-  <div class="grid justify-center items-start mx-auto max-w-screen-2xl xl:grid-cols-2 xl:space-x-4">
+  <div class="mx-auto grid max-w-screen-2xl items-start justify-center xl:grid-cols-2 xl:space-x-4">
     <div class="col-span-2 md:col-span-1">
       <h1>{{ $t('Products with low quantity') }}</h1>
       <crud-table
@@ -185,6 +185,18 @@ export default defineComponent({
           }
         },
         {
+          header: this.$t('location'),
+          component: shallowRef(CrudLink),
+          options: {
+            relationship: 'stock',
+            meta: 'location',
+            attribute: 'name',
+            editLink: true,
+            editRouteName: 'LocationEdit',
+            sort: false
+          }
+        },
+        {
           header: this.$t('quantity'),
           component: shallowRef(CrudText),
           options: {
@@ -228,6 +240,17 @@ export default defineComponent({
             attribute: ['name'],
             editLink: true,
             editRouteName: 'RoomEdit',
+            sort: false
+          }
+        },
+        {
+          header: this.$t('location'),
+          component: shallowRef(CrudLink),
+          options: {
+            relationship: 'location',
+            attribute: ['name'],
+            editLink: true,
+            editRouteName: 'LocationEdit',
             sort: false
           }
         },

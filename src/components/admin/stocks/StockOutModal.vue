@@ -6,8 +6,8 @@
     </r-button>
     <div>
       <vue-final-modal v-model="showModal" classes="modal-container">
-        <div class="flex flex-wrap justify-center items-center p-8 m-4 max-w-xl bg-white rounded-md">
-          <div class="flex flex-wrap justify-center my-4 w-full">
+        <div class="m-4 flex max-w-xl flex-wrap items-center justify-center rounded-md bg-white p-8">
+          <div class="my-4 flex w-full flex-wrap justify-center">
             <h1 class="mb-10 w-full text-center">{{ $t('Delivery of goods') }}</h1>
             <h2 class="mb-2 w-full text-center">
               <b>
@@ -18,10 +18,13 @@
                 />
               </b>
             </h2>
-            <p class="mb-2 w-full text-base text-center">
+            <p class="mb-2 w-full text-center text-base">
               <crud-text :row="row" :included="included" :options="{ relationship: 'room', attribute: ['name'] }" />
             </p>
-            <p class="mb-10 w-full text-base text-center">
+            <p class="mb-2 w-full text-center text-base">
+              <crud-text :row="row" :included="included" :options="{ relationship: 'location', attribute: ['name'] }" />
+            </p>
+            <p class="mb-10 w-full text-center text-base">
               {{ $filters.capitalize($t('expiration')) }}:
               <crud-text
                 :row="row"
@@ -39,7 +42,7 @@
               :label="$filters.capitalize($t('quantity'))"
             />
           </div>
-          <div class="flex justify-between space-x-4 w-full align-middle">
+          <div class="flex w-full justify-between space-x-4 align-middle">
             <r-button variant="secondary" @click="showModal = false">
               {{ $t('Cancel') }}
             </r-button>
@@ -93,6 +96,9 @@ export default defineComponent({
     roomId() {
       return parseInt(this.row.relationships.room.data.id)
     },
+    locationId() {
+      return parseInt(this.row.relationships?.location?.data?.id)
+    },
     expiration() {
       return this.row.attributes.expiration
     }
@@ -108,6 +114,7 @@ export default defineComponent({
         await stockOut({
           productId: this.productId,
           roomId: this.roomId,
+          locationId: this.locationId,
           expiration: this.expiration,
           quantity: parseInt(this.quantity)
         })
@@ -119,6 +126,7 @@ export default defineComponent({
         this.eventBus.emit('reloadCrudTable')
         this.showModal = false
       } catch (error) {
+        console.log(error)
         this.eventBus.emit('alert', {
           level: 'alert',
           message: this.$t('Insufficient stocks')
