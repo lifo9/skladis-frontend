@@ -13,7 +13,7 @@
     :custom-actions="customActions"
     :custom-global-actions="customGlobalActions"
   />
-  <r-spinner v-else class="mr-3 ml-1 w-4 h-4 text-white" />
+  <r-spinner v-else class="mr-3 ml-1 h-4 w-4 text-white" />
 </template>
 
 <script lang="ts">
@@ -28,6 +28,7 @@ import CrudTable from '@/components/CrudTable.vue'
 import CrudText from '@/components/CrudText.vue'
 import NavigationItem from '@/components/NavigationItem.vue'
 import RSpinner from '@/components/ui/RSpinner.vue'
+import { getLocationOptions } from '@/services/LocationService'
 import { getProductOptions } from '@/services/ProductService'
 import { getRoomOptions } from '@/services/RoomService'
 import { getExpirationRange, getStocks } from '@/services/StockService'
@@ -103,6 +104,17 @@ export default defineComponent({
           }
         },
         {
+          header: this.$t('location'),
+          component: shallowRef(CrudLink),
+          options: {
+            relationship: 'location',
+            attribute: ['name'],
+            editLink: true,
+            editRouteName: 'LocationEdit',
+            sort: false
+          }
+        },
+        {
           header: this.$t('expiration'),
           component: shallowRef(CrudText),
           options: {
@@ -147,6 +159,11 @@ export default defineComponent({
         return { id: room.id, label: room.label }
       })
 
+      const locations = await getLocationOptions()
+      const locationOptions = locations.data.map((location) => {
+        return { id: location.id, label: location.label }
+      })
+
       const expirationRange = await getExpirationRange()
 
       this.filterOptions = {
@@ -161,6 +178,10 @@ export default defineComponent({
         'room_id[]': {
           label: this.$t('Room'),
           options: roomOptions
+        },
+        'location_id[]': {
+          label: this.$t('location'),
+          options: locationOptions
         },
         'stock_expiration': {
           label: this.$filters.capitalize(this.$t('expiration')),

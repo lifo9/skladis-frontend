@@ -1,10 +1,17 @@
 <template>
   <div>
     <navigation-back />
-    <div v-if="!loading" class="my-14 mx-auto space-y-6 w-full max-w-5xl">
-      <stock-in-item :products="products" :rooms="rooms" />
+    <div v-if="!loading" class="my-14 mx-auto w-full max-w-5xl space-y-6">
+      <stock-in-item
+        :products="products"
+        :rooms="rooms"
+        :locations="locations"
+        :initial-item="initialItem"
+        @room-change="handleRoomChange"
+        @location-change="handleLocationChange"
+      />
     </div>
-    <r-spinner v-else class="mr-3 ml-1 w-4 h-4 text-white" />
+    <r-spinner v-else class="mr-3 ml-1 h-4 w-4 text-white" />
   </div>
 </template>
 
@@ -15,6 +22,7 @@ import { defineComponent } from 'vue'
 import StockInItem from '@/components/admin/stocks/StockInItem.vue'
 import NavigationBack from '@/components/ui/NavigationBack.vue'
 import RSpinner from '@/components/ui/RSpinner.vue'
+import { getLocationOptions } from '@/services/LocationService'
 import { getProductOptions } from '@/services/ProductService'
 import { getRoomOptions } from '@/services/RoomService'
 import { useMainStore } from '@/stores/mainStore'
@@ -25,7 +33,9 @@ export default defineComponent({
     return {
       loading: false,
       products: [],
-      rooms: []
+      rooms: [],
+      locations: [],
+      initialItem: undefined
     }
   },
   computed: {
@@ -35,6 +45,7 @@ export default defineComponent({
     this.setTitle()
     await this.findProducts()
     await this.findRooms()
+    await this.findLocations()
   },
   updated() {
     this.setTitle()
@@ -43,14 +54,17 @@ export default defineComponent({
     async findProducts() {
       await this.findAsync('products', getProductOptions)
     },
-    async findRooms() {
-      await this.findAsync('rooms', getRoomOptions)
+    async findRooms(locationId) {
+      await this.findAsync('rooms', getRoomOptions, { locations_id: locationId })
     },
-    async findAsync(dataKey, findMethod) {
+    async findLocations(roomId) {
+      await this.findAsync('locations', getLocationOptions, { room_id: roomId })
+    },
+    async findAsync(dataKey, findMethod, filter) {
       this.loading = true
 
       try {
-        const data = await findMethod()
+        const data = await findMethod(filter)
 
         if (data.data) {
           this[dataKey] = data.data
@@ -60,6 +74,14 @@ export default defineComponent({
       }
 
       this.loading = false
+    },
+    handleRoomChange(initialItem) {
+      this.initialItem = initialItem
+      this.findLocations(initialItem.roomId)
+    },
+    handleLocationChange(initialItem) {
+      this.initialItem = initialItem
+      this.findRooms(initialItem.locationId)
     },
     setTitle() {
       this.mainStore.setCurrentTitle(this.$t('Delivery of goods'))

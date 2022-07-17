@@ -1,7 +1,7 @@
 <template>
   <barcode-scanner
     variant="compact"
-    class="inline-flex justify-center items-center py-1 px-2 mx-2 max-w-sm text-sm font-medium leading-6 bg-red-600 hover:bg-red-500 active:bg-red-400 rounded-md border border-transparent focus:border-red-700 transition duration-150 ease-in-out"
+    class="mx-2 inline-flex max-w-sm items-center justify-center rounded-md border border-transparent bg-red-600 py-1 px-2 text-sm font-medium leading-6 transition duration-150 ease-in-out hover:bg-red-500 focus:border-red-700 active:bg-red-400"
     @input="searchProduct"
   ></barcode-scanner>
 </template>

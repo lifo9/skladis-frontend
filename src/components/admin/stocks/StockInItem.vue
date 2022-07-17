@@ -1,5 +1,5 @@
 <template>
-  <div class="grid relative items-start space-y-4 md:grid-cols-2">
+  <div class="relative grid items-start space-y-4 md:grid-cols-2">
     <div class="col-span-2">
       <multiselect
         v-model="product"
@@ -16,7 +16,7 @@
         :show-no-results="false"
       />
     </div>
-    <div class="col-span-2">
+    <div class="col-span-2 md:col-span-1">
       <multiselect
         v-model="room"
         track-by="id"
@@ -30,6 +30,26 @@
         :deselect-label="$t('deselect')"
         :no-options="$t('Not found')"
         :show-no-results="false"
+        @update:modelValue="$emit('roomChange', stockItem)"
+        @remove="$emit('roomChange', stockItem)"
+      />
+    </div>
+    <div class="col-span-2 md:col-span-1 md:ml-4">
+      <multiselect
+        v-model="location"
+        track-by="id"
+        label="label"
+        :options="locations"
+        :searchable="true"
+        :loading="loading"
+        :placeholder="$t('location')"
+        :select-label="$t('select')"
+        :selected-label="$t('deselect')"
+        :deselect-label="$t('deselect')"
+        :no-options="$t('Not found')"
+        :show-no-results="false"
+        @update:modelValue="$emit('locationChange', stockItem)"
+        @remove="$emit('locationChange', stockItem)"
       />
     </div>
     <r-input
@@ -78,6 +98,14 @@ export default defineComponent({
     rooms: {
       type: Array,
       required: true
+    },
+    locations: {
+      type: Array,
+      required: true
+    },
+    initialItem: {
+      type: Object,
+      default: undefined
     }
   },
   data() {
@@ -85,8 +113,28 @@ export default defineComponent({
       loading: false,
       product: undefined,
       room: undefined,
+      location: undefined,
       expiration: undefined,
       quantity: undefined
+    }
+  },
+  computed: {
+    stockItem() {
+      return {
+        productId: this.product?.id,
+        roomId: this.room?.id,
+        locationId: this.location?.id,
+        expiration: this.expiration,
+        quantity: parseInt(this.quantity)
+      }
+    }
+  },
+  mounted() {
+    if (this.initialItem) {
+      this.product = this.products.filter((product) => product.id == this.initialItem.productId).pop()
+      this.room = this.rooms.filter((room) => room.id == this.initialItem.roomId).pop()
+      this.location = this.locations.filter((location) => location.id == this.initialItem.locationId).pop()
+      this.quantity = this.initialItem.quantity
     }
   },
   methods: {
@@ -115,6 +163,7 @@ export default defineComponent({
         await stockIn({
           productId: this.product.id,
           roomId: this.room.id,
+          locationId: this.location.id,
           expiration: this.expiration,
           quantity: parseInt(this.quantity)
         })
@@ -132,6 +181,10 @@ export default defineComponent({
       }
       if (!this.room) {
         this.eventBus.emit('alert', { level: 'alert', message: this.$t('Please, select room') })
+        return false
+      }
+      if (!this.location) {
+        this.eventBus.emit('alert', { level: 'alert', message: this.$t('Please, select location') })
         return false
       }
       if (!this.quantity) {

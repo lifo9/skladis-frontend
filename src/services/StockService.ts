@@ -12,10 +12,11 @@ export function getStocks(params) {
   return crud.getRecords(params)
 }
 
-export function stockIn({ productId, roomId, expiration, quantity }: any = {}) {
+export function stockIn({ productId, roomId, locationId, expiration, quantity }: any = {}) {
   const params = {
     product_id: productId,
     room_id: roomId,
+    location_id: locationId,
     expiration: expiration,
     quantity: quantity
   }
@@ -23,10 +24,11 @@ export function stockIn({ productId, roomId, expiration, quantity }: any = {}) {
   return crud.createRecord(params, false, false, 'in')
 }
 
-export function stockOut({ productId, roomId, expiration, quantity }: any = {}) {
+export function stockOut({ productId, roomId, locationId, expiration, quantity }: any = {}) {
   const params = {
     product_id: productId,
     room_id: roomId,
+    location_id: locationId,
     expiration: expiration,
     quantity: quantity
   }
@@ -34,11 +36,11 @@ export function stockOut({ productId, roomId, expiration, quantity }: any = {}) 
   return crud.createRecord(params, false, false, 'out')
 }
 
-export function stockTransfer({ productId, roomFromId, roomToId, expiration, quantity }: any = {}) {
+export function stockTransfer({ productId, locationFromId, locationToId, expiration, quantity }: any = {}) {
   const params = {
     product_id: productId,
-    room_from_id: roomFromId,
-    room_to_id: roomToId,
+    location_from_id: locationFromId,
+    location_to_id: locationToId,
     expiration: expiration,
     quantity: quantity
   }
