@@ -36,9 +36,19 @@ export function stockOut({ productId, roomId, locationId, expiration, quantity }
   return crud.createRecord(params, false, false, 'out')
 }
 
-export function stockTransfer({ productId, locationFromId, locationToId, expiration, quantity }: any = {}) {
+export function stockTransfer({
+  productId,
+  roomFromId,
+  locationFromId,
+  roomToId,
+  locationToId,
+  expiration,
+  quantity
+}: any = {}) {
   const params = {
     product_id: productId,
+    room_from_id: roomFromId,
+    room_to_id: roomToId,
     location_from_id: locationFromId,
     location_to_id: locationToId,
     expiration: expiration,

@@ -70,7 +70,13 @@ export default defineComponent({
           }
         }
       ],
-      customActions: [{ component: markRaw(StockOutModal) }, { component: markRaw(StockTransferModal) }],
+      customActions: [
+        { component: markRaw(StockOutModal) },
+        {
+          component: markRaw(StockTransferModal),
+          options: { roomOptions: [], locationOptions: [] }
+        }
+      ],
       customCols: [
         {
           header: '',
@@ -137,8 +143,8 @@ export default defineComponent({
       ]
     }
   },
-  mounted() {
-    this.fetchData()
+  async mounted() {
+    await this.fetchData()
   },
   methods: {
     async fetchData() {
@@ -156,13 +162,15 @@ export default defineComponent({
 
       const rooms = await getRoomOptions()
       const roomOptions = rooms.data.map((room) => {
-        return { id: room.id, label: room.label }
+        return { id: room.id, label: room.label, location_ids: room.location_ids }
       })
 
       const locations = await getLocationOptions()
       const locationOptions = locations.data.map((location) => {
-        return { id: location.id, label: location.label }
+        return { id: location.id, label: location.label, room_id: location.room_id }
       })
+
+      this.customActions[1].options = { roomOptions: roomOptions, locationOptions: locationOptions }
 
       const expirationRange = await getExpirationRange()
 
