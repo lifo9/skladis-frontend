@@ -4,9 +4,9 @@
       <thead>
         <tr>
           <th class="ordering">
-            <div class="flex flex-wrap justify-between items-center w-full">
+            <div class="flex w-full flex-wrap items-center justify-between">
               {{ $t('Order') }}
-              <div class="flex flex-wrap justify-end items-center">
+              <div class="flex flex-wrap items-center justify-end">
                 <r-select
                   :options="orderingOptions"
                   :disable-default-option="true"
@@ -17,17 +17,17 @@
               </div>
             </div>
           </th>
-          <th v-if="bulkSelect" scope="col" class="sm:w-16 bulk-select">
+          <th v-if="bulkSelect" scope="col" class="bulk-select sm:w-16">
             <span class="sm:hidden">{{ $t('Select All') }} &nbsp;</span>
             <r-input
-              class="flex flex-wrap justify-start items-center ml-auto w-6 sm:justify-center sm:ml-0"
+              class="ml-auto flex w-6 flex-wrap items-center justify-start sm:ml-0 sm:justify-center"
               type="checkbox"
               :model-value="isSelectedAll"
               @change="selectAll"
             />
           </th>
           <th v-if="rows.length > 0 && rows[0].id && showId" class="cursor-pointer" @click="changeOrder('id')">
-            <div class="flex justify-start items-center">
+            <div class="flex items-center justify-start">
               <span>ID</span>
               <order-arrow v-if="orderBy === 'id'" :order="order" />
             </div>
@@ -40,7 +40,7 @@
             class="cursor-pointer"
             @click="changeOrder(header.id)"
           >
-            <div class="flex justify-start items-center">
+            <div class="flex items-center justify-start">
               {{ header.value }}
               <order-arrow v-if="orderBy === header.id" :order="order" />
             </div>
@@ -57,7 +57,7 @@
           <td
             v-if="bulkSelect"
             :data-title="$t('Select')"
-            class="flex flex-wrap justify-end items-center sm:table-cell has-title"
+            class="has-title flex flex-wrap items-center justify-end sm:table-cell"
           >
             <r-input
               type="checkbox"
@@ -72,7 +72,7 @@
           <td v-for="(col, idx2) in extractedRowData[idx1]" :key="idx2" :data-title="$t(idx2)" class="has-title">
             <span
               v-if="typeof col === 'boolean'"
-              class="font-bold material-icons"
+              class="material-icons font-bold"
               :class="col ? 'text-green-600' : 'text-red-600'"
             >
               {{ col ? 'check' : 'close' }}
@@ -81,12 +81,12 @@
           </td>
           <slot :row="getUnfilteredRowById(row.id)" name="customColsAfter" />
           <td v-if="enableDefaultActions || enableCustomActions" :data-title="$t('Actions')" class="actions">
-            <div class="flex flex-wrap justify-start items-center w-max max-w-xs">
+            <div class="flex w-max max-w-xs flex-wrap items-center justify-start">
               <slot :row="getUnfilteredRowById(row.id)" name="customActions" />
               <navigation-item
                 v-if="enableDefaultActions"
                 :route-name="editRouteName"
-                :params="{ id: row.id }"
+                :params="{ [idParamName]: row.id }"
                 class="m-1"
                 type="button"
                 size="verySmall"
@@ -108,8 +108,8 @@
       </tbody>
     </table>
   </div>
-  <div v-else class="flex flex-wrap justify-center items-center my-4">
-    <r-spinner class="my-4 w-16 h-16 text-gray-800" />
+  <div v-else class="my-4 flex flex-wrap items-center justify-center">
+    <r-spinner class="my-4 h-16 w-16 text-gray-800" />
   </div>
 </template>
 
@@ -196,6 +196,10 @@ export default defineComponent({
     showId: {
       type: Boolean,
       default: true
+    },
+    idParamName: {
+      type: String,
+      default: 'id'
     }
   },
   emits: ['addSelected', 'removeSelected', 'deleteItem', 'order'],

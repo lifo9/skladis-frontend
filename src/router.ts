@@ -6,6 +6,8 @@ import CreateEditContact from '@/components/admin/contacts/CreateEditContact.vue
 import ViewContacts from '@/components/admin/contacts/ViewContacts.vue'
 import CreateEditInvoice from '@/components/admin/invoices/CreateEditInvoice.vue'
 import ViewInvoices from '@/components/admin/invoices/ViewInvoices.vue'
+import CreateEditLocation from '@/components/admin/locations/CreateEditLocation.vue'
+import ViewLocations from '@/components/admin/locations/ViewLocations.vue'
 import MyProfile from '@/components/admin/MyProfile.vue'
 import CreateEditProduct from '@/components/admin/products/CreateEditProduct.vue'
 import ViewProductPriceHistory from '@/components/admin/products/ViewProductPriceHistory.vue'
@@ -34,6 +36,7 @@ import AuditView from '@/views/logged/AuditView.vue'
 import ContactsView from '@/views/logged/ContactsView.vue'
 import HomeView from '@/views/logged/HomeView.vue'
 import InvoicesView from '@/views/logged/InvoicesView.vue'
+import LocationsView from '@/views/logged/LocationsView.vue'
 import LoggedMainView from '@/views/logged/LoggedMainView.vue'
 import ProductsView from '@/views/logged/ProductsView.vue'
 import RoomsView from '@/views/logged/RoomsView.vue'
@@ -189,6 +192,28 @@ const routes: Array<RouteRecordRaw> = [
             path: 'edit/:id',
             name: 'RoomEdit',
             component: CreateEditRoom
+          },
+          {
+            path: ':id',
+            name: 'LocationsView',
+            component: LocationsView,
+            children: [
+              {
+                path: 'locations',
+                name: 'ViewLocations',
+                component: ViewLocations
+              },
+              {
+                path: 'locations/create',
+                name: 'LocationCreate',
+                component: CreateEditLocation
+              },
+              {
+                path: 'locations/edit/:location_id',
+                name: 'LocationEdit',
+                component: CreateEditLocation
+              }
+            ]
           }
         ]
       },
