@@ -62,3 +62,24 @@ resource "cloudflare_record" "skladis_dns" {
   type    = "CNAME"
   proxied = true
 }
+
+resource "cloudflare_record" "www_skladis_dns" {
+  zone_id = var.zone_id
+  name    = "www"
+  value   = "${var.skladis_project_name}.pages.dev"
+  type    = "CNAME"
+  proxied = true
+}
+
+resource "cloudflare_page_rule" "redirect_www_to_apex" {
+  zone_id  = var.zone_id
+  target   = "www.${var.skladis_frontend_domain_name}*"
+  priority = 1
+
+  actions {
+    forwarding_url {
+      url         = "https://${var.skladis_frontend_domain_name}/$1"
+      status_code = 301
+    }
+  }
+}
