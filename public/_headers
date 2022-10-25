@@ -4,5 +4,4 @@
   Referrer-Policy: no-referrer
   Permissions-Policy: document-domain=()
   Content-Security-Policy: strict-dynamic 'self'; frame-ancestors 'none';
-  Access-Control-Allow-Origin: https://api.skladis.com
-  Access-Control-Allow-Origin: https://static.skladis.com
+  Access-Control-Allow-Origin: *
