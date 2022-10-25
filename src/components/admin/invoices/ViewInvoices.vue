@@ -10,8 +10,10 @@
     :custom-cols-before="customCols"
     :custom-actions="customActions"
     :filter-options="filterOptions"
+    initial-order="desc"
+    initial-order-by="created_at"
   />
-  <r-spinner v-else class="mr-3 ml-1 w-4 h-4 text-white" />
+  <r-spinner v-else class="mr-3 ml-1 h-4 w-4 text-white" />
 </template>
 
 <script lang="ts">
