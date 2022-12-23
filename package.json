@@ -29,7 +29,7 @@
     "quagga": "^0.12.1",
     "remove": "^0.1.5",
     "vue": "^3.2.25",
-    "vue-axios": "^3.4.1",
+    "vue-axios": "^3.5.2",
     "vue-final-modal": "^3.4.11",
     "vue-flatpickr-component": "^9",
     "vue-i18n": "9",
