@@ -21,7 +21,7 @@
     "lint:script": "eslint --ext .ts,vue --ignore-path .gitignore ."
   },
   "dependencies": {
-    "axios": "^0.26.0",
+    "axios": "^1.2.1",
     "dayjs": "^1.11.7",
     "material-icons": "^1.10.7",
     "mitt": "^3.0.0",
