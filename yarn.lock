@@ -1329,7 +1329,7 @@ flat-cache@^3.0.4:
     flatted "^3.1.0"
     rimraf "^3.0.2"
 
-flatpickr@^4.6.9:
+flatpickr@^4.6.13:
   version "4.6.13"
   resolved "https://registry.yarnpkg.com/flatpickr/-/flatpickr-4.6.13.tgz#8a029548187fd6e0d670908471e43abe9ad18d94"
   integrity sha512-97PMG/aywoYpB4IvbvUJi0RQi8vearvU0oov1WW3k0WZPBMrTQVqekSX5CjSG/M4Q3i6A/0FKXC7RyAoAUUSPw==
@@ -2713,12 +2713,12 @@ vue-final-modal@^3.4.11:
   resolved "https://registry.yarnpkg.com/vue-final-modal/-/vue-final-modal-3.4.11.tgz#5a7cb31fad5bff0f51e4db167ae9309f404f20a1"
   integrity sha512-tKBM4hcUo16rUGa/UaYMlut11cRfxMZnahz9u+mAoSk8mQNdnm9FHzOeHIcUxNHvMC/YyVBlOHi+2GqOVO8zig==
 
-vue-flatpickr-component@^9:
-  version "9.0.6"
-  resolved "https://registry.yarnpkg.com/vue-flatpickr-component/-/vue-flatpickr-component-9.0.6.tgz#2aeff6933fc2cd40fe4ba52431408901a1ce5511"
-  integrity sha512-U3355po5WPejAagvDig+MA7v8NWr0+Dbx3a1pds19hx4i9CeXuBSpD7vl0fxKhk+Hfu3T+DN2aOR69HIwSJh1A==
+vue-flatpickr-component@^11:
+  version "11.0.1"
+  resolved "https://registry.yarnpkg.com/vue-flatpickr-component/-/vue-flatpickr-component-11.0.1.tgz#e24f7c730287b4e32b7cff33f5f823d6c47dc466"
+  integrity sha512-dbBDC5a7XhsapGeejGrE7r2dj9SALJFAwMXJf/IYvbJhqsUZ8LZbFcK80vwOB6zgoSOrbrtBiVas2IQySLp1+w==
   dependencies:
-    flatpickr "^4.6.9"
+    flatpickr "^4.6.13"
 
 vue-i18n@9:
   version "9.1.10"
