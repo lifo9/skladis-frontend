@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "axios": "^0.26.0",
-    "dayjs": "^1.10.8",
+    "dayjs": "^1.11.7",
     "material-icons": "^1.10.7",
     "mitt": "^3.0.0",
     "pinia": "^2.0.11",
