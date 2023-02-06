@@ -2275,10 +2275,10 @@ vue-i18n@9:
     "@intlify/vue-devtools" "9.2.2"
     "@vue/devtools-api" "^6.2.1"
 
-vue-multiselect@^3.0.0-alpha.2:
-  version "3.0.0-alpha.2"
-  resolved "https://registry.yarnpkg.com/vue-multiselect/-/vue-multiselect-3.0.0-alpha.2.tgz#58186f781136e71f1272b98690b569a0c00ed161"
-  integrity sha512-Xp9fGJECns45v+v8jXbCIsAkCybYkEg0lNwr7Z6HDUSMyx2TEIK2giipPE+qXiShEc1Ipn+ZtttH2iq9hwXP4Q==
+vue-multiselect@^3.0.0-beta.1:
+  version "3.0.0-beta.1"
+  resolved "https://registry.yarnpkg.com/vue-multiselect/-/vue-multiselect-3.0.0-beta.1.tgz#f5c33677237fa9af0105f94783c3175330731e5a"
+  integrity sha512-V+jpydtjyHcQ+yjHsEWEBrDAopOx/pufNkSAXNVDAGQ+ESDEJ7wYejNd9H1RiCnFOYK4yf1XSGqE+Mp3HJXmdg==
 
 vue-router@4:
   version "4.1.6"
