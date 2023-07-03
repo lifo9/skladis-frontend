@@ -10,7 +10,7 @@
     "not ie <= 8"
   ],
   "engines": {
-    "node": ">= 16.x.x",
+    "node": ">= 18.x.x",
     "npm": "please-use-yarn",
     "yarn": ">= 1.22.0"
   },

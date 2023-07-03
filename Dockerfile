@@ -1,5 +1,5 @@
 # build stage
-FROM docker.io/node:16-alpine as build-stage
+FROM docker.io/node:18-alpine as build-stage
 WORKDIR /app
 COPY package*.json ./
 RUN yarn install
