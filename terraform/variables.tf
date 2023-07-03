@@ -4,7 +4,8 @@ variable "cloudflare_account_id" {
 }
 
 variable "api_base_url" {
-  type = string
+  type    = string
+  default = "https://api.skladis.com"
 }
 
 variable "skladis_frontend_domain_name" {

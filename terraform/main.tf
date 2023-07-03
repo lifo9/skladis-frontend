@@ -11,7 +11,7 @@ terraform {
   required_providers {
     cloudflare = {
       source  = "cloudflare/cloudflare"
-      version = "~> 3.0"
+      version = "~> 4.0"
     }
   }
 }
@@ -40,10 +40,16 @@ resource "cloudflare_pages_project" "skladis_frontend" {
   }
 
   deployment_configs {
+    preview {
+      environment_variables = {
+        VITE_API_BASE_URL = var.api_base_url
+        NODE_VERSION      = 18
+      }
+    }
     production {
       environment_variables = {
         VITE_API_BASE_URL = var.api_base_url
-        NODE_VERSION      = 16
+        NODE_VERSION      = 18
       }
     }
   }
