@@ -23,7 +23,7 @@
   "dependencies": {
     "axios": "^1.5.0",
     "dayjs": "^1.11.9",
-    "material-icons": "^1.13.10",
+    "material-icons": "^1.13.11",
     "mitt": "^3.0.1",
     "pinia": "^2.1.6",
     "quagga": "^0.12.1",
