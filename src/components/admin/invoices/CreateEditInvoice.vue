@@ -1,7 +1,7 @@
 <template>
   <div>
     <navigation-back />
-    <div class="my-14 mx-auto space-y-6 w-full max-w-5xl">
+    <div class="mx-auto my-14 w-full max-w-5xl space-y-6">
       <r-button class="mb-5" size="full" :loading="loading" :disabled="loading" @click="createUpdate">
         <span v-if="invoiceId">
           {{ $filters.uppercase($t('Update')) }}
@@ -10,7 +10,7 @@
           {{ $filters.uppercase($t('Create')) }}
         </span>
       </r-button>
-      <div class="grid space-y-6 md:grid-cols-2 md:space-y-0 md:space-x-4">
+      <div class="grid space-y-6 md:grid-cols-2 md:space-x-4 md:space-y-0">
         <r-input
           v-model="invoice_code"
           :label="$t('Invoice code')"
@@ -37,7 +37,7 @@
         @change="handleAttachmentChange"
       >
         <template v-if="invoice_file" #file>
-          <div class="flex flex-wrap justify-center items-center p-4 space-x-4">
+          <div class="flex flex-wrap items-center justify-center space-x-4 p-4">
             <span class="material-icons">insert_drive_file</span>
             <a :href="invoice_file" target="_blank" class="hover:underline">{{ invoice_code }}</a>
           </div>
@@ -46,7 +46,7 @@
       <div>
         <span class="text-lg font-semibold">{{ $t('Invoice items') }}</span>
         <div
-          class="hidden relative items-start pb-2 mt-2 space-y-2 text-sm font-semibold border-b md:grid md:grid-cols-7 md:space-y-0 md:space-x-2"
+          class="relative mt-2 hidden items-start space-y-2 border-b pb-2 text-sm font-semibold md:grid md:grid-cols-7 md:space-x-2 md:space-y-0"
         >
           <div class="col-span-2">{{ $filters.uppercase($t('Product')) }}</div>
           <div class="col-span-2">{{ $filters.uppercase($t('Supplier')) }}</div>
@@ -67,7 +67,7 @@
           :added="true"
           @remove-invoice-item="handleRemoveInvoiceItem(idx)"
         />
-        <div class="hidden my-4 w-full h-[1px] bg-gray-300 md:block"></div>
+        <div class="my-4 hidden h-[1px] w-full bg-gray-300 md:block"></div>
         <invoice-item
           v-if="productOptions && supplierOptions"
           :key="JSON.stringify(invoiceItems)"
@@ -186,9 +186,6 @@ export default defineComponent({
             : this.$t('Invoice was successfully created')
         })
 
-        if (invoice.data && invoice.data.data && invoice.data.data.id && this.deleteAttachment) {
-          await deleteInvoiceAttachment(invoice.data.data.id)
-        }
         if (invoice.data && invoice.data.data && invoice.data.data.id && this.invoiceItems.length > 0) {
           Promise.all(
             this.invoiceItems.map((item) => {
@@ -204,6 +201,10 @@ export default defineComponent({
             .catch((error) => {
               this.eventBus.emit('alert', { level: 'alert', message: error })
             })
+        }
+
+        if (invoice.data && invoice.data.data && invoice.data.data.id && this.deleteAttachment) {
+          await deleteInvoiceAttachment(invoice.data.data.id)
         }
 
         if (!this.invoiceId) {
