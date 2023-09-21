@@ -3,4 +3,4 @@
   X-Content-Type-Options: nosniff
   Referrer-Policy: no-referrer
   Permissions-Policy: document-domain=()
-  Content-Security-Policy: strict-dynamic 'self'; frame-ancestors 'none';
+  Content-Security-Policy: default-src 'self' *.skladis.com skladis.com; script-src 'self' 'unsafe-eval' *.skladis.com skladis.com; img-src 'self' *.skladis.com skladis.com data: blob:; style-src 'self' 'unsafe-inline' *.skladis.com skladis.com; frame-ancestors 'none';
