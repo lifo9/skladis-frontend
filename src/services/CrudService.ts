@@ -65,8 +65,11 @@ class CrudService {
   }
   createRecord(params, formData = false, allowEmpty = false, customPath = undefined) {
     let payload = {}
+    // eslint-disable-next-line prefer-const
+    let headers = { ...securedAxiosInstance.defaults.headers.common }
     if (formData) {
       payload = this._buildFormData(params, allowEmpty)
+      headers['Content-Type'] = 'multipart/form-data'
     } else {
       payload[this.TYPE] = params
     }
@@ -75,12 +78,15 @@ class CrudService {
     if (customPath) {
       path += `/${customPath}`
     }
-    return securedAxiosInstance.post(path, payload)
+    return securedAxiosInstance.post(path, payload, { headers: headers })
   }
   updateRecord(id, params, formData = false, allowEmpty = false) {
     let payload = {}
+    // eslint-disable-next-line prefer-const
+    let headers = { ...securedAxiosInstance.defaults.headers.common }
     if (formData) {
       payload = this._buildFormData(params, allowEmpty)
+      headers['Content-Type'] = 'multipart/form-data'
     } else {
       payload[this.TYPE] = params
     }
@@ -89,7 +95,7 @@ class CrudService {
       id = ''
     }
 
-    return securedAxiosInstance.patch(this.API_PATH + '/' + id, payload)
+    return securedAxiosInstance.patch(this.API_PATH + '/' + id, payload, { headers: headers })
   }
   deleteRecord(id) {
     return securedAxiosInstance.delete(this.API_PATH + '/' + id)
