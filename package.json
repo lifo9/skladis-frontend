@@ -28,7 +28,7 @@
     "pinia": "^2.1.7",
     "quagga": "^0.12.1",
     "remove": "^0.1.5",
-    "vue": "^3.3.13",
+    "vue": "^3.4.3",
     "vue-axios": "^3.5.2",
     "vue-final-modal": "^3.4.11",
     "vue-flatpickr-component": "^11",
