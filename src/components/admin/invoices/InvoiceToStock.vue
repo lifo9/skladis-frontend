@@ -15,11 +15,11 @@
       class="relative m-4 flex min-h-[75vh] max-w-6xl flex-wrap items-center justify-center rounded-md bg-white p-4 md:min-w-[70vw] md:p-8"
     >
       <div class="my-4 flex h-[75vh] w-full flex-wrap justify-center self-baseline overflow-auto">
-        <r-spinner v-if="loading" class="mr-3 ml-1 h-24 w-24 text-gray-300" />
+        <r-spinner v-if="loading" class="ml-1 mr-3 h-24 w-24 text-gray-300" />
         <div v-else class="h-full w-full">
           <h1 class="mb-6 text-center">{{ invoice_code }} - {{ $filters.formatDate(invoice_date) }}</h1>
           <div
-            class="relative mb-4 hidden items-start space-y-4 space-x-2 border-b text-sm font-semibold md:grid md:grid-cols-8 md:space-y-0"
+            class="relative mb-4 hidden items-start space-x-2 space-y-4 border-b text-sm font-semibold md:grid md:grid-cols-8 md:space-y-0"
           >
             <div class="col-span-2">{{ $filters.uppercase($t('Product')) }}</div>
             <div class="col-span-2">{{ $filters.uppercase($t('Room')) }}</div>
@@ -168,28 +168,29 @@ export default defineComponent({
         return
       }
 
-      Promise.all(
-        this.stockItems.map((stockItem) =>
-          stockIn({
+      for (let stockItem of this.stockItems) {
+        try {
+          await stockIn({
             productId: stockItem.product_id,
             roomId: stockItem.room_id,
             locationId: stockItem.location_id,
             expiration: stockItem.expiration,
             quantity: stockItem.quantity
           })
-        )
-      )
-        .then(() => {
-          this.eventBus.emit('alert', { level: 'success', message: this.$t('Items were successfully stocked in') })
-          updateStockedIn(this.invoiceId)
-          this.row.attributes.stocked_in = true
-        })
-        .catch((error) => {
-          this.eventBus.emit('alert', { level: 'alert', message: error })
-        })
-        .finally(() => {
-          this.showModal = false
-        })
+        } catch (error) {
+          this.eventBus.emit('alert', { level: 'error', message: error })
+          return // Stop processing if an error occurs
+        }
+      }
+
+      this.eventBus.emit('alert', {
+        level: 'success',
+        message: this.$t('Items were successfully stocked in')
+      })
+
+      updateStockedIn(this.invoiceId)
+      this.row.attributes.stocked_in = true
+      this.showModal = false
     },
     validate() {
       let valid = true
