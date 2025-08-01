@@ -194,5 +194,7 @@
   "You will be redirected to the sign in page": "You will be redirected to the sign in page",
   "Your profile was successfully updated": "Your profile was successfully updated",
   "zip": "Postal code",
-  "Download Stock Audit CSV": "Download Stock Audit CSV"
+  "Download Stock Audit CSV": "Download Stock Audit CSV",
+  "Stock audit CSV downloaded successfully": "Stock audit CSV downloaded successfully",
+  "Failed to download stock audit CSV": "Failed to download stock audit CSV"
 }
