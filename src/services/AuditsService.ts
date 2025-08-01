@@ -1,3 +1,5 @@
+import { securedAxiosInstance } from '@/services/ApiService'
+
 import CrudService from './CrudService'
 
 const API_PATH = '/audits'
@@ -10,4 +12,13 @@ export function getAudits(params) {
 
 export function getAuditOptions(params) {
   return crud.getOptions(params)
+}
+
+export function getStockAudit() {
+  return securedAxiosInstance.get('/audits/stock-audit', {
+    responseType: 'blob',
+    headers: {
+      'Accept': 'text/csv'
+    }
+  })
 }

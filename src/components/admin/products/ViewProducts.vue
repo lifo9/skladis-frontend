@@ -10,8 +10,23 @@
     :custom-actions="customActions"
     :hide-all-cols="true"
     :filter-options="filterOptions"
-  />
-  <r-spinner v-else class="mr-3 ml-1 w-4 h-4 text-white" />
+  >
+    <template #customButtons>
+      <r-button
+        v-role="constants.roles.admin"
+        class="m-2"
+        variant="primary"
+        size="small"
+        :disabled="downloadingAudit"
+        @click="downloadStockAudit"
+      >
+        <r-spinner v-if="downloadingAudit" class="mr-2 size-4" />
+        <span v-else class="material-icons">download</span>
+        &nbsp;{{ $filters.uppercase($t('Download Stock Audit CSV')) }}
+      </r-button>
+    </template>
+  </crud-table>
+  <r-spinner v-else class="ml-1 mr-3 size-4 text-white" />
 </template>
 
 <script lang="ts">
@@ -23,16 +38,20 @@ import CrudLink from '@/components/CrudLink.vue'
 import CrudTable from '@/components/CrudTable.vue'
 import CrudText from '@/components/CrudText.vue'
 import CrudViewButton from '@/components/CrudViewButton.vue'
+import RButton from '@/components/ui/RButton.vue'
 import RSpinner from '@/components/ui/RSpinner.vue'
+import { getStockAudit } from '@/services/AuditsService'
 import { deleteProduct, getProducts } from '@/services/ProductService'
 import { getSupplierOptions } from '@/services/SupplierService'
 
 export default defineComponent({
-  components: { CrudTable, RSpinner },
+  components: { CrudTable, RSpinner, RButton },
+  inject: ['constants'],
   data() {
     return {
       getEndpoint: getProducts,
       deleteEndpoint: deleteProduct,
+      downloadingAudit: false,
       customActions: [
         {
           component: markRaw(CrudViewButton),
@@ -150,6 +169,44 @@ export default defineComponent({
         }
       }
       this.loading = false
+    },
+    async downloadStockAudit() {
+      this.downloadingAudit = true
+      try {
+        const response = await getStockAudit()
+
+        const url = window.URL.createObjectURL(new Blob([response.data]))
+        const link = document.createElement('a')
+        link.href = url
+
+        const contentDisposition = response.headers['content-disposition']
+        let filename = `stock_audit_${new Date().toISOString().slice(0, 10).replace(/-/g, '')}.csv`
+
+        if (contentDisposition) {
+          const filenameMatch = contentDisposition.match(/filename="(.+)"/)
+          if (filenameMatch) {
+            filename = filenameMatch[1]
+          }
+        }
+
+        link.setAttribute('download', filename)
+        document.body.appendChild(link)
+        link.click()
+        link.remove()
+        window.URL.revokeObjectURL(url)
+
+        this.eventBus.emit('alert', {
+          level: 'success',
+          message: this.$t('Stock audit CSV downloaded successfully')
+        })
+      } catch (error) {
+        this.eventBus.emit('alert', {
+          level: 'alert',
+          message: this.$t('Failed to download stock audit CSV')
+        })
+      } finally {
+        this.downloadingAudit = false
+      }
     }
   }
 })

@@ -192,5 +192,6 @@
   "Warehouses": "Sklady",
   "You will be redirected to the sign in page": "Budete presmerovaný na stránku prihlásenia",
   "Your profile was successfully updated": "Váš profil bol úspešne aktualizovaný",
-  "zip": "PSČ"
+  "zip": "PSČ",
+  "Download Stock Audit CSV": "Stiahnuť inventúru skladu v CSV"
 }

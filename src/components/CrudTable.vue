@@ -6,6 +6,7 @@
       <div v-for="(customGlobalAction, idx) in customGlobalActions" :key="'customGlobalAction_' + idx">
         <component :is="customGlobalAction.component" v-bind="customGlobalAction.props" />
       </div>
+      <slot name="customButtons" :selected="selected" :rows="rows" :included="included"></slot>
       <r-button
         v-if="enableDefaultActions"
         class="m-2"
