@@ -18,7 +18,7 @@ export function getStockAudit() {
   return securedAxiosInstance.get('/audits/stock-audit', {
     responseType: 'blob',
     headers: {
-      'Accept': 'text/csv'
+      'Accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     }
   })
 }

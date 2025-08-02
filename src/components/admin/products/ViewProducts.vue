@@ -22,7 +22,7 @@
       >
         <r-spinner v-if="downloadingAudit" class="mr-2 size-4" />
         <span v-else class="material-icons">download</span>
-        &nbsp;{{ $filters.uppercase($t('Download Stock Audit CSV')) }}
+        &nbsp;{{ $filters.uppercase($t('Download Stock Audit')) }}
       </r-button>
     </template>
   </crud-table>
@@ -180,7 +180,7 @@ export default defineComponent({
         link.href = url
 
         const contentDisposition = response.headers['content-disposition']
-        let filename = `stock_audit_${new Date().toISOString().slice(0, 10).replace(/-/g, '')}.csv`
+        let filename = `stock_audit_${new Date().toISOString().slice(0, 10).replace(/-/g, '')}.xlsx`
 
         if (contentDisposition) {
           const filenameMatch = contentDisposition.match(/filename="(.+)"/)
@@ -197,12 +197,12 @@ export default defineComponent({
 
         this.eventBus.emit('alert', {
           level: 'success',
-          message: this.$t('Stock audit CSV downloaded successfully')
+          message: this.$t('Stock audit downloaded successfully')
         })
       } catch (error) {
         this.eventBus.emit('alert', {
           level: 'alert',
-          message: this.$t('Failed to download stock audit CSV')
+          message: this.$t('Failed to download stock audit')
         })
       } finally {
         this.downloadingAudit = false
