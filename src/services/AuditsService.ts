@@ -18,7 +18,13 @@ export function getStockAudit() {
   return securedAxiosInstance.get('/audits/stock-audit', {
     responseType: 'blob',
     headers: {
-      'Accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      'Accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      'Cache-Control': 'no-cache, no-store, must-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0'
+    },
+    params: {
+      _t: Date.now() // Cache buster
     }
   })
 }
