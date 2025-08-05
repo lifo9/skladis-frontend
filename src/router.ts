@@ -50,8 +50,9 @@ function redirectSignedOut(to, from, next) {
 
   if (!store.signedIn) {
     next('/sign-in')
+  } else {
+    next()
   }
-  next()
 }
 
 function redirectSignedIn(to, from, next) {
